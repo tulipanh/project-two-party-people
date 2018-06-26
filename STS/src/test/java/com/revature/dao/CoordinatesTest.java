@@ -20,5 +20,4 @@ public class CoordinatesTest {
 		assertEquals(-7.1, checkFirstCoor,.001);
 		assertEquals(null, daoCoordImpl.getCoordinatesById(pk));
 	}
-
 }

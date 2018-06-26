@@ -1,5 +1,9 @@
 package dao;
 
+import java.util.List;
+import java.util.Set;
+
+import com.revature.models.Coordinates;
 import com.revature.models.Party;
 
 interface DAOParty {
@@ -8,4 +12,5 @@ interface DAOParty {
 	public void updateParty(Party party);
 	public void deleteParty(Party party);
 	public Party getPartyById(int partyId);
+	public List<Party> getPartyWithinRadius(Coordinates coordinates,double radius);
 }

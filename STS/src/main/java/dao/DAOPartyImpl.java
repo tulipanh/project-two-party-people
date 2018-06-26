@@ -1,12 +1,15 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
+import com.revature.models.Coordinates;
 import com.revature.models.Party;
 import com.revature.util.HibernateUtil;
 
@@ -54,6 +57,27 @@ public class DAOPartyImpl implements DAOParty {
 			session.close();
 			return null;
 		}
+	}
+
+	@Override
+	public List<Party> getPartyWithinRadius(Coordinates coordinates, double radius) {
+		Session session = HibernateUtil.getSession();
+		List<Party> partyList = new ArrayList<>();
+		String sql = "SELECT P.PARTYNAME,A.CITY,C.LONGITUDE,C.LATITUDE  FROM ADDRESS A\n" + 
+				"JOIN PARTY P\n" + 
+				"ON P.ADDRESSID = A.ADDRESSID\n" + 
+				"JOIN COORDINATES C\n" + 
+				"ON A.COORDINATEID = C.COORDINATEID\n" + 
+				"WHERE 3963*ACOS((sin(C.LATTITUDE/ 57.3) * SIN(?/ 57.3))  + \n" + 
+				"(COS(C.LATTITUDE / 57.3) * COS(?/ 57.3) *COS(C.Longitude/ 57.3 - ?/57.3 ))) < ?";
+		Query query = session.createSQLQuery(sql);
+		query.setDouble(0, coordinates.getLattitude());
+		query.setDouble(1, coordinates.getLattitude());
+		query.setDouble(2, coordinates.getLongitude());
+		query.setDouble(3, radius);
+		partyList = query.list();
+		session.close();
+		return partyList;
 	}
 
 }
