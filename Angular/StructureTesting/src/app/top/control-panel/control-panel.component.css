@@ -5,14 +5,14 @@
 }
 
 .mock-up {
-    background-color: #2222CC22;
+    background-color: #CC000022;
 }
 
 .control-panel-button {
     position: relative;
     display: inline-block;
     height: 100px;
-    width: 100px;
+    width: 33.333%;
 }
 
 #control-panel-div {
