@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class Coordinates {
 
 	@Column
-	private double lattitude;
+	private double latitude;
 	@Column
 	private double longitude;
 	@Column
@@ -31,20 +31,20 @@ public class Coordinates {
 	}
 	public Coordinates(double lattitude, double longitude, int id) {
 		super();
-		this.lattitude = lattitude;
+		this.latitude = lattitude;
 		this.longitude = longitude;
 		this.coordinateId = id;
 	}
 	public Coordinates(double lattitude, double longitude) {
 		super();
-		this.lattitude = lattitude;
+		this.latitude = lattitude;
 		this.longitude = longitude;
 	}
 	public double getLattitude() {
-		return lattitude;
+		return latitude;
 	}
 	public void setLattitude(double lattitude) {
-		this.lattitude = lattitude;
+		this.latitude = lattitude;
 	}
 	public double getLongitude() {
 		return longitude;
@@ -65,7 +65,7 @@ public class Coordinates {
 		int result = 1;
 		result = prime * result + coordinateId;
 		long temp;
-		temp = Double.doubleToLongBits(lattitude);
+		temp = Double.doubleToLongBits(latitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(longitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -82,7 +82,7 @@ public class Coordinates {
 		Coordinates other = (Coordinates) obj;
 		if (coordinateId != other.coordinateId)
 			return false;
-		if (Double.doubleToLongBits(lattitude) != Double.doubleToLongBits(other.lattitude))
+		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude))
 			return false;
 		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude))
 			return false;
@@ -90,6 +90,6 @@ public class Coordinates {
 	}
 	@Override
 	public String toString() {
-		return "Coordinates [lattitude=" + lattitude + ", longitude=" + longitude + ", id=" + coordinateId + "]";
+		return "Coordinates [latitude=" + latitude + ", longitude=" + longitude + ", id=" + coordinateId + "]";
 	}
 }
