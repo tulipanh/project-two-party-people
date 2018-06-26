@@ -1,6 +1,6 @@
 package com.revature.models;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,12 +45,12 @@ public class PartyPerson {
 			joinColumns= {@JoinColumn(name="personId")},
 			inverseJoinColumns= {@JoinColumn(name="partyId")}
 			)
-	private List<Party> eventsRSVP;
+	private Set<Party> eventsRSVP;
 	@Column
 	
 	@OneToMany(cascade= {CascadeType.ALL},fetch=FetchType.EAGER)
 	@JoinColumn(name="personId")
-	private List<Party> creatorEvents;
+	private Set<Party> creatorEvents;
 	
 	@Column
 	private int age;
@@ -61,21 +61,10 @@ public class PartyPerson {
 	public PartyPerson() {
 		super();
 	}
-	public PartyPerson(int personId, String username, String password, String email, List<Party> eventsRSVP,
-			List<Party> creatorEvents, int age, Address address) {
+	public PartyPerson(int personId, String username, String password, String email, Set<Party> eventsRSVP,
+			Set<Party> creatorEvents, int age, Address address) {
 		super();
 		this.personId = personId;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.eventsRSVP = eventsRSVP;
-		this.creatorEvents = creatorEvents;
-		this.age = age;
-		this.address = address;
-	}
-	public PartyPerson(String username, String password, String email, List<Party> eventsRSVP,
-			List<Party> creatorEvents, int age, Address address) {
-		super();
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -102,16 +91,16 @@ public class PartyPerson {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public List<Party> getEventsRSVP() {
+	public Set<Party> getEventsRSVP() {
 		return eventsRSVP;
 	}
-	public void setEventsRSVP(List<Party> eventsRSVP) {
+	public void setEventsRSVP(Set<Party> eventsRSVP) {
 		this.eventsRSVP = eventsRSVP;
 	}
-	public List<Party> getCreatorEvents() {
+	public Set<Party> getCreatorEvents() {
 		return creatorEvents;
 	}
-	public void setCreatorEvents(List<Party> creatorEvents) {
+	public void setCreatorEvents(Set<Party> creatorEvents) {
 		this.creatorEvents = creatorEvents;
 	}
 	public int getAge() {

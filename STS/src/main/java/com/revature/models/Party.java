@@ -2,7 +2,8 @@ package com.revature.models;
 
 import java.sql.Date;
 
-import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,11 +51,11 @@ public class Party {
 			joinColumns= {@JoinColumn(name="personId")},
 			inverseJoinColumns= {@JoinColumn(name="partyId")}
 			)
-	private List<PartyPerson> attendees;
+	private Set<PartyPerson> attendees;
 	
 	@OneToMany(cascade= {CascadeType.ALL},fetch=FetchType.EAGER)
 	@JoinColumn(name="partyId")
-	private List<Tag> tagList;
+	private Set<Tag> tagList;
 	@Column
 	private String pictureUrl;
 	
@@ -63,7 +64,7 @@ public class Party {
 		super();
 	}
 	public Party(int partyId, PartyPerson creator, Address address, String partyName, Date date,
-			List<PartyPerson> attendees, List<Tag> tagList, String pictureUrl) {
+			Set<PartyPerson> attendees, Set<Tag> tagList, String pictureUrl) {
 		super();
 		this.partyId = partyId;
 		this.creator = creator;
@@ -74,18 +75,7 @@ public class Party {
 		this.tagList = tagList;
 		this.pictureUrl = pictureUrl;
 	}
-	public Party(int partyId, PartyPerson creator, Address address, String partyName, Date date,
-			List<PartyPerson> attendees, List<Tag> tagList, String pictureUrl, Coordinates coordinates) {
-		super();
-		this.partyId = partyId;
-		this.creator = creator;
-		this.address = address;
-		this.partyName = partyName;
-		this.partyDate = date;
-		this.attendees = attendees;
-		this.tagList = tagList;
-		this.pictureUrl = pictureUrl;
-	}
+	
 	public int getPartyId() {
 		return partyId;
 	}
@@ -116,16 +106,16 @@ public class Party {
 	public void setDate(Date date) {
 		this.partyDate = date;
 	}
-	public List<PartyPerson> getAttendees() {
+	public Set<PartyPerson> getAttendees() {
 		return attendees;
 	}
-	public void setAttendees(List<PartyPerson> attendees) {
+	public void setAttendees(Set<PartyPerson> attendees) {
 		this.attendees = attendees;
 	}
-	public List<Tag> getTagList() {
+	public Set<Tag> getTagList() {
 		return tagList;
 	}
-	public void setTagList(List<Tag> tagList) {
+	public void setTagList(Set<Tag> tagList) {
 		this.tagList = tagList;
 	}
 	public String getPictureUrl() {
