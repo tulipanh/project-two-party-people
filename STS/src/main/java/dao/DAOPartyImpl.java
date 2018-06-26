@@ -68,8 +68,8 @@ public class DAOPartyImpl implements DAOParty {
 				"ON P.ADDRESSID = A.ADDRESSID\n" + 
 				"JOIN COORDINATES C\n" + 
 				"ON A.COORDINATEID = C.COORDINATEID\n" + 
-				"WHERE 3963*ACOS((sin(C.LATTITUDE/ 57.3) * SIN(?/ 57.3))  + \n" + 
-				"(COS(C.LATTITUDE / 57.3) * COS(?/ 57.3) *COS(C.Longitude/ 57.3 - ?/57.3 ))) < ?";
+				"WHERE 3963*ACOS((sin(C.LATITUDE/ 57.3) * SIN(?/ 57.3))  + \n" + 
+				"(COS(C.LATITUDE / 57.3) * COS(?/ 57.3) *COS(C.Longitude/ 57.3 - ?/57.3 ))) < ?";
 		Query query = session.createSQLQuery(sql);
 		query.setDouble(0, coordinates.getLattitude());
 		query.setDouble(1, coordinates.getLattitude());
