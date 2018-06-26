@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
+/**
+ * Class for longitude and latitude of an address
+ * Necessary because google maps requires longitude and latitude
+ * Could not use this class and instead make calls to the Geocaching Google API, 
+ * but we decided we would rather make extra calls to the database than extra HTTP requests
+ */
 @Entity
 @Table
 public class Coordinates {

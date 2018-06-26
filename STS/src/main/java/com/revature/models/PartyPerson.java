@@ -16,7 +16,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
+/**
+ * Class for the party-goers and party-creators
+ * Many-to-Many relationship for people going to parties (PARTY_RSVP),
+ * has a list of parties the person is RSVP'd to,
+ * a list for the events the person has created,
+ * and a link to the address of the person (which in turn has a link to coordinates)
+ */
 @Entity
 @Table
 public class PartyPerson {

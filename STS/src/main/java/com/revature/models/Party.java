@@ -18,7 +18,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
+/**
+ * Class for the party object.  Links to the person who created the party (creator),
+ * the address of the party (and the address links to the coordinates),
+ * has a list of attendees in a many-to-many relationship with PartyPerson,
+ * a list of tags that apply to the event,
+ * and a link to the URL of the picture for the event
+ */
 @Entity
 @Table
 public class Party {
@@ -69,7 +75,7 @@ public class Party {
 		this.pictureUrl = pictureUrl;
 	}
 	public Party(int partyId, PartyPerson creator, Address address, String partyName, Date date,
-			List<PartyPerson> attendees, List<Tag> tagList, String pictureUrl, CoordinatesTest coordinates) {
+			List<PartyPerson> attendees, List<Tag> tagList, String pictureUrl, Coordinates coordinates) {
 		super();
 		this.partyId = partyId;
 		this.creator = creator;

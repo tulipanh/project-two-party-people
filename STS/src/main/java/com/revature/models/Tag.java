@@ -1,20 +1,25 @@
 package com.revature.models;
 
 import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * Class for tags that a party has, like the type of event it is
+ * Different tags are found in the util/Constants.java file, and are stored in this class
+ * in the tagName variable
+ * The icon for the tag is stored in the pathToImage String
+ *
+ */
 @Entity
 @Table
 public class Tag {
 
-	//This int refers to a tag listed in the util/Constants.java file
 	@Column
 	private int tagName;
 	@Column

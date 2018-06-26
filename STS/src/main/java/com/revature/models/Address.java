@@ -12,6 +12,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * Class for the address of something, with street name, city, state, zipcode.  
+ * Currently USA only, as there are only Parties In The USA
+ * Has a link to the longitudinal and lattitudinal coordinates of this address
+ */
+
 @Entity
 @Table
 public class Address {
