@@ -1,11 +1,11 @@
 .search-panel-item {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     position: absolute;
 }
 
 .mock-up {
-    background-color: #2222CC22;
+    background-color: #00CC0022;
 }
 
 #search-panel-div {

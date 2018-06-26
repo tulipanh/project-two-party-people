@@ -1,3 +1,50 @@
-.mock-up {
-    background-color: #2222CC22;
+.control-panel-item {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
 }
+
+.mock-up {
+    background-color: #CC000022;
+}
+
+.control-panel-button {
+    position: relative;
+    display: inline-block;
+    height: 100px;
+    width: 33.333%;
+}
+
+#control-panel-div {
+    top: 0px;
+    left: 0px;
+    width: 300px;
+    height: 100px;
+}
+
+#create-event-button {
+    top: 5px;
+    left: 50%;
+    margin-left: -45px;
+    width: 90px;
+    height: 90px;
+}
+
+#profile-button {
+    top: 5px;
+    left: 50%;
+    margin-left: -45px;
+    width: 90px;
+    height: 45px;
+}
+
+#login-logout-button {
+    top: 5px;
+    left: 50%;
+    margin-left: -45px;
+    width: 90px;
+    height: 45px;
+}
+
+
+
