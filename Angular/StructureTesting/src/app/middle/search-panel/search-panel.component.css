@@ -1,0 +1,30 @@
+.search-panel-item {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+}
+
+.mock-up {
+    background-color: #00CC0022;
+}
+
+#search-panel-div {
+    margin-top:5px;
+    width: 450px;
+    height: 95%;
+    right: 0px;
+}
+
+#search-panel-info {
+    width: 400px;
+    height: 100%;
+    right: 0px;
+}
+
+#search-panel-hide-button {
+    margin-top: -20px;
+    width: 40px;
+    height: 40px;
+    left: 0px;
+    top: 50%;
+}

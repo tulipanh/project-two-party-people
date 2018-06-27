@@ -1,0 +1,18 @@
+.control-details-item {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+}
+
+.mock-up {
+    background-color: #CC000022;
+}
+
+#control-details {
+    top: 50%;
+    left: 50%;
+    margin-top: -250px;
+    margin-left: -300px;
+    width: 600px;
+    height: 500px;
+}
