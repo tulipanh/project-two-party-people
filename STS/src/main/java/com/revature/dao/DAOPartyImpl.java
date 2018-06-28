@@ -1,18 +1,29 @@
-package dao;
+package com.revature.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Scrollable;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import com.revature.models.Coordinates;
 import com.revature.models.Party;
 import com.revature.util.HibernateUtil;
 
+import javassist.convert.Transformer;
+
+@Repository()
 public class DAOPartyImpl implements DAOParty {
 
 	@Override
@@ -58,6 +69,29 @@ public class DAOPartyImpl implements DAOParty {
 			return null;
 		}
 	}
+	
+	@Override
+	public Party getPartyLocationById(int partyId) {
+		Session session = HibernateUtil.getSession();
+		Criteria criteria = session.createCriteria(Party.class);
+		criteria.add(Restrictions.eq("partyId", partyId));
+		criteria.setProjection(Projections.projectionList()
+				.add(Projections.property("partyId"),"partyId")
+				.add(Projections.property("partyName"),"partyName")
+				.add(Projections.property("address"),"address")
+				.add(Projections.property("partyDate"),"partyDate")
+				//	.add(Projections.property("tagList"),"tagList")
+				).setResultTransformer(Transformers.aliasToBean(Party.class));
+		List<Party> partyList = criteria.list();
+		if(partyList.size() > 0) {
+			//since partyId is primary key, there can only be 0 or 1 items in this list
+			session.close();
+			return partyList.get(0);
+		}else {
+			session.close();
+			return null;
+		}
+	}
 
 	@Override
 	public List<Party> getPartyWithinRadius(Coordinates coordinates, double radius) {
@@ -71,11 +105,29 @@ public class DAOPartyImpl implements DAOParty {
 				"WHERE 3963*ACOS((sin(C.LATITUDE/ 57.3) * SIN(?/ 57.3))  + \n" + 
 				"(COS(C.LATITUDE / 57.3) * COS(?/ 57.3) *COS(C.Longitude/ 57.3 - ?/57.3 ))) < ?";
 		Query query = session.createSQLQuery(sql);
-		query.setDouble(0, coordinates.getLattitude());
-		query.setDouble(1, coordinates.getLattitude());
+		query.setDouble(0, coordinates.getLatitude());
+		query.setDouble(1, coordinates.getLatitude());
 		query.setDouble(2, coordinates.getLongitude());
 		query.setDouble(3, radius);
 		partyList = query.list();
+		session.close();
+		return partyList;
+	}
+	
+	public List<Party> getPartyList(){
+		Session session = HibernateUtil.getSession();
+		List<Party> partyList = new ArrayList<>();
+		Criteria criteria = session.createCriteria(Party.class);
+		criteria.add(Restrictions.between("partyId", 50, 70));
+		criteria.setProjection(Projections.projectionList()
+				.add(Projections.property("partyId"),"partyId")
+				.add(Projections.property("partyName"),"partyName")
+				.add(Projections.property("address"),"address")
+				.add(Projections.property("partyDate"),"partyDate")
+				//	.add(Projections.property("tagList"),"tagList")
+				).setResultTransformer(Transformers.aliasToBean(Party.class));
+		partyList = criteria.list();
+		System.out.println("Hi");
 		session.close();
 		return partyList;
 	}

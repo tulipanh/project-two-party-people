@@ -37,7 +37,7 @@ public class Address {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="addressSequence")
 	@SequenceGenerator(allocationSize=1,name="addressSequence",sequenceName="SQ_ADDRESS_PK")
-	private int addressId;
+	private Integer addressId;
 	
 	public Address() {
 		super();
@@ -84,10 +84,10 @@ public class Address {
 		this.coordinates = coordinates;
 	}
 	
-	public int getAddressId() {
+	public Integer getAddressId() {
 		return addressId;
 	}
-	public void setAddressId(int addressId) {
+	public void setAddressId(Integer addressId) {
 		this.addressId = addressId;
 	}
 	@Override

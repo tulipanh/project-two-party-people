@@ -3,9 +3,8 @@ package com.revature.dao;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import com.revature.dao.DAOCoordinatesImpl;
 import com.revature.models.Coordinates;
-
-import dao.DAOCoordinatesImpl;
 
 public class CoordinatesTest {
 	

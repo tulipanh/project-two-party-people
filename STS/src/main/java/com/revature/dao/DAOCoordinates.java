@@ -1,8 +1,11 @@
-package dao;
+package com.revature.dao;
+
+import org.springframework.stereotype.Repository;
 
 import com.revature.models.Coordinates;
 
-interface DAOCoordinates {
+@Repository
+public interface DAOCoordinates {
 
 	public int insertCoordinates(Coordinates coordinates);
 	public void updateCoordinates(Coordinates coordinates);
