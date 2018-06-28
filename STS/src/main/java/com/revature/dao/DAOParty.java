@@ -16,6 +16,6 @@ public interface DAOParty {
 	public void deleteParty(Party party);
 	public Party getPartyById(int partyId);
 	public List<Party> getPartyWithinRadius(Coordinates coordinates,double radius);
-	Party getPartyLocationById(int partyId);
-	public List<Party> getPartyList();
+	public Party getPartyLocationById(int partyId);
+	public List<Party> getPartyListWithinCoordinates(Coordinates coordinatesMin,Coordinates coordinatesMax);
 }

@@ -114,20 +114,34 @@ public class DAOPartyImpl implements DAOParty {
 		return partyList;
 	}
 	
-	public List<Party> getPartyList(){
+	public List<Party> getPartyListWithinCoordinates(Coordinates coordinatesMin,Coordinates coordinatesMax){
 		Session session = HibernateUtil.getSession();
 		List<Party> partyList = new ArrayList<>();
-		Criteria criteria = session.createCriteria(Party.class);
-		criteria.add(Restrictions.between("partyId", 50, 70));
-		criteria.setProjection(Projections.projectionList()
-				.add(Projections.property("partyId"),"partyId")
-				.add(Projections.property("partyName"),"partyName")
-				.add(Projections.property("address"),"address")
-				.add(Projections.property("partyDate"),"partyDate")
-				//	.add(Projections.property("tagList"),"tagList")
-				).setResultTransformer(Transformers.aliasToBean(Party.class));
-		partyList = criteria.list();
-		System.out.println("Hi");
+		String sql = "SELECT P.PARTYID, P.PARTYNAME, P.PARTYDATE, C.LATITUDE,C.LONGITUDE  FROM PARTY P\n" + 
+				"JOIN ADDRESS A\n" + 
+				"ON P.ADDRESSID = A.ADDRESSID\n" + 
+				"JOIN COORDINATES C\n" + 
+				"ON A.COORDINATEID = C.COORDINATEID\n" + 
+				"WHERE C.LATITUDE BETWEEN ? AND ?\n" + 
+				"AND C.LONGITUDE BETWEEN ? AND ?";
+		Query query = session.createSQLQuery(sql);
+		query.setDouble(0, coordinatesMin.getLatitude());
+		query.setDouble(1, coordinatesMax.getLatitude());
+		query.setDouble(2, coordinatesMin.getLongitude());
+		query.setDouble(3, coordinatesMax.getLongitude());
+		
+		
+//		Criteria criteria = session.createCriteria(Party.class);
+//		criteria.add(Restrictions.between("address.coordinates", coordinatesMin, coordinatesMax));
+//		criteria.setProjection(Projections.projectionList()
+//				.add(Projections.property("partyId"),"partyId")
+//				.add(Projections.property("partyName"),"partyName")
+//				.add(Projections.property("address"),"address")
+//				.add(Projections.property("partyDate"),"partyDate")
+//					.add(Projections.property("tagList"),"tagList")
+//				).setResultTransformer(Transformers.aliasToBean(Party.class));
+//		partyList = criteria.list();
+		partyList = query.list();
 		session.close();
 		return partyList;
 	}

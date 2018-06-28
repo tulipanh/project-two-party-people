@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-public class Coordinates {
+public class Coordinates implements Comparable<Coordinates>{
 
 	@Column
 	private Double latitude;
@@ -96,6 +96,17 @@ public class Coordinates {
 		} else if (!longitude.equals(other.longitude))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Coordinates o) {
+		if(this.latitude > o.latitude && this.longitude > o.longitude) {
+			return 1;
+		}else if(this.latitude < o.latitude && this.longitude < o.longitude) {
+			return -1;
+		}else {
+			return 0;
+		}
 	}
 	
 	
