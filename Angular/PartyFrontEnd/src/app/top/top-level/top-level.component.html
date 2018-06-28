@@ -12,7 +12,10 @@
             </button>
         </span>
         <span class="control-panel-button">
-            <button class="control-panel-item small-button" id="login-logout-button" type="button" (click)="switchToLogin()">
+            <button *ngIf="loggedIn" class="control-panel-item small-button" id="login-logout-button" type="button" (click)="logout()">
+                Log Out
+            </button>
+            <button *ngIf="!loggedIn" class="control-panel-item small-button" id="login-logout-button" type="button" (click)="switchToLogin()">
                 Log In
             </button>
         </span>

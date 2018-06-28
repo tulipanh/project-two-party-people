@@ -10,7 +10,7 @@ export class TopLevelComponent implements OnInit {
 
   currentActivity: TopLevelActivity = TopLevelActivity.None;
   shroudOn: boolean = false;
-  loggedIn: boolean = false;
+  loggedIn: boolean = true;
 
   constructor() { }
 
@@ -40,6 +40,10 @@ export class TopLevelComponent implements OnInit {
   switchToCreate() {
     this.shroudOn = true;
     this.currentActivity = TopLevelActivity.Create;
+  }
+
+  logout() {
+    this.loggedIn = false;
   }
 }
 
