@@ -4,9 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.revature.dao.DAOTagImpl;
 import com.revature.models.Tag;
-
-import dao.DAOTagImpl;
 
 
 public class TagTest {

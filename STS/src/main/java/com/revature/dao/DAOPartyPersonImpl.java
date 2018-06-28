@@ -1,4 +1,4 @@
-package dao;
+package com.revature.dao;
 
 import java.util.List;
 
@@ -6,10 +6,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import com.revature.models.PartyPerson;
 import com.revature.util.HibernateUtil;
 
+@Repository
 public class DAOPartyPersonImpl implements DAOPartyPerson {
 
 	@Override

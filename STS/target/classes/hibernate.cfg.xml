@@ -20,5 +20,6 @@
 		<mapping class="com.revature.models.Party"/>
 		<mapping class="com.revature.models.PartyPerson"/>
 		
+		
 	</session-factory>
 </hibernate-configuration>

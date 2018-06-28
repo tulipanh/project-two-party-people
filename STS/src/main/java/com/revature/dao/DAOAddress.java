@@ -1,8 +1,11 @@
-package dao;
+package com.revature.dao;
+
+import org.springframework.stereotype.Repository;
 
 import com.revature.models.Address;
 
-interface DAOAddress {
+@Repository
+public interface DAOAddress {
 
 	public int insertAddress(Address address);
 	public void updateAddress(Address address);

@@ -1,4 +1,4 @@
-package dao;
+package com.revature.dao;
 
 import java.util.List;
 
@@ -6,10 +6,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import com.revature.models.Tag;
 import com.revature.util.HibernateUtil;
 
+@Repository
 public class DAOTagImpl implements DAOTag {
 
 	@Override
