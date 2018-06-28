@@ -1,0 +1,13 @@
+#map-details-div {
+    margin: 0;
+    padding: 0;
+    width: 60px;
+    height: 150px;
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+}
+
+.mock-up {
+    background-color: #00CC0022;
+}
