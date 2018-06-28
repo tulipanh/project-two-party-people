@@ -1,8 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+
+
+import {SearchCoordinatesDataService} from "./services/search-coordinates-data.service";
 
 import { AppComponent } from './app.component';
-import { MapComponentComponent } from './bottom/map-component/map-component.component';
 import { MapDetailsComponent } from './middle/map-details/map-details.component';
 import { SearchPanelComponent } from './middle/search-panel/search-panel.component';
 import { LoginComponent } from './top/login/login.component';
@@ -12,11 +15,12 @@ import { ProfileComponent } from './top/profile/profile/profile.component';
 import { CreateComponent } from './top/create/create/create.component';
 import { RegisterComponent } from './top/register/register/register.component';
 import { EventTileComponent } from './middle/event-tile/event-tile.component';
+import { MapViewComponent } from './bottom/map-view/map-view.component';
+import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponentComponent,
     MapDetailsComponent,
     SearchPanelComponent,
     LoginComponent,
@@ -25,11 +29,15 @@ import { EventTileComponent } from './middle/event-tile/event-tile.component';
     CreateComponent,
     RegisterComponent,
     EventTileComponent,
+    MapViewComponent,
+    SearchBarComponent,
   ],
   imports: [
-    BrowserModule, FormsModule
+    BrowserModule,
+    FormsModule,
+    GooglePlaceModule
   ],
-  providers: [],
+  providers: [SearchCoordinatesDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

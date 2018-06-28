@@ -1,0 +1,15 @@
+#map-search{
+    min-width:400px;
+    max-width:50%;
+    position:absolute;
+    top:5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+ }
+ #map-search input {
+     width:100%;
+     padding: 20px;
+     border-radius:20px;
+     font-size: 1.5em;
+ }
