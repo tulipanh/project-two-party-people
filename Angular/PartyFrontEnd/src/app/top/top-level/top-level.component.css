@@ -1,0 +1,74 @@
+.fullscreen {
+    width: 100%;
+    height: 100%;
+}
+
+.mock-up {
+    background-color: #CC000022;
+}
+
+.control-panel-item {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+}
+
+.control-details-item {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+}
+
+.control-panel-button {
+    position: relative;
+    display: inline-block;
+    height: 100px;
+    width: 25%;
+}
+
+.shroud-item {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+}
+
+.small-button {
+    top: 5px;
+    left: 50%;
+    margin-left: -45px;
+    width: 90px;
+    height: 45px;
+}
+
+#shroud {
+    width: 100%;
+    height: 100%;
+    background-color: #00000066
+}
+
+#control-panel-div {
+    top: 0px;
+    left: 0px;
+    width: 400px;
+    height: 100px;
+}
+
+#create-event-button {
+    height: 90px;
+}
+
+#control-details {
+    top: 50%;
+    left: 50%;
+    margin-top: -250px;
+    margin-left: -300px;
+    width: 600px;
+    height: 500px;
+}
+
+#exit-button {    
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+}
