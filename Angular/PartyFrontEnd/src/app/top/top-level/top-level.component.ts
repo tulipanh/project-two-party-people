@@ -10,7 +10,10 @@ export class TopLevelComponent implements OnInit {
 
   currentActivity: TopLevelActivity = TopLevelActivity.None;
   shroudOn: boolean = false;
-  loggedIn: boolean = true;
+  loggedIn: boolean = false;
+  userSet: boolean = false;
+  username: string;
+  password: string;
 
   constructor() { }
 
@@ -44,6 +47,15 @@ export class TopLevelComponent implements OnInit {
 
   logout() {
     this.loggedIn = false;
+    this.username = "";
+    this.password = "";
+  }
+
+  handleMyEvent(arg) {
+    this.username = arg[0];
+    this.password = arg[1];
+    this.loggedIn = true;
+    this.switchToNone();
   }
 }
 

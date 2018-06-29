@@ -27,9 +27,9 @@
       </div>
       <div *ngIf="currentActivity > 0" class="control-details-item" id="control-details">
         <button class="control-panel-item" id="exit-button" (click)="switchToNone()">X</button>
-        <app-login *ngIf="currentActivity === 1"></app-login>
+        <app-login *ngIf="currentActivity === 1" (myevent)="handleMyEvent($event)"></app-login>
         <app-register *ngIf="currentActivity === 2"></app-register>
-        <app-profile *ngIf="currentActivity === 3"></app-profile>
+        <app-profile *ngIf="currentActivity === 3" [username]="username" [password]="password"></app-profile>
         <app-create *ngIf="currentActivity == 4"></app-create>
       </div>
 </div>

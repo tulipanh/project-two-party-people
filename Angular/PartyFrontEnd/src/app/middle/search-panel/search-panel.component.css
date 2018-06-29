@@ -22,6 +22,7 @@
     height: 95%;
     right: 0px;
     overflow: hidden;
+    pointer-events: none;
 }
 
 #search-panel-div {
@@ -35,6 +36,7 @@
     height: 100%;
     right: 0px;
     overflow-y: auto;
+    pointer-events: all;
 }
 
 #search-panel-hide-button {
@@ -43,6 +45,7 @@
     height: 40px;
     left: 0px;
     top: 50%;
+    pointer-events: all;
 }
 
 #temp-button-content {
