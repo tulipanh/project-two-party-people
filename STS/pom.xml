@@ -68,7 +68,6 @@
   		<artifactId>junit</artifactId>
   		<version>4.12</version>
   	</dependency>
-
 	<dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>servlet-api</artifactId>
