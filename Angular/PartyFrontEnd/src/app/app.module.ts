@@ -6,7 +6,6 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import {SearchCoordinatesDataService} from "./services/search-coordinates-data.service";
 
 import { AppComponent } from './app.component';
-import { MapDetailsComponent } from './middle/map-details/map-details.component';
 import { SearchPanelComponent } from './middle/search-panel/search-panel.component';
 import { LoginComponent } from './top/login/login.component';
 import { TopLevelComponent } from './top/top-level/top-level.component';
@@ -17,11 +16,11 @@ import { RegisterComponent } from './top/register/register/register.component';
 import { EventTileComponent } from './middle/event-tile/event-tile.component';
 import { MapViewComponent } from './bottom/map-view/map-view.component';
 import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
+import { FilterTileComponent } from './middle/filter-tile/filter-tile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapDetailsComponent,
     SearchPanelComponent,
     LoginComponent,
     TopLevelComponent,
@@ -31,6 +30,7 @@ import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
     EventTileComponent,
     MapViewComponent,
     SearchBarComponent,
+    FilterTileComponent,
   ],
   imports: [
     BrowserModule,

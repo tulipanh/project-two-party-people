@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { User } from '../../models/User';
 import { UserService } from '../../services/user.service';
 
@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   usernameInput: string;
   passwordInput: string;
   errorMessage: string;
+  @Output() myevent: EventEmitter<string[]> = new EventEmitter();
   
   // Only for testing
   users: User[];
@@ -26,6 +27,6 @@ export class LoginComponent implements OnInit {
   }
 
   authenticate(username, password) {
-    
+    this.myevent.next([username, password]);
   }
 }
