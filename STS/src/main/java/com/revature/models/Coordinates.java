@@ -107,6 +107,8 @@ public class Coordinates implements Comparable<Coordinates>{
 		}else {
 			return 0;
 		}
+		
+		
 	}
 	
 	
