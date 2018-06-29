@@ -20,11 +20,16 @@ export class MapViewComponent implements OnInit {
 
   ngOnInit() {
    
+    
     // initial map properties
     var mapProp = {
       center: new google.maps.LatLng(38, -77),
       zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        position: google.maps.ControlPosition.BOTTOM_RIGHT
+      }
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     this.geoData.currentCoordinates.subscribe(this.centerMap);
