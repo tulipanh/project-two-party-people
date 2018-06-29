@@ -15,62 +15,62 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-public class Coordinates {
+public class Coordinates implements Comparable<Coordinates>{
 
 	@Column
-	private double latitude;
+	private Double latitude;
 	@Column
-	private double longitude;
+	private Double longitude;
 	@Column
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="coordinateSequence")
 	@SequenceGenerator(allocationSize=1,name="coordinateSequence",sequenceName="SQ_COORDINATE_PK")
-	private int coordinateId;
+	private Integer coordinateId;
+	
 	public Coordinates() {
 		super();
 	}
-	public Coordinates(double lattitude, double longitude, int id) {
+	
+	public Coordinates(Double latitude, Double longitude) {
 		super();
-		this.latitude = lattitude;
-		this.longitude = longitude;
-		this.coordinateId = id;
-	}
-	public Coordinates(double lattitude, double longitude) {
-		super();
-		this.latitude = lattitude;
+		this.latitude = latitude;
 		this.longitude = longitude;
 	}
-	public double getLattitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
-	public void setLattitude(double lattitude) {
-		this.latitude = lattitude;
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
 	}
-	public double getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-	
-	public int getId() {
+	public Integer getCoordinateId() {
 		return coordinateId;
 	}
-	public void setId(int id) {
-		this.coordinateId = id;
+	public void setCoordinateId(Integer coordinateId) {
+		this.coordinateId = coordinateId;
 	}
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	@Override
+	public String toString() {
+		return "Coordinates [latitude=" + latitude + ", longitude=" + longitude + ", coordinateId=" + coordinateId
+				+ "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + coordinateId;
-		long temp;
-		temp = Double.doubleToLongBits(latitude);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(longitude);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((coordinateId == null) ? 0 : coordinateId.hashCode());
+		result = prime * result + ((latitude == null) ? 0 : latitude.hashCode());
+		result = prime * result + ((longitude == null) ? 0 : longitude.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -80,16 +80,38 @@ public class Coordinates {
 		if (getClass() != obj.getClass())
 			return false;
 		Coordinates other = (Coordinates) obj;
-		if (coordinateId != other.coordinateId)
+		if (coordinateId == null) {
+			if (other.coordinateId != null)
+				return false;
+		} else if (!coordinateId.equals(other.coordinateId))
 			return false;
-		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude))
+		if (latitude == null) {
+			if (other.latitude != null)
+				return false;
+		} else if (!latitude.equals(other.latitude))
 			return false;
-		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude))
+		if (longitude == null) {
+			if (other.longitude != null)
+				return false;
+		} else if (!longitude.equals(other.longitude))
 			return false;
 		return true;
 	}
+
 	@Override
-	public String toString() {
-		return "Coordinates [latitude=" + latitude + ", longitude=" + longitude + ", id=" + coordinateId + "]";
+	public int compareTo(Coordinates o) {
+		if(this.latitude > o.latitude && this.longitude > o.longitude) {
+			return 1;
+		}else if(this.latitude < o.latitude && this.longitude < o.longitude) {
+			return -1;
+		}else {
+			return 0;
+		}
+		
+		
 	}
+	
+	
+	
+	
 }

@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Class for the party-goers and party-creators
  * Many-to-Many relationship for people going to parties (PARTY_RSVP),
@@ -31,7 +33,7 @@ public class PartyPerson {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="personSequence")
 	@SequenceGenerator(allocationSize=1,name="personSequence",sequenceName="SQ_PERSON_PK")
-	private int personId;
+	private Integer personId;
 	@Column
 	private String username;
 	@Column
@@ -39,7 +41,7 @@ public class PartyPerson {
 	@Column
 	private String email;
 	@Column
-	@ManyToMany(cascade= {CascadeType.ALL},fetch= FetchType.EAGER )
+	@ManyToMany(cascade= {CascadeType.ALL},fetch= FetchType.LAZY )
 	@JoinTable(
 			name="PARTY_RSVP",
 			joinColumns= {@JoinColumn(name="personId")},
@@ -47,22 +49,22 @@ public class PartyPerson {
 			)
 	private Set<Party> eventsRSVP;
 	@Column
-	
-	@OneToMany(cascade= {CascadeType.ALL},fetch=FetchType.EAGER)
+	@OneToMany(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="personId")
 	private Set<Party> creatorEvents;
 	
 	@Column
-	private int age;
-	@OneToOne(cascade= {CascadeType.ALL})
+	private Integer age;
+	@OneToOne(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="addressId")
 	private Address address;
 	
 	public PartyPerson() {
 		super();
 	}
-	public PartyPerson(int personId, String username, String password, String email, Set<Party> eventsRSVP,
-			Set<Party> creatorEvents, int age, Address address) {
+
+	public PartyPerson(Integer personId, String username, String password, String email, Set<Party> eventsRSVP,
+			Set<Party> creatorEvents, Integer age, Address address) {
 		super();
 		this.personId = personId;
 		this.username = username;
@@ -73,69 +75,86 @@ public class PartyPerson {
 		this.age = age;
 		this.address = address;
 	}
+
+	public Integer getPersonId() {
+		return personId;
+	}
+
+	public void setPersonId(Integer personId) {
+		this.personId = personId;
+	}
+
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public Set<Party> getEventsRSVP() {
 		return eventsRSVP;
 	}
+
 	public void setEventsRSVP(Set<Party> eventsRSVP) {
 		this.eventsRSVP = eventsRSVP;
 	}
+
 	public Set<Party> getCreatorEvents() {
 		return creatorEvents;
 	}
+
 	public void setCreatorEvents(Set<Party> creatorEvents) {
 		this.creatorEvents = creatorEvents;
 	}
-	public int getAge() {
+
+	public Integer getAge() {
 		return age;
 	}
-	public void setAge(int age) {
+
+	public void setAge(Integer age) {
 		this.age = age;
 	}
+
 	public Address getAddress() {
 		return address;
 	}
+
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
-	public int getPersonId() {
-		return personId;
-	}
-	public void setPersonId(int personId) {
-		this.personId = personId;
-	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + age;
+		result = prime * result + ((age == null) ? 0 : age.hashCode());
 		result = prime * result + ((creatorEvents == null) ? 0 : creatorEvents.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((eventsRSVP == null) ? 0 : eventsRSVP.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + personId;
+		result = prime * result + ((personId == null) ? 0 : personId.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -150,7 +169,10 @@ public class PartyPerson {
 				return false;
 		} else if (!address.equals(other.address))
 			return false;
-		if (age != other.age)
+		if (age == null) {
+			if (other.age != null)
+				return false;
+		} else if (!age.equals(other.age))
 			return false;
 		if (creatorEvents == null) {
 			if (other.creatorEvents != null)
@@ -172,7 +194,10 @@ public class PartyPerson {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (personId != other.personId)
+		if (personId == null) {
+			if (other.personId != null)
+				return false;
+		} else if (!personId.equals(other.personId))
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -181,13 +206,12 @@ public class PartyPerson {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "PartyPerson [personId=" + personId + ", username=" + username + ", password=" + password + ", email="
 				+ email + ", eventsRSVP=" + eventsRSVP + ", creatorEvents=" + creatorEvents + ", age=" + age
 				+ ", address=" + address + "]";
 	}
-	
-	
 	
 }

@@ -4,9 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.revature.dao.DAOAddressImpl;
 import com.revature.models.Address;
-
-import dao.DAOAddressImpl;
 
 public class AddressTest {
 

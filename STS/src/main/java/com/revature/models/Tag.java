@@ -21,25 +21,25 @@ import javax.persistence.Table;
 public class Tag {
 
 	@Column
-	private int tagName;
+	private Integer tagName;
 	@Column
 	private String pathToImage;
 	@Column
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="tagSequence")
 	@SequenceGenerator(allocationSize=1,name="tagSequence",sequenceName="SQ_tag_PK")
-	private int tagId;
+	private Integer tagId;
 	
 	public Tag() {
 		super();
 	}
-	public Tag(int tagName, String pathToImage, int tagId) {
+	public Tag(Integer tagName, String pathToImage, Integer tagId) {
 		super();
 		this.tagName = tagName;
 		this.pathToImage = pathToImage;
 		this.tagId = tagId;
 	}
-	public int getTagName() {
+	public Integer getTagName() {
 		return tagName;
 	}
 	public void setTagName(int tagName) {
@@ -52,7 +52,7 @@ public class Tag {
 		this.pathToImage = pathToImage;
 	}
 	
-	public int getTagId() {
+	public Integer getTagId() {
 		return tagId;
 	}
 	public void setTagId(int tagId) {

@@ -3,9 +3,8 @@ package com.revature.dao;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import com.revature.dao.DAOCoordinatesImpl;
 import com.revature.models.Coordinates;
-
-import dao.DAOCoordinatesImpl;
 
 public class CoordinatesTest {
 	
@@ -13,6 +12,7 @@ public class CoordinatesTest {
 
 	@Test
 	public void saveDeleteReadNewCoordinate() {
+		
 		Coordinates coordinates = new Coordinates(5.2,-7.1);
 		int pk = daoCoordImpl.insertCoordinates(coordinates);
 		double checkFirstCoor = daoCoordImpl.getCoordinatesById(pk).getLongitude();
