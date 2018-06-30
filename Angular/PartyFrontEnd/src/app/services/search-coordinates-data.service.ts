@@ -26,9 +26,13 @@ export class SearchCoordinatesDataService {
         // success
         (position) => {
         this.updateCoordinates(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-        })   
+        },
+        // no success
+        ()=> {
+          console.log("error: I couldnt find you");
+        })   ;
     } else {
-      console.log("no navigator.geolocation");
+      console.log("error: no navigator.geolocation");
     }
     return coordinates;
   }

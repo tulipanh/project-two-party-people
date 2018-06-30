@@ -17,6 +17,8 @@ import { EventTileComponent } from './middle/event-tile/event-tile.component';
 import { MapViewComponent } from './bottom/map-view/map-view.component';
 import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
 import { FilterTileComponent } from './middle/filter-tile/filter-tile.component';
+import { ClarityModule } from '@clr/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { FilterTileComponent } from './middle/filter-tile/filter-tile.component'
   imports: [
     BrowserModule,
     FormsModule,
-    GooglePlaceModule
+    GooglePlaceModule,
+    ClarityModule,
+    BrowserAnimationsModule
   ],
   providers: [SearchCoordinatesDataService],
   bootstrap: [AppComponent]

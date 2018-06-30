@@ -5,3 +5,7 @@ html, body {
     height: 100%;
     width: 100%;
 }
+
+.content-area {
+    padding: 0 !important;
+}
