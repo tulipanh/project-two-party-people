@@ -57,7 +57,7 @@ export class MapViewComponent implements OnInit {
 
   
   // function that adds an array of markers
-  addMarkers = ( markers) => {
+  addMarkers = (markers) => {
     for(let marker of markers) {
      
       // make a new marker option objecy

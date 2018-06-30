@@ -12,14 +12,14 @@
             </button>
         </span>
         <span class="control-panel-button">
-            <button *ngIf="loggedIn" class="control-panel-item small-button" id="login-logout-button" type="button" (click)="logout()">
+            <button *ngIf="!(activeUser.id == null)" class="control-panel-item small-button" id="login-logout-button" type="button" (click)="logout()">
                 Log Out
             </button>
-            <button *ngIf="!loggedIn" class="control-panel-item small-button" id="login-logout-button" type="button" (click)="switchToLogin()">
+            <button *ngIf="(activeUser.id == null)" class="control-panel-item small-button" id="login-logout-button" type="button" (click)="switchToLogin()">
                 Log In
             </button>
         </span>
-        <span *ngIf="!loggedIn" class="control-panel-button">
+        <span *ngIf="(activeUser.id == null)" class="control-panel-button">
             <button class="control-panel-item small-button" id="register-button" type="button" (click)="switchToRegister()">
                 Register
             </button>
@@ -27,9 +27,12 @@
       </div>
       <div *ngIf="currentActivity > 0" class="control-details-item" id="control-details">
         <button class="control-panel-item" id="exit-button" (click)="switchToNone()">X</button>
-        <app-login *ngIf="currentActivity === 1"></app-login>
+        <app-login *ngIf="currentActivity === 1" 
+            (loginEvent)="attemptLogin($event)"
+            [errorMessage]="loginError">
+        </app-login>
         <app-register *ngIf="currentActivity === 2"></app-register>
-        <app-profile *ngIf="currentActivity === 3"></app-profile>
+        <app-profile *ngIf="currentActivity === 3" [activeUser]="activeUser"></app-profile>
         <app-create *ngIf="currentActivity == 4"></app-create>
       </div>
 </div>
