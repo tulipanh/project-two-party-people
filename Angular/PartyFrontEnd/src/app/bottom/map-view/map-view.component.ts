@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SearchCoordinatesDataService } from '../../services/search-coordinates-data.service';
+import { PartyHttpRequestService } from '../../services/party-http-request.service';
 
 import { } from '@types/googlemaps';
 
@@ -16,7 +17,7 @@ export class MapViewComponent implements OnInit {
 
   // inject coordinate service to get updated coordinates
   // inject service for get requests
-  constructor(private geoData: SearchCoordinatesDataService) { }
+  constructor(private geoData: SearchCoordinatesDataService, private partyRequest : PartyHttpRequestService) { }
 
   ngOnInit() {
    
@@ -69,8 +70,13 @@ export class MapViewComponent implements OnInit {
       // add a listener
       newMarker.addListener('click', (event) => {
         // do something with the id 
-        console.log(newMarker.get('id'));
+       let id = newMarker.get('id');
         this.centerMap(event.latLng);
+        this.partyRequest.getPartyById(id).subscribe(
+          (data)=>{
+            console.log(data["partyName"]);
+          }
+        );
       });
       // add directly to map
       newMarker.setMap(this.map);

@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 
-import {SearchCoordinatesDataService} from "./services/search-coordinates-data.service";
+import { SearchCoordinatesDataService } from "./services/search-coordinates-data.service";
+import { PartyHttpRequestService } from "./services/party-http-request.service";
 
 import { AppComponent } from './app.component';
 import { MapDetailsComponent } from './middle/map-details/map-details.component';
@@ -19,6 +20,7 @@ import { MapViewComponent } from './bottom/map-view/map-view.component';
 import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
 import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -39,9 +41,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     GooglePlaceModule,
     ClarityModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
-  providers: [SearchCoordinatesDataService],
+  providers: [
+    SearchCoordinatesDataService,
+    PartyHttpRequestService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
