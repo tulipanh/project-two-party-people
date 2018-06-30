@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
-
+import { HttpModule } from "@angular/http";
 
 import {SearchCoordinatesDataService} from "./services/search-coordinates-data.service";
 
@@ -35,7 +35,8 @@ import { FilterTileComponent } from './middle/filter-tile/filter-tile.component'
   imports: [
     BrowserModule,
     FormsModule,
-    GooglePlaceModule
+    GooglePlaceModule,
+    HttpModule,
   ],
   providers: [SearchCoordinatesDataService],
   bootstrap: [AppComponent]

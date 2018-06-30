@@ -1,6 +1,5 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { User } from '../../models/User';
-import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -11,22 +10,17 @@ export class LoginComponent implements OnInit {
 
   usernameInput: string;
   passwordInput: string;
-  errorMessage: string;
-  @Output() myevent: EventEmitter<string[]> = new EventEmitter();
-  
-  // Only for testing
-  users: User[];
+  @Input() errorMessage: string;
+  @Output() loginEvent: EventEmitter<string[]> = new EventEmitter();
 
-  constructor(private userService: UserService) { }
+  constructor() { }
 
   ngOnInit() {
   }
 
-  getUsers() {
-    this.userService.getUsers().subscribe(users => this.users = users);
-  }
-
-  authenticate(username, password) {
-    this.myevent.next([username, password]);
+  attemptLogin(username, password) {
+    this.loginEvent.next([username, password]);
+    this.usernameInput = "";
+    this.passwordInput = "";
   }
 }

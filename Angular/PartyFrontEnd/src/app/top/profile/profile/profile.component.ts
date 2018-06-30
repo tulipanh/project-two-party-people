@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { User } from '../../../models/User';
 
 @Component({
   selector: 'app-profile',
@@ -7,8 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  @Input() username: string;
-  @Input() password: string;
+  @Input() activeUser: User;
 
   constructor() { }
 
