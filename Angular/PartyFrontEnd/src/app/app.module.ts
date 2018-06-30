@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
-
+import { HttpModule } from "@angular/http";
 
 import {SearchCoordinatesDataService} from "./services/search-coordinates-data.service";
 
@@ -39,7 +39,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     GooglePlaceModule,
     ClarityModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpModule,
   ],
   providers: [SearchCoordinatesDataService],
   bootstrap: [AppComponent]
