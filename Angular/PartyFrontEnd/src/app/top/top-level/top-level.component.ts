@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TopLevelActivity } from './TopLevelActivity';
+import { UserStore } from '../../stores/user-store';
+import { User } from '../../models/User';
+import { InterfaceStore } from '../../stores/interface-store';
 
 @Component({
   selector: 'app-top-level',
@@ -10,40 +13,59 @@ export class TopLevelComponent implements OnInit {
 
   currentActivity: TopLevelActivity = TopLevelActivity.None;
   shroudOn: boolean = false;
-  loggedIn: boolean = true;
+  activeUser: User;
+  loginError: string;
 
-  constructor() { }
+  constructor(private userStore: UserStore, private interfaceStore: InterfaceStore) {}
 
   ngOnInit() {
-  }
-  
-  switchToNone() {
-    this.shroudOn = false;
-    this.currentActivity = TopLevelActivity.None;
+    this.subscribeActiveUser();
+    this.subscribeLoginError();
+    this.subscribeActivity();
   }
 
-  switchToLogin() {
-    this.shroudOn = true;
-    this.currentActivity = TopLevelActivity.Login;
+  subscribeActiveUser() {
+    this.userStore.activeUser.subscribe(user => {
+      this.activeUser = user;
+      if (this.currentActivity === TopLevelActivity.Login) this.switchToNone();
+    });
   }
 
-  switchToRegister() {
-    this.shroudOn = true;
-    this.currentActivity = TopLevelActivity.Register;
+  subscribeLoginError() {
+    this.userStore.loginError.subscribe(errTxt => this.loginError = errTxt);
   }
 
-  switchToProfile() {
-    this.shroudOn = true;
-    this.currentActivity = TopLevelActivity.Profile;
-  }
-
-  switchToCreate() {
-    this.shroudOn = true;
-    this.currentActivity = TopLevelActivity.Create;
+  subscribeActivity() {
+    this.interfaceStore.topActivity.subscribe(activity => this.currentActivity = activity);
+    this.interfaceStore.shroudState.subscribe(state => this.shroudOn = state);
   }
 
   logout() {
-    this.loggedIn = false;
+    this.userStore.logout();
+  }
+
+  attemptLogin(arg) {
+    this.userStore.login(arg[0], arg[1]);
+  }
+
+  switchToCreate() {
+    this.interfaceStore.setActivity(TopLevelActivity.Create);
+  }
+
+  switchToProfile() {
+    this.interfaceStore.setActivity(TopLevelActivity.Profile);
+  }
+
+  switchToLogin() {
+    this.interfaceStore.setActivity(TopLevelActivity.Login);
+  }
+
+  switchToRegister() {
+    this.interfaceStore.setActivity(TopLevelActivity.Register);
+  }
+
+  switchToNone() {
+    this.interfaceStore.setActivity(TopLevelActivity.None);
   }
 }
 

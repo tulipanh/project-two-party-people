@@ -5,7 +5,8 @@
             <input type="text" name="username" [(ngModel)]="inputUsername" class="login-input"/>
             <label>Password:</label>
             <input type="password" name="password" [(ngModel)]="inputPassword" class="login-input"/>
-            <button (click)="authenticate(inputUsername, inputPassword)">Log In</button>
+            <button (click)="attemptLogin(inputUsername, inputPassword)">Log In</button>
+            <p>{{errorMessage}}</p>
         </form>
     </div>
 </div>
