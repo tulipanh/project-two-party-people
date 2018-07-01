@@ -55,7 +55,7 @@ public class PartyPerson {
 	
 	@Column
 	private Integer age;
-	@OneToOne(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToOne(cascade= {CascadeType.ALL})
 	@JoinColumn(name="addressId")
 	private Address address;
 	
