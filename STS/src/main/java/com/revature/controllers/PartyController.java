@@ -9,11 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.revature.dao.DAOParty;
 import com.revature.models.Coordinates;
 import com.revature.models.Party;
+import com.revature.models.PartyPerson;
 
 @Controller
 public class PartyController {
@@ -27,11 +30,18 @@ public class PartyController {
 	    response.setHeader("Access-Control-Allow-Origin", "*");
 	}   
 	
-	@GetMapping("/party-location/{id}")
+	@GetMapping("/party/{id}")
 	@ResponseBody
 	public Party partyById(@PathVariable("id") int id) {
-		Party party = daoPartyImpl.getPartyLocationById(id);
+		Party party = daoPartyImpl.getPartyById(id);
 		return party;
+	}
+	
+	@GetMapping("/party/{id}/attendees")
+	@ResponseBody
+	public List <PartyPerson> partyAttendeesById(@PathVariable("id") int id) {
+		List<PartyPerson> people = daoPartyImpl.getAttendeesById(id);
+		return people;
 	}
 	
 	@GetMapping("/local-parties")
@@ -40,15 +50,19 @@ public class PartyController {
 			@ModelAttribute("minLong") Double minLong,
 			@ModelAttribute("maxLat") Double maxLat,
 			@ModelAttribute("maxLong") Double maxLong){
-		
-		Coordinates coordinates1 = new Coordinates();
-		Coordinates coordinates2 = new Coordinates();
-		coordinates1.setLatitude(minLat);
-		coordinates1.setLongitude(minLong);
-		coordinates2.setLatitude(maxLat);
-		coordinates2.setLongitude(maxLong);
-		return daoPartyImpl.getPartyListWithinCoordinates(coordinates1,coordinates2);
+		return daoPartyImpl.getPartyListWithinCoordinates(minLat,minLong,maxLat,maxLong);
 	}
 	
+	@PostMapping("party-create")
+	@ResponseBody
+	public void createParty(@RequestBody Party party) {
+		daoPartyImpl.insertParty(party);
+	}
+	
+	@PostMapping("party-update")
+	@ResponseBody
+	public void updateParty(@RequestBody Party party) {
+		daoPartyImpl.updateParty(party);
+	}
 	
 }

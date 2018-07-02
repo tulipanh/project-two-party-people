@@ -8,7 +8,6 @@ com/revature/controllers/PartyPersonController.class
 com/revature/models/Tag.class
 com/revature/dao/DAOPartyPerson.class
 com/revature/dao/DAOPartyPersonImpl.class
-com/revature/controllers/CoordinatesController.class
 com/revature/dao/DAOPartyImpl.class
 com/revature/dao/DAOTag.class
 com/revature/models/Address.class

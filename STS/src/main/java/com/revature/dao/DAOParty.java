@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.revature.models.Coordinates;
 import com.revature.models.Party;
+import com.revature.models.PartyPerson;
 
 @Repository
 public interface DAOParty {
@@ -16,6 +17,8 @@ public interface DAOParty {
 	public void deleteParty(Party party);
 	public Party getPartyById(int partyId);
 	public List<Party> getPartyWithinRadius(Coordinates coordinates,double radius);
-	public Party getPartyLocationById(int partyId);
-	public List<Party> getPartyListWithinCoordinates(Coordinates coordinatesMin,Coordinates coordinatesMax);
+	public List<Party> getPartyListWithinCoordinates(double minLat, double minLong, double maxLat, double maxLong);
+	public List<Party> getPartiesAttending(int personId);
+	public List<Party> getPartiesCreated(int personId);
+	public List<PartyPerson> getAttendeesById(int partyId);
 }
