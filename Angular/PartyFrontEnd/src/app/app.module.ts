@@ -19,6 +19,7 @@ import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
 import { FilterTileComponent } from './middle/filter-tile/filter-tile.component';
 import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GeocachingApiService } from './services/geocaching-api.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     HttpModule,
   ],
-  providers: [SearchCoordinatesDataService],
+  providers: [SearchCoordinatesDataService,GeocachingApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
