@@ -34,8 +34,7 @@ export class PartyHttpRequestService {
           "maxLat" : maxLat,
           "maxLong" : maxLong
         }
-      })
-    .toPromise();
+      });
 
   }
 

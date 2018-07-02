@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SearchCoordinatesDataService } from '../../services/search-coordinates-data.service';
 import { PartyHttpRequestService } from '../../services/party-http-request.service';
+import { EventFilterService } from '../../services/event-filter.service';
 
 import { } from '@types/googlemaps';
 
@@ -13,20 +14,38 @@ import { } from '@types/googlemaps';
 export class MapViewComponent implements OnInit {
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
-  coordinates : google.maps.LatLng; 
-  markers : google.maps.Marker[];
-  minLat;
-  maxLat;
-  minLong;
-  maxLong;
-
-
+  prevCoordinates : google.maps.LatLng; 
+  currentCoordinates : google.maps.LatLng;
+  markers : google.maps.Marker[] = [];
+  minLat: Number;
+  maxLat: Number;
+  minLong: Number;
+  maxLong: Number;
 
   // inject coordinate service to get updated coordinates
   // inject service for get requests
-  constructor(private geoData: SearchCoordinatesDataService, private partyRequest : PartyHttpRequestService) { }
+  constructor(private geoData: SearchCoordinatesDataService,
+              private partyRequest : PartyHttpRequestService,
+              private eventFilters: EventFilterService) { 
+
+  }
 
   ngOnInit() {
+    this.createMap();
+    this.listenForMapLoaded();    
+    this.subscribeToCoordinateChanges();
+    this.subscribeToFilterChanges();  
+  }
+
+  subscribeToFilterChanges = ()=> {
+    this.eventFilters.currentFilterParams.subscribe(this.filterEvents);
+  }
+
+  filterEvents = (filterParams) => {
+    console.log(filterParams);
+  }
+
+  createMap = ()=> {
     // initial map properties
     var mapProp = {
       center: new google.maps.LatLng(38, -77),
@@ -40,32 +59,37 @@ export class MapViewComponent implements OnInit {
 
     // add map to dom
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+  }
 
-    // get bounds when loaded
+  listenForMapLoaded = ()=> {
+    // whenever map finished loading, get the new bounds and get the markers
+    // withing those bounds
     this.map.addListener('tilesloaded', ()=>{
       this.maxLat = this.map.getBounds().getNorthEast().lat();
       this.maxLong = this.map.getBounds().getNorthEast().lng();
       this.minLat = this.map.getBounds().getSouthWest().lat();
       this.minLong = this.map.getBounds().getSouthWest().lng();
       
+      // add markers
       this.getMarkers();
     });
-
-    // 
-    
-    //
-    this.geoData.currentCoordinates.subscribe(this.centerMap);
-
-    
   }
 
+  subscribeToCoordinateChanges = ()=> {
+    // change center when new coordinates are pushed
+    this.geoData.currentCoordinates.subscribe(this.centerMap);
+  }
+
+  // gets the data from the Observable
   getMarkers = ()=> {
     this.partyRequest
       .getPartiesByCoordinates(this.minLat, this.maxLat,this.minLong, this.maxLong)
-      .then((data) => {
-        this.addMarkers(data);
+      .subscribe((data) => {
+        this.addMarkers(data, this);
       })
   }
+
+
 
   // centers map on coordinates passed in
   centerMap = (updatedCoordinates:google.maps.LatLng) => {
@@ -74,13 +98,16 @@ export class MapViewComponent implements OnInit {
 
   
   // function that adds an array of markers
-  addMarkers = (markers) => {
-
+  addMarkers = (markerData, context) => {
+    console.log(`there were ${this.markers.length} markers`);
     //clear the previous markers
-
-    for(let marker of markers) {
-     
-      // make a new marker option objecy
+    for(let marker of this.markers) {
+      marker.setMap(null);
+    }
+    this.markers = [];
+    //add all the new markers
+    for(let marker of markerData) {
+      // make a new marker option object
       let newMarker = new google.maps.Marker();
       newMarker.setPosition(new google.maps.LatLng(marker.address.coordinates.latitude, marker.address.coordinates.longitude));
       newMarker.set('id', marker.partyId);
@@ -92,33 +119,20 @@ export class MapViewComponent implements OnInit {
         // do something with the id 
        let id = newMarker.get('id');
         this.centerMap(event.latLng)   
-    }
-  );
+        }
+      );
       // add directly to map
-      newMarker.setMap(this.map);
+      newMarker.setMap(this.map); 
+      context.markers.push(newMarker);
     }
+    console.log(`there are now ${this.markers.length} markers`);
   }
 
-  // dummy data
-  // markers = [
-  //   {
-  //       id: 1,
-  //       title: "Revature Party",
-  //       label: 'R', //change to custom icon
-  //       coordinates: {lat: 38.9534019, lng: -77.3527004}
-  //   },
-  //   {
-  //       id: 2,
-  //       title: "Dulles Greene Party",
-  //       label: 'D',
-  //       coordinates: {lat: 38.968193, lng: -77.4142168}
-  //   },
-  //   {
-  //       id: 3,
-  //       title: "Bowtie Movie Party",
-  //       label: 'B',
-  //       coordinates: {lat: 38.9590691, lng: -77.3581058}
-  //   }
-  //   ]
+  // if bounds increased, only add new markers from outside of the bounds
+  boundsIncreased = ()=> {
+
+  }
+
+  //if the bounds decrease, only remove markers that are outside the new bounds
 
     }

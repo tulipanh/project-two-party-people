@@ -5,6 +5,7 @@ import { HttpModule } from "@angular/http";
 
 import { SearchCoordinatesDataService } from "./services/search-coordinates-data.service";
 import { PartyHttpRequestService } from "./services/party-http-request.service";
+import { EventFilterService } from "./services/event-filter.service"
 
 import { AppComponent } from './app.component';
 import { SearchPanelComponent } from './middle/search-panel/search-panel.component';
@@ -47,7 +48,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [
     SearchCoordinatesDataService,
-    PartyHttpRequestService
+    PartyHttpRequestService,
+    EventFilterService
   ],
   bootstrap: [AppComponent]
 })
