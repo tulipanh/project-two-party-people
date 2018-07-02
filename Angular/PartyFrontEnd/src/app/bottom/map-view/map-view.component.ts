@@ -3,8 +3,6 @@ import { SearchCoordinatesDataService } from '../../services/search-coordinates-
 import { PartyHttpRequestService } from '../../services/party-http-request.service';
 
 import { } from '@types/googlemaps';
-import { MergeMapSubscriber } from 'rxjs/internal/operators/mergeMap';
-import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 
 @Component({
   selector: 'app-map-view',
@@ -39,7 +37,7 @@ export class MapViewComponent implements OnInit {
         position: google.maps.ControlPosition.BOTTOM_RIGHT
       }
     };
-    
+
     // add map to dom
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 
@@ -49,7 +47,7 @@ export class MapViewComponent implements OnInit {
       this.maxLong = this.map.getBounds().getNorthEast().lng();
       this.minLat = this.map.getBounds().getSouthWest().lat();
       this.minLong = this.map.getBounds().getSouthWest().lng();
-    
+      
       this.getMarkers();
     });
 
@@ -98,7 +96,6 @@ export class MapViewComponent implements OnInit {
   );
       // add directly to map
       newMarker.setMap(this.map);
-      
     }
   }
 
