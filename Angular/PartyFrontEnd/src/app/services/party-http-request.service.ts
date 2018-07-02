@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Secrets } from '../secrets';
 
@@ -13,20 +13,31 @@ export class PartyHttpRequestService {
   }
 
   baseUrl = Secrets.baseUrl;
+  headers :HttpHeaders = new HttpHeaders().set("Access-Control-Allow-Origin", "*");
 
-  getPartyById(id: Number) {
 
-    console.log(`${this.baseUrl}/party-location/${id}`);
-     return this.http.get(`${this.baseUrl}party-location/${id}`,{
-       headers: {
-         'Content-Type' : 'application/json',
-         'Access-Control-Allow-Origin' : '*'
-       }
-     });
+  getPartyById = (id: Number) => {
 
+    return this.http.get(this.baseUrl+"party-location/"+id, {headers:{"Access-Control-Allow-Origin": "*"}}).subscribe((data)=>{
+      console.log(data);
+    });
   }
 
-  getPartiesByCoordinates(minLat: Number, maxLat:Number, minLong: Number, maxLong: Number) {}
+  getPartiesByCoordinates(minLat: any, maxLat:any, minLong: any, maxLong: any) {
+
+    return this.http
+    .get(this.baseUrl+"local-parties",
+      { 
+        params: {
+          "minLat" : minLat,
+          "minLong" : minLong,
+          "maxLat" : maxLat,
+          "maxLong" : maxLong
+        }
+      })
+    .toPromise();
+
+  }
 
   getPartiesByUser() {}
 

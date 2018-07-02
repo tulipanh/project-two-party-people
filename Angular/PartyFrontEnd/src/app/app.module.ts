@@ -42,7 +42,8 @@ import { HttpClientModule } from '@angular/common/http';
     GooglePlaceModule,
     ClarityModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    HttpModule
   ],
   providers: [
     SearchCoordinatesDataService,
