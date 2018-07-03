@@ -21,8 +21,7 @@ import { EventTileComponent } from './middle/event-tile/event-tile.component';
 import { MapViewComponent } from './bottom/map-view/map-view.component';
 import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
 import { FilterTileComponent } from './middle/filter-tile/filter-tile.component';
-import { ClarityModule } from '@clr/angular';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { ClarityModule } from '@clr/angular';
 import { GeocachingApiService } from './services/geocaching-api.service';
 
 @NgModule({
@@ -43,7 +42,7 @@ import { GeocachingApiService } from './services/geocaching-api.service';
     BrowserModule,
     FormsModule,
     GooglePlaceModule,
-    ClarityModule,
+    // ClarityModule,
     BrowserAnimationsModule,
     HttpModule,
     BrowserAnimationsModule,
