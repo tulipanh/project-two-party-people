@@ -25,6 +25,8 @@ public class Address {
 	@Column
 	private String streetName;
 	@Column
+	private String streetName2;
+	@Column
 	private String city;
 	@Column
 	private String state;

@@ -1,12 +1,18 @@
 package com.revature.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.engine.internal.Cascade;
 /**
  * Class for longitude and latitude of an address
  * Necessary because google maps requires longitude and latitude
@@ -15,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-public class Coordinates {
+public class Coordinates implements Comparable<Coordinates>{
 
 	@Column
 	private Double latitude;
@@ -96,6 +102,19 @@ public class Coordinates {
 		} else if (!longitude.equals(other.longitude))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Coordinates o) {
+		if(this.latitude > o.latitude && this.longitude > o.longitude) {
+			return 1;
+		}else if(this.latitude < o.latitude && this.longitude < o.longitude) {
+			return -1;
+		}else {
+			return 0;
+		}
+		
+		
 	}
 	
 	

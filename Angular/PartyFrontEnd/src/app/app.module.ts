@@ -21,6 +21,9 @@ import { EventTileComponent } from './middle/event-tile/event-tile.component';
 import { MapViewComponent } from './bottom/map-view/map-view.component';
 import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
 import { FilterTileComponent } from './middle/filter-tile/filter-tile.component';
+import { ClarityModule } from '@clr/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GeocachingApiService } from './services/geocaching-api.service';
 
 @NgModule({
   declarations: [
@@ -40,6 +43,8 @@ import { FilterTileComponent } from './middle/filter-tile/filter-tile.component'
     BrowserModule,
     FormsModule,
     GooglePlaceModule,
+    ClarityModule,
+    BrowserAnimationsModule,
     HttpModule,
     BrowserAnimationsModule,
     MatToolbarModule,
@@ -51,7 +56,7 @@ import { FilterTileComponent } from './middle/filter-tile/filter-tile.component'
     MatDividerModule,
 
   ],
-  providers: [SearchCoordinatesDataService],
+  providers: [SearchCoordinatesDataService,GeocachingApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,3 +1,18 @@
-<form id="map-search">
-  <input ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
-</form>
+
+
+
+<div id="search-row" class="row">
+  <div id="search-bar" class="col-lg-5 col-md-8 col-sm-12 col-xs-12">
+      <div class="card">
+          <div class="card-header">
+            <form id="map-search">
+                <section class="form-block">
+
+                     <input type="text" ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
+                  
+              </section>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>

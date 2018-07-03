@@ -12,5 +12,6 @@ public interface DAOPartyPerson {
 	public void updatePerson(PartyPerson person);
 	public void deletePerson(PartyPerson person);
 	public PartyPerson getPersonById(int personId);
-	
+	public PartyPerson login(String username, String password);
+	public boolean uniqueUsername(String username);
 }

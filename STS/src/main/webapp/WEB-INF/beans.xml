@@ -14,7 +14,27 @@
 	<tx:annotation-driven></tx:annotation-driven>
 	<mvc:annotation-driven></mvc:annotation-driven>
 	<mvc:resources location="/WEB-INF/static/" mapping="/static/**"></mvc:resources>
-	
+	 <bean id="OurDatabase" class="org.apache.commons.dbcp.BasicDataSource">
+        	<property name="url" value="jdbc:oracle:thin:@testdb.cc7yywafeslt.us-east-2.rds.amazonaws.com:1521:ORCL"></property>
+        	<property name="username" value="falenas108"></property>
+        	<property name="password" value="password"></property>
+        	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+        </bean>
+        <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        	<property name="dataSource" ref="OurDatabase"></property>
+        	<property name="packagesToScan" value="com.revature"></property>
+        	<property name="hibernateProperties">
+        		<props>
+        			<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+        			<prop key="hibernate.show_sql">true</prop> 
+        			<prop key="hibernate.hbm2ddl.auto">update</prop>
+        		</props>
+        	</property>
+        </bean>
+        <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        	<property name="sessionFactory" ref="sessionFactory"></property>
+        	<property name="nestedTransactionAllowed" value="true"></property>
+        </bean>
 	
 	<bean name="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">

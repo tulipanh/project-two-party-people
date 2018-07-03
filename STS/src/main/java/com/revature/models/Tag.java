@@ -1,11 +1,15 @@
 package com.revature.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -23,51 +27,70 @@ public class Tag {
 	@Column
 	private Integer tagName;
 	@Column
-	private String pathToImage;
-	@Column
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="tagSequence")
 	@SequenceGenerator(allocationSize=1,name="tagSequence",sequenceName="SQ_tag_PK")
 	private Integer tagId;
-	
+	@ManyToOne(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
+	@JoinColumn(name="partyId")
+	private Party partyOfTag;
+
 	public Tag() {
 		super();
 	}
-	public Tag(Integer tagName, String pathToImage, Integer tagId) {
+	
+
+	public Tag(Integer tagName, Integer tagId, Party party) {
 		super();
 		this.tagName = tagName;
-		this.pathToImage = pathToImage;
 		this.tagId = tagId;
+		this.partyOfTag = party;
 	}
+
+
 	public Integer getTagName() {
 		return tagName;
 	}
-	public void setTagName(int tagName) {
+
+	public void setTagName(Integer tagName) {
 		this.tagName = tagName;
 	}
-	public String getPathToImage() {
-		return pathToImage;
-	}
-	public void setPathToImage(String pathToImage) {
-		this.pathToImage = pathToImage;
-	}
-	
+
 	public Integer getTagId() {
 		return tagId;
 	}
-	public void setTagId(int tagId) {
+
+	public void setTagId(Integer tagId) {
 		this.tagId = tagId;
 	}
+
+	public Party getParty() {
+		return partyOfTag;
+	}
+
+	public void setParty(Party party) {
+		this.partyOfTag = party;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Tag [tagName=" + tagName + ", tagId=" + tagId + ", partyOfTag=" + partyOfTag + "]";
+	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((pathToImage == null) ? 0 : pathToImage.hashCode());
-		result = prime * result + tagId;
-		result = prime * result + tagName;
+		result = prime * result + ((partyOfTag == null) ? 0 : partyOfTag.hashCode());
+		result = prime * result + ((tagId == null) ? 0 : tagId.hashCode());
+		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
 		return result;
 	}
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -77,20 +100,23 @@ public class Tag {
 		if (getClass() != obj.getClass())
 			return false;
 		Tag other = (Tag) obj;
-		if (pathToImage == null) {
-			if (other.pathToImage != null)
+		if (partyOfTag == null) {
+			if (other.partyOfTag != null)
 				return false;
-		} else if (!pathToImage.equals(other.pathToImage))
+		} else if (!partyOfTag.equals(other.partyOfTag))
 			return false;
-		if (tagId != other.tagId)
+		if (tagId == null) {
+			if (other.tagId != null)
+				return false;
+		} else if (!tagId.equals(other.tagId))
 			return false;
-		if (tagName != other.tagName)
+		if (tagName == null) {
+			if (other.tagName != null)
+				return false;
+		} else if (!tagName.equals(other.tagName))
 			return false;
 		return true;
 	}
-	@Override
-	public String toString() {
-		return "Tag [tagName=" + tagName + ", pathToImage=" + pathToImage + ", tagId=" + tagId + "]";
-	}
+	
 	
 }
