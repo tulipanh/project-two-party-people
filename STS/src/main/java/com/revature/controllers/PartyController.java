@@ -3,10 +3,13 @@ package com.revature.controllers;
 import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.revature.dao.DAOParty;
@@ -45,14 +48,23 @@ public class PartyController {
 		return daoPartyImpl.getPartyListWithinCoordinates(minLat,minLong,maxLat,maxLong);
 	}
 	
-	@PostMapping("party-create")
+	@PostMapping("party")
 	public void createParty(@RequestBody Party party) {
 		daoPartyImpl.insertParty(party);
 	}
 	
-	@PostMapping("party-update")
+	@PutMapping("party")
 	public void updateParty(@RequestBody Party party) {
 		daoPartyImpl.updateParty(party);
 	}
+	@DeleteMapping("party")
+	public void deleteParty(@RequestBody Party party) {
+		daoPartyImpl.deleteParty(party);
+	}
+	@PatchMapping("party")
+	public Party patchParty(@RequestBody Party party) {
+		return null;
+	}
+	
 	
 }
