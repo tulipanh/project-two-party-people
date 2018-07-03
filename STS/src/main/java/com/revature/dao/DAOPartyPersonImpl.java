@@ -24,14 +24,22 @@ public class DAOPartyPersonImpl implements DAOPartyPerson {
 	
 	@Override
 	public int insertPerson(PartyPerson person) {
-		Session session = sessionFactory.getCurrentSession();
-		return (int) session.save(person);
+		//returns the PK if the username was unique and insertion was successful, and -1 if not
+		if(uniqueUsername(person.getUsername())) {
+			Session session = sessionFactory.getCurrentSession();
+			return (int) session.save(person);
+		}else {
+			return -1;
+		}
 	}
 
 	@Override
 	public void updatePerson(PartyPerson person) {
-		Session session = sessionFactory.getCurrentSession();
-		session.update(person);	
+		if(getPersonById(person.getPersonId()).getUsername().equals(person.getUsername()) || uniqueUsername(person.getUsername()) ){
+			//if either the new username is unique, or the new username is the same as this user's old username
+			Session session = sessionFactory.getCurrentSession();
+			session.update(person);	
+		}
 	}
 
 	@Override
@@ -60,6 +68,8 @@ public class DAOPartyPersonImpl implements DAOPartyPerson {
 			return null;
 		}
 	}
+	
+	
 
 	@Override
 	public PartyPerson login(String username, String password) {
@@ -80,6 +90,20 @@ public class DAOPartyPersonImpl implements DAOPartyPerson {
 			return personList.get(0);
 		}else {
 			return null;
+		}
+	}
+
+	@Override
+	public boolean uniqueUsername(String username) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(PartyPerson.class);
+		criteria.add(Restrictions.eq("username", username));
+		if(criteria.list().size() > 0) {
+			//There is a username, already exists
+			return false;
+		}else {
+			//list empty, nobody has that username
+			return true;
 		}
 	}
 }

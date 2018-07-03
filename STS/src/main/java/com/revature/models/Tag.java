@@ -27,29 +27,26 @@ public class Tag {
 	@Column
 	private Integer tagName;
 	@Column
-	private String pathToImage;
-	@Column
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="tagSequence")
 	@SequenceGenerator(allocationSize=1,name="tagSequence",sequenceName="SQ_tag_PK")
 	private Integer tagId;
 	@ManyToOne(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
 	@JoinColumn(name="partyId")
-	private Party party;
-	
+	private Party partyOfTag;
+
 	public Tag() {
 		super();
 	}
 	
-	public Tag(Integer tagName, String pathToImage, Integer tagId, Party party) {
+
+	public Tag(Integer tagName, Integer tagId, Party party) {
 		super();
 		this.tagName = tagName;
-		this.pathToImage = pathToImage;
 		this.tagId = tagId;
-		this.party = party;
+		this.partyOfTag = party;
 	}
 
-	
 
 	public Integer getTagName() {
 		return tagName;
@@ -57,14 +54,6 @@ public class Tag {
 
 	public void setTagName(Integer tagName) {
 		this.tagName = tagName;
-	}
-
-	public String getPathToImage() {
-		return pathToImage;
-	}
-
-	public void setPathToImage(String pathToImage) {
-		this.pathToImage = pathToImage;
 	}
 
 	public Integer getTagId() {
@@ -76,23 +65,31 @@ public class Tag {
 	}
 
 	public Party getParty() {
-		return party;
+		return partyOfTag;
 	}
 
 	public void setParty(Party party) {
-		this.party = party;
+		this.partyOfTag = party;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "Tag [tagName=" + tagName + ", tagId=" + tagId + ", partyOfTag=" + partyOfTag + "]";
+	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((party == null) ? 0 : party.hashCode());
-		result = prime * result + ((pathToImage == null) ? 0 : pathToImage.hashCode());
+		result = prime * result + ((partyOfTag == null) ? 0 : partyOfTag.hashCode());
 		result = prime * result + ((tagId == null) ? 0 : tagId.hashCode());
 		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -103,15 +100,10 @@ public class Tag {
 		if (getClass() != obj.getClass())
 			return false;
 		Tag other = (Tag) obj;
-		if (party == null) {
-			if (other.party != null)
+		if (partyOfTag == null) {
+			if (other.partyOfTag != null)
 				return false;
-		} else if (!party.equals(other.party))
-			return false;
-		if (pathToImage == null) {
-			if (other.pathToImage != null)
-				return false;
-		} else if (!pathToImage.equals(other.pathToImage))
+		} else if (!partyOfTag.equals(other.partyOfTag))
 			return false;
 		if (tagId == null) {
 			if (other.tagId != null)
@@ -125,13 +117,6 @@ public class Tag {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "Tag [tagName=" + tagName + ", pathToImage=" + pathToImage + ", tagId=" + tagId + ", party=" + party
-				+ "]";
-	}
-
 	
 	
 }

@@ -1,10 +1,8 @@
 package com.revature.dao;
 
-import java.sql.Timestamp;
-
+import java.util.HashSet;
 import java.util.List;
-
-
+import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.Query;
@@ -12,16 +10,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.revature.models.Coordinates;
 import com.revature.models.Party;
 import com.revature.models.PartyPerson;
+import com.revature.models.Tag;
 
-@Repository()
+@Repository
 @Transactional
 public class DAOPartyImpl implements DAOParty {
 	
@@ -50,19 +49,47 @@ public class DAOPartyImpl implements DAOParty {
 	@Override
 	public Party getPartyById(int partyId) {
 		Session session = sessionFactory.getCurrentSession();
+		//get the information from the party
 		Criteria criteria = session.createCriteria(Party.class);
 		criteria.add(Restrictions.eq("partyId", partyId));
+		criteria.setProjection(Projections.projectionList()
+				.add(Projections.property("partyId"),"partyId")
+				.add(Projections.property("partyName"),"partyName")
+				.add(Projections.property("address"),"address")
+				.add(Projections.property("partyDate"),"partyDate")
+				).setResultTransformer(new AliasToBeanResultTransformer(Party.class));
 		List<Party> partyList = criteria.list();
+	
 		if(partyList.size() > 0) {
 			//since partyId is primary key, there can only be 0 or 1 items in this list
-			return partyList.get(0);
+			Party party = partyList.get(0);
+			party.setAttendees(getAttendeesById(partyId));
+			party.setTagList(getTagsByPartyId(partyId));
+			return party;
 		}else {
 			return null;
 		}
 	}
 	
 	@Override
-	public List<Party> getPartiesAttending(int personId) {
+	public Set<Tag> getTagsByPartyId(int partyId){
+		Session session = sessionFactory.getCurrentSession();
+		String sql = "SELECT TAGID, TAGNAME FROM TAG WHERE PARTYID = ?";
+		Query query = session.createSQLQuery(sql);
+		query.setInteger(0, partyId);
+		List<Object[]> tagLists = query.list();
+		Set<Tag> tags = new HashSet<>();
+		for(Object[] obj: tagLists) {
+			Tag tag = new Tag();
+			tag.setTagId( Integer.parseInt(obj[0].toString()));
+			tag.setTagName(Integer.parseInt(obj[1].toString()));
+			tags.add(tag);
+		}
+		return tags;
+	}
+	
+	@Override
+	public Set<Party> getPartiesAttending(int personId) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(Party.class);
 		criteria.createAlias("attendees", "people");
@@ -70,15 +97,14 @@ public class DAOPartyImpl implements DAOParty {
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property("partyId"),"partyId")
 				.add(Projections.property("partyName"),"partyName")
-				.add(Projections.property("tagList"),"tagList")
 				.add(Projections.property("address"),"address")
 				.add(Projections.property("partyDate"),"partyDate")
 				).setResultTransformer(Transformers.aliasToBean(Party.class));
-		return criteria.list();
+		return new HashSet<>(criteria.list());
 	}
 	
 	@Override
-	public List<Party> getPartiesCreated(int personId) {
+	public Set<Party> getPartiesCreated(int personId) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(Party.class);
 		criteria.createAlias("attendees", "people");
@@ -86,15 +112,13 @@ public class DAOPartyImpl implements DAOParty {
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property("partyId"),"partyId")
 				.add(Projections.property("partyName"),"partyName")
-				.add(Projections.property("tagList"),"tagList")
-				.add(Projections.property("address"),"address")
 				.add(Projections.property("partyDate"),"partyDate")
 				).setResultTransformer(Transformers.aliasToBean(Party.class));
-		return criteria.list();
+		return new HashSet<>(criteria.list());
 	}
 	
 	@Override
-	public List<PartyPerson> getAttendeesById(int partyId) {
+	public Set<PartyPerson> getAttendeesById(int partyId) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(PartyPerson.class);
 		criteria.createAlias("eventsRSVP", "events");
@@ -103,18 +127,20 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("personId"),"personId")
 				.add(Projections.property("username"),"username")
 				).setResultTransformer(Transformers.aliasToBean(PartyPerson.class));
-		return criteria.list();
+		return new HashSet<>(criteria.list());
 	}
 
 
 	@Override
-	public List<Party> getPartyWithinRadius(Coordinates coordinates, double radius) {
+	public Set<Party> getPartyWithinRadius(Coordinates coordinates, double radius) {
 		Session session = sessionFactory.getCurrentSession();
-		String sql = "SELECT P.PARTYNAME,A.CITY,C.LONGITUDE,C.LATITUDE  FROM ADDRESS A\n" + 
+		String sql = "SELECT P.PARTYNAME,A.CITY,C.LONGITUDE,C.LATITUDE,T.TAGNAME FROM ADDRESS A\n" + 
 				"JOIN PARTY P\n" + 
 				"ON P.ADDRESSID = A.ADDRESSID\n" + 
 				"JOIN COORDINATES C\n" + 
 				"ON A.COORDINATEID = C.COORDINATEID\n" + 
+				"JOIN TAG T\n"+
+				"ON T.PARTYID = P.PARTYID\n" +
 				"WHERE 3963*ACOS((sin(C.LATITUDE/ 57.3) * SIN(?/ 57.3))  + \n" + 
 				"(COS(C.LATITUDE / 57.3) * COS(?/ 57.3) *COS(C.Longitude/ 57.3 - ?/57.3 ))) < ?";
 		Query query = session.createSQLQuery(sql);
@@ -122,10 +148,10 @@ public class DAOPartyImpl implements DAOParty {
 		query.setDouble(1, coordinates.getLatitude());
 		query.setDouble(2, coordinates.getLongitude());
 		query.setDouble(3, radius);
-		return query.list();
+		return new HashSet<>(query.list());
 	}
 	
-	public List<Party> getPartyListWithinCoordinates(double minLat, double minLong, double maxLat, double maxLong){
+	public Set<Party> getPartyListWithinCoordinates(double minLat, double minLong, double maxLat, double maxLong){
 		Session session = sessionFactory.getCurrentSession();
 		session.setFlushMode(FlushMode.MANUAL);
 
@@ -137,11 +163,15 @@ public class DAOPartyImpl implements DAOParty {
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property("partyId"),"partyId")
 				.add(Projections.property("partyName"),"partyName")
-				.add(Projections.property("tagList"),"tagList")
 				.add(Projections.property("address"),"address")
 				.add(Projections.property("partyDate"),"partyDate")		
 				).setResultTransformer(Transformers.aliasToBean(Party.class));
-		return criteria.list();
+		Set<Party> parties =new HashSet<>(criteria.list());
+		
+		for(Party party:parties) {
+			party.setTagList(getTagsByPartyId(party.getPartyId()));
+		}
+		return parties;
+		
 	}
-
 }
