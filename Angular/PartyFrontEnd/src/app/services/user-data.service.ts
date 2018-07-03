@@ -32,4 +32,8 @@ export class UserDataService {
     return this.api.getUserById(userId);
   }
 
+  login(username: string, password: string) {
+    return this.api.login(username, password);
+  }
+
 }

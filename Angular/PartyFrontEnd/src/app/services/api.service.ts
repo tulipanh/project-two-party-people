@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Http, Response } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { User } from '../models/User';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const API_URL = environment.apiUrl;
+const REAL = "http://testpipeline-env.cmsw7gc4gr.us-east-1.elasticbeanstalk.com";
 
 @Injectable({
   providedIn: 'root'
@@ -34,16 +35,23 @@ export class ApiService {
   }
 
   public createUser(user: User): Observable<User> {
+    // let h = new Headers();
+    // h.append("Access-Control-Allow-Origin", "*");
+    // let ro = new RequestOptions();
+    // ro.headers = h;
     return this.http
-      .post(API_URL + '/users', user).pipe(
+      .post(REAL + '/user-create', user).pipe(
       map(response => {
-        return new User(response.json());
+        let user = response.json();
+        console.log(user);
+        return new User(user);
       }));
   }
 
   public updateUser(user: User): Observable<User> {
+    console.log("Api Service: " + user);
     return this.http
-      .put(API_URL + '/users/' + user.id, user).pipe(
+      .put(API_URL + '/users/' + user.personId, user).pipe(
       map(response => {
         return new User(response.json());
       }));
@@ -55,8 +63,21 @@ export class ApiService {
       map(response => null));
   }
 
+  public login(username: string, password: string): Observable<User> {
+    // let h = new Headers();
+    // h.append("Access-Control-Allow-Origin", "*");
+    return this.http
+      .get(REAL + '/login' + "?username="+username+"&password="+password).pipe(
+      map(response => {
+        let user = response.json();
+        console.log(user);
+        return new User(user);
+      }));
+  }
+
   public handleError (error: Response | any) {
     console.error("ApiService::handleError", error);
     return Observable.throw(error);
   }
+
 }

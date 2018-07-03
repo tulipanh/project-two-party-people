@@ -8,8 +8,8 @@ import { User } from '../../models/User';
 })
 export class LoginComponent implements OnInit {
 
-  usernameInput: string;
-  passwordInput: string;
+  inputUsername: string;
+  inputPassword: string;
   @Input() errorMessage: string;
   @Output() loginEvent: EventEmitter<string[]> = new EventEmitter();
 
@@ -18,9 +18,9 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  attemptLogin(username, password) {
-    this.loginEvent.next([username, password]);
-    this.usernameInput = "";
-    this.passwordInput = "";
+  attemptLogin() {
+    this.loginEvent.next([this.inputUsername, this.inputPassword]);
+    this.inputUsername = "";
+    this.inputPassword = "";
   }
 }

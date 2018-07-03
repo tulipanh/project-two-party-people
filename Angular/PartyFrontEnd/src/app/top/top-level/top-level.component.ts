@@ -15,12 +15,16 @@ export class TopLevelComponent implements OnInit {
   shroudOn: boolean = false;
   activeUser: User;
   loginError: string;
+  registerError: string;
+  profileError: string;
 
   constructor(private userStore: UserStore, private interfaceStore: InterfaceStore) {}
 
   ngOnInit() {
     this.subscribeActiveUser();
     this.subscribeLoginError();
+    this.subscribeRegisterError();
+    this.subscribeProfileError();
     this.subscribeActivity();
   }
 
@@ -35,6 +39,14 @@ export class TopLevelComponent implements OnInit {
     this.userStore.loginError.subscribe(errTxt => this.loginError = errTxt);
   }
 
+  subscribeRegisterError() {
+    this.userStore.registerError.subscribe(errTxt => this.registerError = errTxt);
+  }
+
+  subscribeProfileError() {
+    this.userStore.profileError.subscribe(errTxt => this.profileError = errTxt);
+  }
+
   subscribeActivity() {
     this.interfaceStore.topActivity.subscribe(activity => this.currentActivity = activity);
     this.interfaceStore.shroudState.subscribe(state => this.shroudOn = state);
@@ -46,6 +58,14 @@ export class TopLevelComponent implements OnInit {
 
   attemptLogin(arg) {
     this.userStore.login(arg[0], arg[1]);
+  }
+
+  attemptUpdate(arg) {
+    this.userStore.updateUser(this.activeUser.personId, arg);
+  }
+
+  attemptRegister(arg) {
+    this.userStore.createUser(arg);
   }
 
   switchToCreate() {
