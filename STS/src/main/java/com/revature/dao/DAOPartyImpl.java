@@ -61,13 +61,14 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("pp.personId"),"personId")
 				).setResultTransformer(new AliasToBeanResultTransformer(Party.class));
 		List<Party> partyList = criteria.list();
-	
 		if(partyList.size() > 0) {
 			//since partyId is primary key, there can only be 0 or 1 items in this list
 			Party party = partyList.get(0);
 			party.setAttendees(getAttendeesById(partyId));
 			party.setTagList(getTagsByPartyId(partyId));
-			party.setCreator(getCreatorByPersonId(party.getCreator().getPersonId()));
+			if(party.getCreator().getPersonId() != null) {
+				party.setCreator(getCreatorByPersonId(party.getCreator().getPersonId()));
+			}
 			return party;
 		}else {
 			return null;
@@ -110,16 +111,16 @@ public class DAOPartyImpl implements DAOParty {
 	public Set<Party> getPartiesCreated(int personId) {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(Party.class);
-		criteria.createAlias("attendees", "people");
-		criteria.add(Restrictions.eq("people.personId", personId));
+		criteria.createAlias("creator", "person");
+		criteria.add(Restrictions.eq("person.personId", personId));
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property("partyId"),"partyId")
 				.add(Projections.property("partyName"),"partyName")
 				.add(Projections.property("partyDate"),"partyDate")
-				.add(Projections.property("email"),"email")
 				).setResultTransformer(Transformers.aliasToBean(Party.class));
 		return new HashSet<Party>(criteria.list());
 	}
+	
 	
 	@Override
 	public Set<PartyPerson> getAttendeesById(int partyId) {

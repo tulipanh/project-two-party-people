@@ -24,6 +24,9 @@ public class DAOPartyPersonImpl implements DAOPartyPerson {
 	@Autowired
 	SessionFactory sessionFactory;
 	
+	@Autowired
+	DAOParty daoParty;
+	
 	@Override
 	public int insertPerson(PartyPerson person) {
 		//returns the PK if the username was unique and insertion was successful, and -1 if not
@@ -89,7 +92,9 @@ public class DAOPartyPersonImpl implements DAOPartyPerson {
 		List<PartyPerson> personList = criteria.list();
 		if(personList.size() > 0) {
 			//since personId is primary key, there can only be 0 or 1 items in this list
-			return personList.get(0);
+			PartyPerson person = personList.get(0);
+			person.setCreatorEvents(daoParty.getPartiesCreated(personId));
+			return person;
 		}else {
 			return null;
 		}

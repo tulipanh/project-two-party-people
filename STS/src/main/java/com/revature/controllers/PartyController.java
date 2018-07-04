@@ -38,6 +38,7 @@ public class PartyController {
 	
 	@GetMapping("/party/{id}")
 	public Party partyById(@PathVariable("id") int id) {
+		System.out.println(id);
 		Party party = daoPartyImpl.getPartyById(id);
 		return party;
 	}
