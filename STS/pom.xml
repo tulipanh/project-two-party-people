@@ -9,6 +9,12 @@
   	<maven.compiler.source>1.8</maven.compiler.source>
   	<maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+   <repositories>
+  	<repository>
+  		<id>Java.Net</id>
+  		<url>http://download.java.net/maven/2/</url>
+  	</repository>
+  </repositories>
   
   <dependencyManagement>
   		<dependencies>
@@ -28,6 +34,11 @@
 		<version>4.3.3.RELEASE</version>
 	</dependency>
 	<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context-support</artifactId>
+    <version>5.0.7.RELEASE</version>
+</dependency>
+	<dependency>
 		<groupId>commons-logging</groupId>
 		<artifactId>commons-logging</artifactId>
 		<version>1.2</version>
@@ -42,7 +53,11 @@
 			<artifactId>commons-logging</artifactId>
 			<version>1.2</version>
 		</dependency>
-	
+	<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-mail</artifactId>
+    <version>2.0.3.RELEASE</version>
+	</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
@@ -90,11 +105,6 @@
   		<artifactId>hibernate-core</artifactId>
   		<version>4.3.11.Final</version>
   	</dependency>
-  	<dependency>
-    	<groupId>com.sun.mail</groupId>
-    	<artifactId>javax.mail</artifactId>
-    <version>1.6.0</version>
-	</dependency>
 	<dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate-ehcache</artifactId>
@@ -110,6 +120,14 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4.3</version>
+  	  </dependency>
   </dependencies>
+
+  <!-- Java Mail API -->
+    
   
 </project>

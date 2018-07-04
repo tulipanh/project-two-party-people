@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
 /**
  * Class for the party object.  Links to the person who created the party (creator),
  * the address of the party (and the address links to the coordinates),
@@ -27,6 +29,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
+@DynamicUpdate
 public class Party {
 	
 	@Column
@@ -34,9 +37,9 @@ public class Party {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="partySequence")
 	@SequenceGenerator(allocationSize=1,name="partySequence",sequenceName="SQ_party_PK")
 	private Integer partyId;
-	@ManyToOne(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
+	@ManyToOne(cascade= {CascadeType.MERGE,CascadeType.PERSIST},fetch=FetchType.LAZY)
 	@JoinColumn(name="personId")
-	private PartyPerson creator;
+	private PartyPerson creator = new PartyPerson();
 	@OneToOne(cascade= {CascadeType.ALL})
 	@JoinColumn(name="addressId")
 	private Address address;
@@ -47,7 +50,7 @@ public class Party {
 	@Column
 	private Double cost;
 	
-	@ManyToMany(cascade= {CascadeType.ALL},fetch= FetchType.LAZY )
+	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST},fetch= FetchType.LAZY )
 	@JoinTable(
 			name="PARTY_RSVP",
 			joinColumns= {@JoinColumn(name="personId")},
@@ -157,6 +160,11 @@ public class Party {
 
 	public void setPictureUrl(String pictureUrl) {
 		this.pictureUrl = pictureUrl;
+	}
+	
+	public void setPersonId(Integer id) {
+		//sets the fk for party creator
+		creator.setPersonId(id);
 	}
 
 

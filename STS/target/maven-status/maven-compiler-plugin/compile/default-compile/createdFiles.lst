@@ -1,8 +1,8 @@
-com/revature/util/Email.class
 com/revature/dao/DAOAddress.class
 com/revature/dao/DAOCoordinates.class
 com/revature/dao/DAOCoordinatesImpl.class
 com/revature/util/UpdatableBCrypt.class
+com/revature/emails/JavaMailSenderImpl.class
 com/revature/dao/DAOAddressImpl.class
 com/revature/controllers/PartyPersonController.class
 com/revature/models/Tag.class
@@ -15,8 +15,9 @@ com/revature/controllers/PartyController.class
 com/revature/models/Party.class
 com/revature/util/Constants.class
 com/revature/util/HashPassword.class
+com/revature/emails/SendEmailImpl.class
 com/revature/models/Coordinates.class
+com/revature/emails/SendEmail.class
 com/revature/dao/DAOParty.class
 com/revature/dao/DAOTagImpl.class
 com/revature/models/PartyPerson.class
-com/revature/controllers/EmailController.class

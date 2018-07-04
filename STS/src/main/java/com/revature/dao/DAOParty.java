@@ -20,5 +20,6 @@ public interface DAOParty {
 	public Set<Party> getPartiesCreated(int personId);
 	public Set<PartyPerson> getAttendeesById(int partyId);
 	public Set<Tag> getTagsByPartyId(int partyId);
-	Set<Party> getPartyWithinRadius(double radius, double latitude, double longitude);
+	public Set<Party> getPartyWithinRadius(double radius, double latitude, double longitude);
+	public PartyPerson getCreatorByPersonId(int personId);
 }

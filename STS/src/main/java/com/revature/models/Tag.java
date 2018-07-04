@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 /**
  * Class for tags that a party has, like the type of event it is
  * Different tags are found in the util/Constants.java file, and are stored in this class
@@ -22,6 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
+@DynamicUpdate
 public class Tag {
 
 	@Column
@@ -31,7 +34,7 @@ public class Tag {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="tagSequence")
 	@SequenceGenerator(allocationSize=1,name="tagSequence",sequenceName="SQ_tag_PK")
 	private Integer tagId;
-	@ManyToOne(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
+	@ManyToOne(cascade= {CascadeType.MERGE,CascadeType.PERSIST},fetch=FetchType.LAZY)
 	@JoinColumn(name="partyId")
 	private Party partyOfTag;
 
