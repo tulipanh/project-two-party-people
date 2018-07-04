@@ -1,14 +1,11 @@
-<div class="event-tile">
-  <label>EventId:</label>
-  <h4>{{event.id}}</h4>
-  <label>Date:</label>
-  <h4>{{event.date}}</h4>
-  <label>Name:</label>
-  <h4>{{event.name}}</h4>
-  <label>URL:</label>
-  <h4>{{event.pictureurl}}</h4>
-  <label>Address:</label>
-  <h4>{{event.address}}</h4>
-  <label>CreatorId:</label>
-  <h4>{{event.creatorid}}</h4>
-</div>
+<mat-card color="primary" >
+  <mat-card-title color="primary">
+    {{event.name}}
+  </mat-card-title>
+  <div class="mat-card-image-container" color="primary">
+  <img mat-card-image [src]="event.pictureurl">
+  </div>
+  <mat-card-content>
+    Details
+  </mat-card-content>
+</mat-card>

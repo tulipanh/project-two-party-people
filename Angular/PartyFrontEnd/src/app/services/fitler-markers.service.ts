@@ -11,8 +11,12 @@ export class FitlerMarkersService {
   filter = (markers, filterParams)=> {
     let filteredMarkers = markers;
     //filter by radius
-      // ???
-      
+    if(filterParams.radius) {
+      // get all the markers within a specific radius
+      // using the http request
+      console.log('filtering by radius. coming soon to a theater near you');
+    }
+
     //filter by date
     if(filterParams.startDate!= null  && filterParams.endDate!= null) {
       console.log('filtering by date');

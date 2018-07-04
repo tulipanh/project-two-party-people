@@ -14,9 +14,9 @@ export class SearchPanelComponent implements OnInit {
   hidden: boolean = false;
   toggleButtonContent: string = ">";
   events: Event[] = [
-    {id: 1, date: new Date(7/27/2018), name: "Phased static application", pictureurl: "https://robohash.org/velitautemiusto.jpg?size=50x50&set=set1", address: "71 Hoffman Plaza", creatorid: 54},
-    {id: 2, date: new Date(7/18/2018), name: "Business-focused coherent workforce", pictureurl: "https://robohash.org/nisietdignissimos.bmp?size=50x50&set=set1", address: "3369 Bunker Hill Circle", creatorid: 79},
-    {id: 3, date: new Date(7/2/2018), name: "Cross-group context-sensitive synergy", pictureurl: "https://robohash.org/temporeetratione.png?size=50x50&set=set1", address: "0 Rusk Plaza", creatorid: 33}
+    {id: 1, date: new Date(7/27/2018), name: "Phased static application", pictureurl: "https://seda.college/wp-content/uploads/party.jpg", address: "71 Hoffman Plaza", creatorid: 54},
+    {id: 2, date: new Date(7/18/2018), name: "Business-focused coherent workforce", pictureurl: "https://seda.college/wp-content/uploads/party.jpg", address: "3369 Bunker Hill Circle", creatorid: 79},
+    {id: 3, date: new Date(7/2/2018), name: "Cross-group context-sensitive synergy", pictureurl: "https://seda.college/wp-content/uploads/party.jpg", address: "0 Rusk Plaza", creatorid: 33}
   ];
   
   constructor() { }

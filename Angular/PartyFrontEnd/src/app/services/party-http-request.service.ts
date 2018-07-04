@@ -38,6 +38,9 @@ export class PartyHttpRequestService {
 
   }
 
+  getPartiesWithinRadius() {
+    return this.http.get(this.baseUrl+'/endpoint');
+  }
   getPartiesByUser() {}
 
   postNewParty() {}
