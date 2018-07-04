@@ -19,3 +19,4 @@ com/revature/models/Coordinates.class
 com/revature/dao/DAOParty.class
 com/revature/dao/DAOTagImpl.class
 com/revature/models/PartyPerson.class
+com/revature/controllers/EmailController.class

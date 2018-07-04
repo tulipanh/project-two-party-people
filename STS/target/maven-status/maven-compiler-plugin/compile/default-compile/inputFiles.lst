@@ -7,6 +7,7 @@
 /Users/jayfman/Google Drive/Revature/Assignments/Project2/project-two-party-people/STS/src/main/java/com/revature/models/PartyPerson.java
 /Users/jayfman/Google Drive/Revature/Assignments/Project2/project-two-party-people/STS/src/main/java/com/revature/dao/DAOParty.java
 /Users/jayfman/Google Drive/Revature/Assignments/Project2/project-two-party-people/STS/src/main/java/com/revature/dao/DAOPartyPersonImpl.java
+/Users/jayfman/Google Drive/Revature/Assignments/Project2/project-two-party-people/STS/src/main/java/com/revature/controllers/EmailController.java
 /Users/jayfman/Google Drive/Revature/Assignments/Project2/project-two-party-people/STS/src/main/java/com/revature/util/UpdatableBCrypt.java
 /Users/jayfman/Google Drive/Revature/Assignments/Project2/project-two-party-people/STS/src/main/java/com/revature/util/Constants.java
 /Users/jayfman/Google Drive/Revature/Assignments/Project2/project-two-party-people/STS/src/main/java/com/revature/dao/DAOTag.java

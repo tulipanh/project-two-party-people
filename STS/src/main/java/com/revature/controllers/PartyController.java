@@ -1,7 +1,5 @@
 package com.revature.controllers;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +41,7 @@ public class PartyController {
 		return people;
 	}
 	
-	@GetMapping("/local-parties")
+	@GetMapping("/party/local")
 	public Set<Party> parties(@ModelAttribute("minLat") Double minLat,
 			@ModelAttribute("minLong") Double minLong,
 			@ModelAttribute("maxLat") Double maxLat,
@@ -60,6 +58,7 @@ public class PartyController {
 	
 	@PostMapping("party")
 	public Party createParty(@RequestBody Party party) {
+		System.out.println(party);
 		if(daoPartyImpl.insertParty(party) > 0) {
 			return party;
 		}else {
