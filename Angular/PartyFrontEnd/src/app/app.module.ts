@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { HttpModule } from "@angular/http";
+import { MaterialAppModule } from './ngmaterial.module'
 
 import { SearchCoordinatesDataService } from "./services/search-coordinates-data.service";
 import { PartyHttpRequestService } from "./services/party-http-request.service";
@@ -19,7 +20,6 @@ import { EventTileComponent } from './middle/event-tile/event-tile.component';
 import { MapViewComponent } from './bottom/map-view/map-view.component';
 import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
 import { FilterTileComponent } from './middle/filter-tile/filter-tile.component';
-import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -41,10 +41,10 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     FormsModule,
     GooglePlaceModule,
-    ClarityModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    HttpModule
+    HttpModule,
+    MaterialAppModule
   ],
   providers: [
     SearchCoordinatesDataService,

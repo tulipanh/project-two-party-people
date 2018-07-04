@@ -1,3 +1,69 @@
-<div class="filter-tile">
-  <h1>Filter</h1>
-</div>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      Filter Results
+    </mat-expansion-panel-header>
+    <form>
+        <mat-form-field>
+          <mat-select
+            name="radius-picker" 
+            placeholder="Radius"
+            (selectionChange)="pushRadiusChange($event)">
+            <mat-option value="5">5 miles</mat-option>
+            <mat-option value="10">10 miles</mat-option>
+            <mat-option value="25">25 miles</mat-option>
+            <mat-option value="50">50 miles</mat-option>
+            <mat-option value="100">100 miles</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput 
+            name="startPicker"
+            [matDatepicker]="startPicker"  
+            [min]="today.value"
+            [max]="end.value"
+            [(ngModel)]="start.value"
+            [value]="start.value"
+            (dateChange)="pushStartDate($event)"
+            placeholder="Choose a start date">
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput 
+            name="endPicker"
+            [matDatepicker]="endPicker" 
+            [min]="start.value"
+            [(ngModel)]="end.value"
+            (value)="end.value"
+            (dateChange)="pushEndDate($event)"
+            placeholder="Choose a end date">
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+            placeholder="Event Name"
+            name="nameSearch" 
+            [(ngModel)]="name"
+            (ngModelChange)="pushName()"
+          >
+        </mat-form-field>
+        
+        <mat-form-field>
+            <mat-select 
+              name="categoryPicker"
+              placeholder="Categories" 
+              (selected)="categories" 
+              [(ngModel)]="categories"
+              (ngModelChange)="pushCategories()"
+              multiple>
+              <mat-option *ngFor="let category of categoryList" [value]="category">{{category.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+    </form>
+  </mat-expansion-panel>
