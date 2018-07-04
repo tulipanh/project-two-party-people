@@ -13,7 +13,7 @@ export class EventFilterService {
 
 
   private getStartingFilterParams = ()=> {
-    return [];
+    return { type: '', value: ''};
   }
 
   private filterParamsSource = new BehaviorSubject(this.getStartingFilterParams());
@@ -33,7 +33,7 @@ export class EventFilterService {
   }
 
   updateEndDate(endDate: Date) {
-    endDate.setHours(11, 59, 59, 99);
+    endDate.setHours(23, 59, 59, 99);
     this._updateFilterParams({type: 'endDate', endDate: endDate});
   }
 

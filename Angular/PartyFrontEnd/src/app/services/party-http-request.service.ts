@@ -18,7 +18,7 @@ export class PartyHttpRequestService {
 
   getPartyById = (id: Number) => {
 
-    return this.http.get(this.baseUrl+"party-location/"+id, {headers:{"Access-Control-Allow-Origin": "*"}}).subscribe((data)=>{
+    return this.http.get(this.baseUrl+"party/"+id, {headers:{"Access-Control-Allow-Origin": "*"}}).subscribe((data)=>{
       console.log(data);
     });
   }
@@ -26,14 +26,14 @@ export class PartyHttpRequestService {
   getPartiesByCoordinates(minLat: any, maxLat:any, minLong: any, maxLong: any) {
 
     return this.http
-    .get(this.baseUrl+"local-parties",
+    .get(this.baseUrl+"/party/local",
       { 
         params: {
           "minLat" : minLat,
           "minLong" : minLong,
           "maxLat" : maxLat,
           "maxLong" : maxLong
-        }
+        } 
       });
 
   }

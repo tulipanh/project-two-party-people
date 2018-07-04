@@ -4,6 +4,7 @@ import { PartyHttpRequestService } from '../../services/party-http-request.servi
 import { EventFilterService } from '../../services/event-filter.service';
 
 import { } from '@types/googlemaps';
+import { FitlerMarkersService } from '../../services/fitler-markers.service';
 
 @Component({
   selector: 'app-map-view',
@@ -17,7 +18,7 @@ export class MapViewComponent implements OnInit {
   prevCoordinates : google.maps.LatLng; 
   currentCoordinates : google.maps.LatLng;
   markers : google.maps.Marker[] = [];
-  filterMarkers : google.maps.Marker[] = [];
+  filteredMarkers : google.maps.Marker[] = [];
   filters = {
     radius: '',
     startDate: null,
@@ -35,7 +36,8 @@ export class MapViewComponent implements OnInit {
   // inject service for get requests
   constructor(private geoData: SearchCoordinatesDataService,
               private partyRequest : PartyHttpRequestService,
-              private eventFilters: EventFilterService) { 
+              private eventFilters: EventFilterService,
+              private markerFilter: FitlerMarkersService) { 
 
   }
 
@@ -53,29 +55,24 @@ export class MapViewComponent implements OnInit {
   filterEvents = (filterParams) => {
     switch(filterParams.type) {
       case 'startDate':
-        console.log(`dates after ${filterParams.startDate}`);
         this.filters.startDate = filterParams.startDate;
         break;
       case 'endDate':
-        console.log(`dates before ${filterParams.endDate}`);
         this.filters.endDate = filterParams.endDate;
         break;
       case 'radius':
-        console.log(`dates within ${filterParams.radius}`);
         this.filters.radius = filterParams.radius;
         break;
       case 'name':
-        console.log(`party names that contain ${filterParams.name}`);
         this.filters.name = filterParams.name;
         break;
       case 'categories':  
-        for(let category of filterParams.categories) {
-          console.log(`category name: ${category.name} value: ${category.value}`);
-        }
         this.filters.categories = filterParams.categories;
         break;
-    
     }
+
+    this.filteredMarkers = this.markerFilter.filter(this.markers, this.filters);
+    this.addMarkers(this.filteredMarkers);
   }
 
   createMap = ()=> {
@@ -108,6 +105,10 @@ export class MapViewComponent implements OnInit {
       // add markers
       this.getMarkers();
     });
+    /*this.map.addListener('click', ()=>{
+      console.log(this.map.getCenter().lat());
+      console.log(this.map.getCenter().lng());
+    })*/
   }
 
   subscribeToCoordinateChanges = ()=> {
@@ -120,11 +121,9 @@ export class MapViewComponent implements OnInit {
     this.partyRequest
       .getPartiesByCoordinates(this.minLat, this.maxLat,this.minLong, this.maxLong)
       .subscribe((data) => {
-        this.addMarkers(data);
+        this.addMarkerData(data);
       })
   }
-
-
 
   // centers map on coordinates passed in
   centerMap = (updatedCoordinates:google.maps.LatLng) => {
@@ -132,8 +131,8 @@ export class MapViewComponent implements OnInit {
   }
 
   
-  // function that adds an array of markers
-  addMarkers = (markerData) => {
+  // function that adds an array of markers from data
+  addMarkerData = (markerData) => {
     //clear the previous markers
     for(let marker of this.markers) {
       marker.setMap(null);
@@ -144,13 +143,20 @@ export class MapViewComponent implements OnInit {
       // make a new marker option object
       let newMarker = new google.maps.Marker();
       newMarker.setPosition(new google.maps.LatLng(marker.address.coordinates.latitude, marker.address.coordinates.longitude));
-      newMarker.set('id', marker.partyId);
+      newMarker.set('partyId', marker.partyId);
+      newMarker.set('partyDate', marker.partyDate);
       newMarker.setTitle(marker.partyName);
       newMarker.setLabel(marker.partyName.substring(0,1).toUpperCase());
      
+      let tagList = [];
+      for(let tag of marker.tagList) {
+        tagList.push(tag.tagName);
+      }
+      newMarker.set('partyTags', tagList);
+
       // add a listener
       newMarker.addListener('click', (event)=> {
-        console.log(newMarker.get('id')); 
+        let data = this.partyRequest.getPartyById(newMarker.get('partyId'));
         this.centerMap(event.latLng);
       });
 
@@ -159,9 +165,13 @@ export class MapViewComponent implements OnInit {
       this.markers.push(newMarker);
     }
   }
-
-  // if bounds increased, only add new markers from outside of the bounds
-  boundsIncreased = ()=> {
+  //function that adds markers from a list of markers
+  addMarkers = (filteredMarkers: google.maps.Marker[])=> {
+    for(let marker of this.markers) {
+      marker.setMap(null);
+    }
+    for(let fMarker of filteredMarkers) {
+      fMarker.setMap(this.map)
+    }
   }
-  //if the bounds decrease, only remove markers that are outside the new bounds
 }
