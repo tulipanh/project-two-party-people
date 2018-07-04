@@ -1,6 +1,7 @@
 package com.revature.dao;
 
 import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
 import org.hibernate.Criteria;
@@ -15,7 +16,6 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import com.revature.models.Coordinates;
 import com.revature.models.Party;
 import com.revature.models.PartyPerson;
 import com.revature.models.Tag;
@@ -30,7 +30,6 @@ public class DAOPartyImpl implements DAOParty {
 	@Override
 	public int insertParty(Party party) {
 		Session session = sessionFactory.getCurrentSession();
-		System.out.println(session);
 		return (int) session.save(party);
 	}
 
@@ -100,7 +99,7 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("address"),"address")
 				.add(Projections.property("partyDate"),"partyDate")
 				).setResultTransformer(Transformers.aliasToBean(Party.class));
-		return new HashSet<>(criteria.list());
+		return new HashSet<Party>(criteria.list());
 	}
 	
 	@Override
@@ -114,7 +113,7 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("partyName"),"partyName")
 				.add(Projections.property("partyDate"),"partyDate")
 				).setResultTransformer(Transformers.aliasToBean(Party.class));
-		return new HashSet<>(criteria.list());
+		return new HashSet<Party>(criteria.list());
 	}
 	
 	@Override
@@ -127,12 +126,12 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("personId"),"personId")
 				.add(Projections.property("username"),"username")
 				).setResultTransformer(Transformers.aliasToBean(PartyPerson.class));
-		return new HashSet<>(criteria.list());
+		return new HashSet<PartyPerson>(criteria.list());
 	}
 
 
 	@Override
-	public Set<Party> getPartyWithinRadius(Coordinates coordinates, double radius) {
+	public Set<Party> getPartyWithinRadius(double radius, double latitude, double longitude) {
 		Session session = sessionFactory.getCurrentSession();
 		String sql = "SELECT P.PARTYNAME,A.CITY,C.LONGITUDE,C.LATITUDE,T.TAGNAME FROM ADDRESS A\n" + 
 				"JOIN PARTY P\n" + 
@@ -144,11 +143,11 @@ public class DAOPartyImpl implements DAOParty {
 				"WHERE 3963*ACOS((sin(C.LATITUDE/ 57.3) * SIN(?/ 57.3))  + \n" + 
 				"(COS(C.LATITUDE / 57.3) * COS(?/ 57.3) *COS(C.Longitude/ 57.3 - ?/57.3 ))) < ?";
 		Query query = session.createSQLQuery(sql);
-		query.setDouble(0, coordinates.getLatitude());
-		query.setDouble(1, coordinates.getLatitude());
-		query.setDouble(2, coordinates.getLongitude());
+		query.setDouble(0, latitude);
+		query.setDouble(1, latitude);
+		query.setDouble(2,longitude);
 		query.setDouble(3, radius);
-		return new HashSet<>(query.list());
+		return new HashSet<Party>(query.list());
 	}
 	
 	public Set<Party> getPartyListWithinCoordinates(double minLat, double minLong, double maxLat, double maxLong){
@@ -166,7 +165,7 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("address"),"address")
 				.add(Projections.property("partyDate"),"partyDate")		
 				).setResultTransformer(Transformers.aliasToBean(Party.class));
-		Set<Party> parties =new HashSet<>(criteria.list());
+		Set<Party> parties = new HashSet<Party>(criteria.list());
 		
 		for(Party party:parties) {
 			party.setTagList(getTagsByPartyId(party.getPartyId()));

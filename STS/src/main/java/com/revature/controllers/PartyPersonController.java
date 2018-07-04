@@ -1,13 +1,10 @@
 package com.revature.controllers;
 
-import java.util.List;
 import java.util.Set;
 
-import javax.mail.Part;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.dao.DAOParty;
@@ -44,16 +40,6 @@ public class PartyPersonController {
 		return daoPartyPerson.login(username, password);
 	}
 	
-	@PutMapping("user")
-	public void updateUser(@RequestBody PartyPerson person) {
-		daoPartyPerson.updatePerson(person);
-	}
-	
-	@DeleteMapping("user")
-	public void deleteUser(@RequestBody PartyPerson person) {
-		daoPartyPerson.deletePerson(person);
-	}
-	
 	@GetMapping("/user/{id}")
 	public PartyPerson userById(@PathVariable("id") int id) {
 		PartyPerson person = daoPartyPerson.getPersonById(id);
@@ -73,9 +59,28 @@ public class PartyPersonController {
 	}
 	
 	@PostMapping("user")
-	public void createUser(@RequestBody PartyPerson person) {
-		daoPartyPerson.insertPerson(person);
+	public PartyPerson createUser(@RequestBody PartyPerson person) {
+		if(daoPartyPerson.insertPerson(person) > 0) {
+			return person;
+		}else {
+			return null;
+		}
 	}
+	
+	@PutMapping("user")
+	public PartyPerson updateUser(@RequestBody PartyPerson person) {
+		if(daoPartyPerson.updatePerson(person) > 0) {
+			return person;
+		}else {
+			return null;
+		}
+	}
+	
+	@DeleteMapping("user")
+	public void deleteUser(@RequestBody PartyPerson person) {
+		daoPartyPerson.deletePerson(person);
+	}
+	
 	@PatchMapping("user")
 	public PartyPerson patchParty(@RequestBody Party party) {
 		return null;
