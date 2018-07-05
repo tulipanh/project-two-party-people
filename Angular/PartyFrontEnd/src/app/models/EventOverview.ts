@@ -2,6 +2,10 @@ export class EventOverview {
     id: number;
     name: string;
     date: Date;
-    address: {};
+    address: {
+        streetName: string;
+        city: string;
+        state:string;
+    };
     picture: string;
 }
