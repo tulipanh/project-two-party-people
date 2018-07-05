@@ -16,6 +16,7 @@ export class TopLevelComponent implements OnInit {
   currentActivity: TopLevelActivity = TopLevelActivity.None;
   shroudOn: boolean = false;
   activeUser: User;
+  activeEvent: Event;
   loginError: string;
   registerError: string;
   profileError: string;
@@ -25,6 +26,7 @@ export class TopLevelComponent implements OnInit {
 
   ngOnInit() {
     this.subscribeActiveUser();
+    this.subscribeActiveEvent();
     this.subscribeLoginError();
     this.subscribeRegisterError();
     this.subscribeProfileError();
@@ -39,6 +41,13 @@ export class TopLevelComponent implements OnInit {
       if (this.currentActivity === TopLevelActivity.Register) this.switchToNone();
       if (this.currentActivity === TopLevelActivity.Profile) this.switchToNone();
     });
+  }
+
+  subscribeActiveEvent() {
+    this.eventStore.activeEvent.subscribe(event => {
+      this.activeEvent = event;
+      this.switchToPartyDetails;
+    })
   }
 
   subscribeLoginError() {
@@ -71,6 +80,20 @@ export class TopLevelComponent implements OnInit {
     console.log(arg);
     this.eventStore.createEvent(arg);
     this.switchToNone();
+  }
+  setRSVP(arg) {
+    if(arg) {
+      if (!(this.activeUser.eventsRSVP.isArray)) this.activeUser.eventsRSVP = [];
+      this.activeUser.eventsRSVP.push(this.activeEvent);
+    } else {
+      if (this.activeUser.eventsRSVP.isArray) {
+        this.activeUser.eventsRSVP = this.activeUser.eventsRSVP.filter(
+          (entry) => {
+            entry.partyId !== this.activeEvent.partyId;
+        });
+      }
+    }
+    this.attemptUpdate(this.activeUser);
   }
 
   switchToPartyDetails() {this.interfaceStore.setActivity(TopLevelActivity.Event);}

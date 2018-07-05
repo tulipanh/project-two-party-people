@@ -18,6 +18,7 @@ export class UserStore {
   constructor(private userService: UserDataService) {
     let blankUser = new User();
     blankUser['address'] = {};
+    // can be replaced with new User({address: {}})
     this._activeUser = new BehaviorSubject(blankUser);
   }
 

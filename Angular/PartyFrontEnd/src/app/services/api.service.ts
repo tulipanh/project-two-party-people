@@ -71,13 +71,18 @@ export class ApiService {
     console.log("Api Service: ");
     console.log(username + " " + password);
     return this.http
-      .get(REAL + '/login' + "?username="+username+"&password="+password, {headers}).pipe(
+      .get(REAL + '/user/login' + "?username="+username+"&password="+password, {headers}).pipe(
       map(response => {
         // What do do with an empty response?
         console.log(response);
-        let user = response.json();
-        console.log(user);
-        return new User(user);
+        try {
+          let user = response.json();
+          console.log(user);
+          return new User(user);
+        } catch {
+          return new User({address: {}});
+        }
+        
       }));
   }
 
