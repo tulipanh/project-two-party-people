@@ -1,8 +1,16 @@
 export class Event {
-    id: number;
-    date: Date;
-    name: string;
+    partyId: number;
+    creator: {};
+    address: {};
+    partyName: string;
+    partyDate: Date;
+    cost: number;
+    attendees: {};
+    tagList: any[];
     pictureurl: string;
-    address: string;
-    creatorid: number;
+    description: string;
+
+    constructor(values: Object = {}) {
+        Object.assign(this, values);
+    }
 }

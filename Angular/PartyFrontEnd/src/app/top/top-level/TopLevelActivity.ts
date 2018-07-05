@@ -4,4 +4,5 @@ export enum TopLevelActivity {
     Register,
     Profile,
     Create,
+    Event
 }

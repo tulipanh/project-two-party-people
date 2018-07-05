@@ -8,9 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class UserDataService {
 
-  constructor(private api: ApiService) {
-
-  }
+  constructor(private api: ApiService) {}
 
   addUser(user: User): Observable<User> {
     return this.api.createUser(user);

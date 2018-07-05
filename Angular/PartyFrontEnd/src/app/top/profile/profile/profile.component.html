@@ -22,7 +22,7 @@
           </mat-form-field>
         </div>
         <div name="password-group">
-          <mat-toolbar class="profile-header"><span>Password:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditPassword()">{{passwerEdit?keepText:editText}}</button></mat-toolbar>
+          <mat-toolbar class="profile-header"><span>Password:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditPassword()">{{passwordEdit?keepText:editText}}</button></mat-toolbar>
           <mat-form-field *ngIf="passwordEdit" class="info-form-input">
             <input name="password" type="password" matInput placeholder="New Password" [(ngModel)]="inputPassword">
           </mat-form-field>

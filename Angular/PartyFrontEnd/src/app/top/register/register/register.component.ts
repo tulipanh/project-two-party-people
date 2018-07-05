@@ -30,13 +30,16 @@ export class RegisterComponent implements OnInit {
       this.errorField += "Username required.\n";
     }
     if (this.inputPassword === undefined || this.inputReenter === undefined) {
-      this.errorField += "Password entry required.\n"
+      this.errorField += "Password entry required.\n";
     }
     if (this.inputPassword === null || this.inputReenter === null) {
-      this.errorField += "Password entry required.\n"
+      this.errorField += "Password entry required.\n";
     }
     if (this.inputPassword !== this.inputReenter) {
       this.errorField += "Password fields must match.\n";
+    }
+    if (this.inputEmail === null || this.inputEmail == undefined) {
+      this.errorField += "Email is required.\n";
     }
     if (this.errorField != "") {
       return;
