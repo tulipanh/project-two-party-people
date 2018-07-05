@@ -5,6 +5,7 @@ import { EventFilterService } from '../../services/event-filter.service';
 
 import { } from '@types/googlemaps';
 import { FitlerMarkersService } from '../../services/fitler-markers.service';
+import { UpdateMarkerEventsService } from '../../services/update-marker-events.service';
 
 @Component({
   selector: 'app-map-view',
@@ -37,7 +38,8 @@ export class MapViewComponent implements OnInit {
   constructor(private geoData: SearchCoordinatesDataService,
               private partyRequest : PartyHttpRequestService,
               private eventFilters: EventFilterService,
-              private markerFilter: FitlerMarkersService) { 
+              private markerFilter: FitlerMarkersService,
+              private updateMarkerEvents: UpdateMarkerEventsService) { 
 
   }
 
@@ -145,6 +147,8 @@ export class MapViewComponent implements OnInit {
       newMarker.setPosition(new google.maps.LatLng(marker.address.coordinates.latitude, marker.address.coordinates.longitude));
       newMarker.set('partyId', marker.partyId);
       newMarker.set('partyDate', marker.partyDate);
+      newMarker.set('address', marker.address);
+      newMarker.set('pictureUrl', marker.pictureUrl);
       newMarker.setTitle(marker.partyName);
       newMarker.setLabel(marker.partyName.substring(0,1).toUpperCase());
      
@@ -164,7 +168,9 @@ export class MapViewComponent implements OnInit {
       newMarker.setMap(this.map); 
       this.markers.push(newMarker);
     }
+    this.updateMarkerEvents.updateMarkers(this.markers);
   }
+
   //function that adds markers from a list of markers
   addMarkers = (filteredMarkers: google.maps.Marker[])=> {
     for(let marker of this.markers) {
@@ -173,5 +179,8 @@ export class MapViewComponent implements OnInit {
     for(let fMarker of filteredMarkers) {
       fMarker.setMap(this.map)
     }
+    this.updateMarkerEvents.updateMarkers(filteredMarkers);
+
   }
+
 }

@@ -1,8 +1,7 @@
 export class Event {
-    id: number;
+    id: Number;
     date: Date;
     name: string;
-    pictureurl: string;
     address: string;
-    creatorid: number;
+    picture: string;
 }
