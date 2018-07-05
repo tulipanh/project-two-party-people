@@ -28,21 +28,21 @@ export class SearchPanelComponent implements OnInit {
     this.updateMarkerEvent.currentMarkers.subscribe((markers: google.maps.Marker[])=> {
       this.zone.run(()=>{    
         let tempEvents : Event[] = [];
-        if(markers.length != 0) {
+
           for(let marker of markers) {
             let myEvent : Event = {
               id: Number.parseInt(marker.get('partyId')),
               name: marker.getTitle(),
               date: new Date(marker.get('partyDate')),
               address: marker.get('address'),
-              picture: marker.get('pictureUrl')
+              picture: marker.get('pictureUrl')? marker.get('pictureUrl') : 'https://seda.college/wp-content/uploads/party.jpg'
             }
             tempEvents.push(myEvent);
           }
 
           this.events = tempEvents;
           console.log(this.events);
-        }
+        
       })
     });
     
