@@ -1,10 +1,12 @@
-.event-tile {
-    width: 370px;
-    background-color: #CCCCCC;
-    border-radius: 5px;
-    border-width: 1px;
-    border-color: black;
-    border-style: solid;
-    padding: 5px;
-    
+.mat-card {
+    margin-bottom: 5px;
+}
+.mat-card-image-container {
+    height:150px;
+    overflow:hidden;
+    margin: 0 -24px 16px -24px;
+}
+.mat-card-image {
+    background-size: cover;
+    background-position: center center;
 }

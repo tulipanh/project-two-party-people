@@ -17,19 +17,19 @@ export class SearchBarComponent implements OnInit {
    
   coordinates: google.maps.LatLng;
 
-  public handleAddressChange(address:google.maps.places.PlaceResult) {
-    var latitude = address.geometry.location.lat();
-    var longitude = address.geometry.location.lng();
-    var newCoordinates = new google.maps.LatLng(latitude, longitude);
-    this.geoData.updateCoordinates(newCoordinates);
-    console.log('pushed new coordinates');
-    
-  }
+  
 
   constructor(private geoData: SearchCoordinatesDataService) { }
 
   ngOnInit() {
     this.geoData.currentCoordinates.subscribe(coordinates => this.coordinates = coordinates);
+  }
+
+  public handleAddressChange(address:google.maps.places.PlaceResult) {
+    var latitude = address.geometry.location.lat();
+    var longitude = address.geometry.location.lng();
+    var newCoordinates = new google.maps.LatLng(latitude, longitude);
+    this.geoData.updateCoordinates(newCoordinates);
   }
 
 }

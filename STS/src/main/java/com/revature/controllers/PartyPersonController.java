@@ -1,13 +1,11 @@
 package com.revature.controllers;
 
-import java.util.List;
 import java.util.Set;
 
-import javax.mail.Part;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,20 +14,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.dao.DAOParty;
 import com.revature.dao.DAOPartyPerson;
+import com.revature.emails.SendEmail;
 import com.revature.models.Party;
 import com.revature.models.PartyPerson;
+import com.revature.util.HashPassword;
 
+@CrossOrigin(origins="*")
 @RestController
 public class PartyPersonController {
 	
 	@ModelAttribute
 	public void setVaryResponseHeader(HttpServletResponse response) {
 	    response.setHeader("Access-Control-Allow-Origin", "*");
+	    response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, PATCH");
 	}  
 
 	@Autowired
@@ -38,20 +39,13 @@ public class PartyPersonController {
 	@Autowired
 	DAOParty DAOParty;
 	
-	@GetMapping("login")
+	@Autowired
+	SendEmail sendEmail;
+	
+	@GetMapping("/user/login")
 	public PartyPerson tryLogin(@ModelAttribute("username") String username,
 			@ModelAttribute("password") String password) {
 		return daoPartyPerson.login(username, password);
-	}
-	
-	@PutMapping("user")
-	public void updateUser(@RequestBody PartyPerson person) {
-		daoPartyPerson.updatePerson(person);
-	}
-	
-	@DeleteMapping("user")
-	public void deleteUser(@RequestBody PartyPerson person) {
-		daoPartyPerson.deletePerson(person);
 	}
 	
 	@GetMapping("/user/{id}")
@@ -72,11 +66,35 @@ public class PartyPersonController {
 		return DAOParty.getPartiesCreated(id);
 	}
 	
-	@PostMapping("user")
-	public void createUser(@RequestBody PartyPerson person) {
-		daoPartyPerson.insertPerson(person);
+	@PostMapping("/user")
+	public PartyPerson createUser(@RequestBody PartyPerson person) {
+		person.setPassword(HashPassword.hash(person.getPassword()));
+		if(daoPartyPerson.insertPerson(person) > 0) {
+			if(person.getEmail() != null) {
+				sendEmail.sendWelcomeEmail(person);
+			}
+			return person;
+		}else {
+			return null;
+		}
 	}
-	@PatchMapping("user")
+	
+	@PutMapping("/user")
+	public PartyPerson updateUser(@RequestBody PartyPerson person) {
+		person.setPassword(HashPassword.hash(person.getPassword()));
+		if(daoPartyPerson.updatePerson(person) > 0) {
+			return person;
+		}else {
+			return null;
+		}
+	}
+	
+	@DeleteMapping("/user")
+	public void deleteUser(@RequestBody PartyPerson person) {
+		daoPartyPerson.deletePerson(person);
+	}
+	
+	@PatchMapping("/user")
 	public PartyPerson patchParty(@RequestBody Party party) {
 		return null;
 	}

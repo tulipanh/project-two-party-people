@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Event } from '../../models/Event';
+import { Component, OnInit, NgZone} from '@angular/core';
+import { UpdateMarkerEventsService } from '../../services/update-marker-events.service';
 
+
+import { EventOverview } from '../../models/EventOverview';
 /* Need to figure out a way to auto-hide this 
     panel when the window is shrunk below a certain width.
 */
@@ -13,15 +15,33 @@ export class SearchPanelComponent implements OnInit {
 
   hidden: boolean = false;
   toggleButtonContent: string = ">";
-  // events: Event[] = [
-  //   {partyId: 1, partyDate: new Date(7/27/2018), partyName: "Phased static application", pictureurl: "https://robohash.org/velitautemiusto.jpg?size=50x50&set=set1", address: "71 Hoffman Plaza", creatorid: 54},
-  //   {id: 2, date: new Date(7/18/2018), name: "Business-focused coherent workforce", pictureurl: "https://robohash.org/nisietdignissimos.bmp?size=50x50&set=set1", address: "3369 Bunker Hill Circle", creatorid: 79},
-  //   {id: 3, date: new Date(7/2/2018), name: "Cross-group context-sensitive synergy", pictureurl: "https://robohash.org/temporeetratione.png?size=50x50&set=set1", address: "0 Rusk Plaza", creatorid: 33}
-  // ];
+  events: EventOverview[] = [];
   
-  constructor() { }
+  constructor(private updateMarkerEvent: UpdateMarkerEventsService, private zone: NgZone) { }
 
   ngOnInit() {
+    
+    this.updateMarkerEvent.currentMarkers.subscribe((markers: google.maps.Marker[])=> {
+      this.zone.run(()=>{    
+        let tempEvents : EventOverview[] = [];
+
+          for(let marker of markers) {
+            let myEvent : EventOverview = {
+              id: Number.parseInt(marker.get('partyId')),
+              name: marker.getTitle(),
+              date: new Date(marker.get('partyDate')),
+              address: marker.get('address'),
+              picture: marker.get('pictureUrl')? marker.get('pictureUrl') : 'https://seda.college/wp-content/uploads/party.jpg'
+            }
+            tempEvents.push(myEvent);
+          }
+
+          this.events = tempEvents;
+          console.log(this.events);
+        
+      })
+    });
+    
   }
 
   toggleHide() {

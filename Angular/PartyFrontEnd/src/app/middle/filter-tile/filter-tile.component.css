@@ -1,9 +1,3 @@
-.filter-tile {
-    width: 370px;
-    background-color: #DDDDDD;
-    border-radius: 5px;
-    border-width: 1px;
-    border-color: black;
-    border-style: solid;
-    padding: 5px;
+.mat-expansion-panel {
+    margin-bottom: 5px;
 }

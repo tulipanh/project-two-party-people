@@ -2,13 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { HttpModule } from "@angular/http";
-import { HttpClientModule } from "@angular/common/http";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatSelectModule, MatOptionModule, MatChipsModule} from '@angular/material';
-import { MatDividerModule } from '@angular/material/divider';
+import { MaterialAppModule } from './ngmaterial.module';
+import { MatChipsModule } from '@angular/material';
 
-import {SearchCoordinatesDataService} from "./services/search-coordinates-data.service";
+import { SearchCoordinatesDataService } from "./services/search-coordinates-data.service";
+import { PartyHttpRequestService } from "./services/party-http-request.service";
+import { EventFilterService } from "./services/event-filter.service"
 
 import { AppComponent } from './app.component';
 import { SearchPanelComponent } from './middle/search-panel/search-panel.component';
@@ -22,6 +21,8 @@ import { EventTileComponent } from './middle/event-tile/event-tile.component';
 import { MapViewComponent } from './bottom/map-view/map-view.component';
 import { SearchBarComponent } from './bottom/search-bar/search-bar.component';
 import { FilterTileComponent } from './middle/filter-tile/filter-tile.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 import { GeocachingApiService } from './services/geocaching-api.service';
 import { EventDetailsComponent } from './top/event-details/event-details.component';
 
@@ -46,22 +47,17 @@ import { EventDetailsComponent } from './top/event-details/event-details.compone
     ReactiveFormsModule,
     GooglePlaceModule,
     BrowserAnimationsModule,
-    HttpModule,
     HttpClientModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatSelectModule,
-    MatOptionModule,
+    HttpModule,
     MatChipsModule,
-    MatDividerModule,
-
+    MaterialAppModule
   ],
-  providers: [SearchCoordinatesDataService,GeocachingApiService],
+  providers: [
+    SearchCoordinatesDataService,
+    PartyHttpRequestService,
+    EventFilterService,
+    GeocachingApiService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

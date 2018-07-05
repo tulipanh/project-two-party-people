@@ -2,12 +2,10 @@ package com.revature.dao;
 
 import static org.junit.Assert.*;
 
-
 import org.junit.Test;
 
 import com.revature.dao.DAOPartyPersonImpl;
 import com.revature.models.PartyPerson;
-
 
 
 public class personTest {

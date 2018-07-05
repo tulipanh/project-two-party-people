@@ -33,6 +33,6 @@
         <app-register *ngIf="currentActivity === 2" (registerEvent)="attemptRegister($event)" [errorField]="registerError"></app-register>
         <app-profile *ngIf="currentActivity === 3" (updateEvent)="attemptUpdate($event)" [activeUser]="activeUser" [errorField]="profileError"></app-profile>
         <app-create *ngIf="currentActivity === 4" (createEvent)="attemptCreate($event)" [errorField]="createError"></app-create>
-        <app-event-details *ngIf="currentActivity === 5" (setRSVPEvent)="setRSVP($event)" [activeEvent]="activeEvent" [activeUser]="activeUser" [errorField]="eventError"></app-event-details>
+        <!--<app-event-details *ngIf="currentActivity === 5" (setRSVPEvent)="setRSVP($event)" [activeEvent]="activeEvent" [activeUser]="activeUser" [errorField]="eventError"></app-event-details>-->
     </div>
 </div>

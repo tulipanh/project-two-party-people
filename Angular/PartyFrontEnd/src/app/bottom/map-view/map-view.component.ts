@@ -1,7 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SearchCoordinatesDataService } from '../../services/search-coordinates-data.service';
+import { PartyHttpRequestService } from '../../services/party-http-request.service';
+import { EventFilterService } from '../../services/event-filter.service';
 
 import { } from '@types/googlemaps';
+import { FitlerMarkersService } from '../../services/fitler-markers.service';
+import { UpdateMarkerEventsService } from '../../services/update-marker-events.service';
 
 @Component({
   selector: 'app-map-view',
@@ -12,15 +16,68 @@ import { } from '@types/googlemaps';
 export class MapViewComponent implements OnInit {
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
-  coordinates : google.maps.LatLng; 
+  prevCoordinates : google.maps.LatLng; 
+  currentCoordinates : google.maps.LatLng;
+  markers : google.maps.Marker[] = [];
+  filteredMarkers : google.maps.Marker[] = [];
+  filters = {
+    radius: '',
+    startDate: null,
+    endDate: null,
+    name: '',
+    categories: []
+  };
+
+  minLat: Number;
+  maxLat: Number;
+  minLong: Number;
+  maxLong: Number;
 
   // inject coordinate service to get updated coordinates
   // inject service for get requests
-  constructor(private geoData: SearchCoordinatesDataService) { }
+  constructor(private geoData: SearchCoordinatesDataService,
+              private partyRequest : PartyHttpRequestService,
+              private eventFilters: EventFilterService,
+              private markerFilter: FitlerMarkersService,
+              private updateMarkerEvents: UpdateMarkerEventsService) { 
+
+  }
 
   ngOnInit() {
-   
-    
+    this.createMap();
+    this.listenForMapLoaded();    
+    this.subscribeToCoordinateChanges();
+    this.subscribeToFilterChanges();  
+  }
+
+  subscribeToFilterChanges = ()=> {
+    this.eventFilters.currentFilterParams.subscribe(this.filterEvents);
+  }
+
+  filterEvents = (filterParams) => {
+    switch(filterParams.type) {
+      case 'startDate':
+        this.filters.startDate = filterParams.startDate;
+        break;
+      case 'endDate':
+        this.filters.endDate = filterParams.endDate;
+        break;
+      case 'radius':
+        this.filters.radius = filterParams.radius;
+        break;
+      case 'name':
+        this.filters.name = filterParams.name;
+        break;
+      case 'categories':  
+        this.filters.categories = filterParams.categories;
+        break;
+    }
+
+    this.filteredMarkers = this.markerFilter.filter(this.markers, this.filters);
+    this.addMarkers(this.filteredMarkers);
+  }
+
+  createMap = ()=> {
     // initial map properties
     var mapProp = {
       center: new google.maps.LatLng(38, -77),
@@ -29,24 +86,45 @@ export class MapViewComponent implements OnInit {
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
         position: google.maps.ControlPosition.BOTTOM_RIGHT
-      }
+      },
+      minZoom: 8,
+      maxZoom: 16,
     };
+
+    // add map to dom
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-    this.geoData.currentCoordinates.subscribe(this.centerMap);
-
-    // get markers
-
-    // add markers
-    this.addMarkers(this.markers);
-    // listen for map changes to redraw markers
-    this.map.addListener('idle', this.redrawMap);
-    
   }
 
-  // when the map bounds change, does stuff
-  redrawMap = () => {
-    //get new markers
-    console.log('I am going to get new markers');
+  listenForMapLoaded = ()=> {
+    // whenever map finished loading, get the new bounds and get the markers
+    // withing those bounds
+    this.map.addListener('tilesloaded', ()=>{
+      this.maxLat = this.map.getBounds().getNorthEast().lat();
+      this.maxLong = this.map.getBounds().getNorthEast().lng();
+      this.minLat = this.map.getBounds().getSouthWest().lat();
+      this.minLong = this.map.getBounds().getSouthWest().lng();
+
+      // add markers
+      this.getMarkers();
+    });
+    /*this.map.addListener('click', ()=>{
+      console.log(this.map.getCenter().lat());
+      console.log(this.map.getCenter().lng());
+    })*/
+  }
+
+  subscribeToCoordinateChanges = ()=> {
+    // change center when new coordinates are pushed
+    this.geoData.currentCoordinates.subscribe(this.centerMap);
+  }
+
+  // gets the data from the Observable
+  getMarkers = ()=> {
+    this.partyRequest
+      .getPartiesByCoordinates(this.minLat, this.maxLat,this.minLong, this.maxLong)
+      .subscribe((data) => {
+        this.addMarkerData(data);
+      })
   }
 
   // centers map on coordinates passed in
@@ -55,48 +133,54 @@ export class MapViewComponent implements OnInit {
   }
 
   
-  // function that adds an array of markers
-  addMarkers = (markers) => {
-    for(let marker of markers) {
-     
-      // make a new marker option objecy
+  // function that adds an array of markers from data
+  addMarkerData = (markerData) => {
+    //clear the previous markers
+    for(let marker of this.markers) {
+      marker.setMap(null);
+    }
+    this.markers = [];
+    //add all the new markers
+    for(let marker of markerData) {
+      // make a new marker option object
       let newMarker = new google.maps.Marker();
-      newMarker.setPosition(new google.maps.LatLng(marker.coordinates.lat, marker.coordinates.lng));
-      newMarker.set('id', marker.id);
-      newMarker.setTitle(marker.title);
-      newMarker.setLabel(marker.title.substring(0,1));
+      newMarker.setPosition(new google.maps.LatLng(marker.address.coordinates.latitude, marker.address.coordinates.longitude));
+      newMarker.set('partyId', marker.partyId);
+      newMarker.set('partyDate', marker.partyDate);
+      newMarker.set('address', marker.address);
+      newMarker.set('pictureUrl', marker.pictureUrl);
+      newMarker.setTitle(marker.partyName);
+      newMarker.setLabel(marker.partyName.substring(0,1).toUpperCase());
      
+      let tagList = [];
+      for(let tag of marker.tagList) {
+        tagList.push(tag.tagName);
+      }
+      newMarker.set('partyTags', tagList);
+
       // add a listener
-      newMarker.addListener('click', (event) => {
-        // do something with the id 
-        console.log(newMarker.get('id'));
+      newMarker.addListener('click', (event)=> {
+        let data = this.partyRequest.getPartyById(newMarker.get('partyId'));
         this.centerMap(event.latLng);
       });
+
       // add directly to map
-      newMarker.setMap(this.map);
+      newMarker.setMap(this.map); 
+      this.markers.push(newMarker);
     }
+    this.updateMarkerEvents.updateMarkers(this.markers);
   }
 
-
-  // dummy data
-  markers = [
-    {
-        id: 1,
-        title: "Revature Party",
-        label: 'R', //change to custom icon
-        coordinates: {lat: 38.9534019, lng: -77.3527004}
-    },
-    {
-        id: 2,
-        title: "Dulles Greene Party",
-        label: 'D',
-        coordinates: {lat: 38.968193, lng: -77.4142168}
-    },
-    {
-        id: 3,
-        title: "Bowtie Movie Party",
-        label: 'B',
-        coordinates: {lat: 38.9590691, lng: -77.3581058}
+  //function that adds markers from a list of markers
+  addMarkers = (filteredMarkers: google.maps.Marker[])=> {
+    for(let marker of this.markers) {
+      marker.setMap(null);
     }
-    ]
+    for(let fMarker of filteredMarkers) {
+      fMarker.setMap(this.map)
+    }
+    this.updateMarkerEvents.updateMarkers(filteredMarkers);
+
+  }
+
 }

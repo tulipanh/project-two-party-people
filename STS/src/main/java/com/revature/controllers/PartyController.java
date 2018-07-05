@@ -3,6 +3,7 @@ package com.revature.controllers;
 import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.revature.dao.DAOParty;
+import com.revature.emails.SendEmail;
 import com.revature.models.Party;
 import com.revature.models.PartyPerson;
 
+@CrossOrigin(origins="*")
 @RestController
 public class PartyController {
 	
@@ -23,9 +27,13 @@ public class PartyController {
 	@Autowired
 	DAOParty daoPartyImpl;
 	
+	@Autowired
+	SendEmail sendEmail;
+	
 	@ModelAttribute
 	public void setVaryResponseHeader(HttpServletResponse response) {
 	    response.setHeader("Access-Control-Allow-Origin", "*");
+	    response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, PATCH");
 	}   
 	
 	@GetMapping("/party/{id}")
@@ -40,7 +48,7 @@ public class PartyController {
 		return people;
 	}
 	
-	@GetMapping("/local-parties")
+	@GetMapping("/party/local")
 	public Set<Party> parties(@ModelAttribute("minLat") Double minLat,
 			@ModelAttribute("minLong") Double minLong,
 			@ModelAttribute("maxLat") Double maxLat,
@@ -48,20 +56,37 @@ public class PartyController {
 		return daoPartyImpl.getPartyListWithinCoordinates(minLat,minLong,maxLat,maxLong);
 	}
 	
-	@PostMapping("party")
-	public void createParty(@RequestBody Party party) {
-		daoPartyImpl.insertParty(party);
+	@GetMapping("/party/local/radius")
+	public Set<Party> parties(@RequestParam("radius") Double radius, 
+			@RequestParam("latitude") Double latitude,
+			@RequestParam("longitude") Double longitude){
+		return daoPartyImpl.getPartyWithinRadius(radius,latitude,longitude);
 	}
 	
-	@PutMapping("party")
-	public void updateParty(@RequestBody Party party) {
-		daoPartyImpl.updateParty(party);
+	@PostMapping("/party")
+	public Party createParty(@RequestBody Party party) {
+		if(daoPartyImpl.insertParty(party) > 0) {
+			if(party.getCreator().getEmail() != null) {
+				sendEmail.sendEventCreatedEmail(party.getCreator(), party);
+			}
+			return party;
+		}else {
+			return null;
+		}
 	}
-	@DeleteMapping("party")
+	
+	@PutMapping("/party")
+	public Party updateParty(@RequestBody Party party) {
+		daoPartyImpl.updateParty(party);
+		return party;
+		
+		
+	}
+	@DeleteMapping("/party")
 	public void deleteParty(@RequestBody Party party) {
 		daoPartyImpl.deleteParty(party);
 	}
-	@PatchMapping("party")
+	@PatchMapping("/party")
 	public Party patchParty(@RequestBody Party party) {
 		return null;
 	}

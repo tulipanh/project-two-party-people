@@ -4,11 +4,6 @@
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    width: 100%;
-}
-
-.content-area {
-    padding: 0px;
-    margin: 0px;
+    height: 100vh;
+    width: 100vw;
 }

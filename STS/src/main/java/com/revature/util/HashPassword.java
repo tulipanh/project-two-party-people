@@ -10,7 +10,7 @@ public class HashPassword {
 	}
 
 	public static boolean verifyHash(String password,String hashedPassword) {
-		return (hashedPassword.equals(hash(password)));
+		return bcrypt.verifyHash(password, hashedPassword);
 	}
 	
 	public static boolean verifyAndUpdateHash(String password, String hash, Function<String, Boolean> updateFunc) {

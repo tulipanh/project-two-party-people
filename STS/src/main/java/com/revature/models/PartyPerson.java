@@ -2,6 +2,7 @@ package com.revature.models;
 
 import java.util.Set;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.DynamicUpdate;
+
 /**
  * Class for the party-goers and party-creators
  * Many-to-Many relationship for people going to parties (PARTY_RSVP),
@@ -27,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 @Table
+@DynamicUpdate
 public class PartyPerson {
 
 	@Column
@@ -41,7 +44,7 @@ public class PartyPerson {
 	@Column
 	private String email;
 	@Column
-	@ManyToMany(cascade= {CascadeType.ALL},fetch= FetchType.LAZY )
+	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST},fetch= FetchType.LAZY )
 	@JoinTable(
 			name="PARTY_RSVP",
 			joinColumns= {@JoinColumn(name="personId")},
@@ -49,7 +52,7 @@ public class PartyPerson {
 			)
 	private Set<Party> eventsRSVP;
 	@Column
-	@OneToMany(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST},fetch=FetchType.LAZY)
 	@JoinColumn(name="personId")
 	private Set<Party> creatorEvents;
 	
