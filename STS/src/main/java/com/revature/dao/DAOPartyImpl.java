@@ -59,6 +59,7 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("address"),"address")
 				.add(Projections.property("partyDate"),"partyDate")
 				.add(Projections.property("description"),"description")
+				.add(Projections.property("pictureUrl"),"pictureUrl")
 				.add(Projections.property("pp.personId"),"personId")
 				).setResultTransformer(new AliasToBeanResultTransformer(Party.class));
 		List<Party> partyList = criteria.list();
@@ -173,6 +174,7 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("partyId"),"partyId")
 				.add(Projections.property("partyName"),"partyName")
 				.add(Projections.property("address"),"address")
+				.add(Projections.property("pictureUrl"),"pictureUrl")
 				.add(Projections.property("partyDate"),"partyDate")		
 				).setResultTransformer(Transformers.aliasToBean(Party.class));
 		Set<Party> parties = new HashSet<Party>(criteria.list());
@@ -214,6 +216,7 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("partyId"),"partyId")
 				.add(Projections.property("partyName"),"partyName")
 				.add(Projections.property("address"),"address")
+				.add(Projections.property("pictureUrl"),"pictureUrl")
 				.add(Projections.property("partyDate"),"partyDate")
 				).setResultTransformer(new AliasToBeanResultTransformer(Party.class));
 		List<Party> partyList = criteria.list();

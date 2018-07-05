@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.models.PartyPerson;
+import com.revature.util.HashPassword;
 
 @Repository
 @Transactional
@@ -107,21 +108,24 @@ public class DAOPartyPersonImpl implements DAOPartyPerson {
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(PartyPerson.class);
 		criteria.add(Restrictions.eq("username", username));
-		criteria.add(Restrictions.eq("password", password));
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property("personId"),"personId")
 				.add(Projections.property("username"),"username")
 				.add(Projections.property("email"),"email")
 				.add(Projections.property("age"),"age")
+				.add(Projections.property("password"),"password")
 				.add(Projections.property("address"),"address")
 				).setResultTransformer(Transformers.aliasToBean(PartyPerson.class));
 		List<PartyPerson> personList = criteria.list();
 		if(personList.size() > 0) {
+			PartyPerson person = personList.get(0);
 			//since personId is primary key, there can only be 0 or 1 items in this list
-			return personList.get(0);
-		}else {
-			return null;
+			if(HashPassword.verifyHash(password, person.getPassword())) {
+				person.setPassword(null);
+				return person;
+			}
 		}
+		return null;
 	}
 
 	@Override

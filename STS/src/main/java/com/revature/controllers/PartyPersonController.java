@@ -21,6 +21,7 @@ import com.revature.dao.DAOPartyPerson;
 import com.revature.emails.SendEmail;
 import com.revature.models.Party;
 import com.revature.models.PartyPerson;
+import com.revature.util.HashPassword;
 
 @CrossOrigin(origins="*")
 @RestController
@@ -41,7 +42,7 @@ public class PartyPersonController {
 	@Autowired
 	SendEmail sendEmail;
 	
-	@GetMapping("/login")
+	@GetMapping("/user/login")
 	public PartyPerson tryLogin(@ModelAttribute("username") String username,
 			@ModelAttribute("password") String password) {
 		return daoPartyPerson.login(username, password);
@@ -67,6 +68,7 @@ public class PartyPersonController {
 	
 	@PostMapping("/user")
 	public PartyPerson createUser(@RequestBody PartyPerson person) {
+		person.setPassword(HashPassword.hash(person.getPassword()));
 		if(daoPartyPerson.insertPerson(person) > 0) {
 			if(person.getEmail() != null) {
 				sendEmail.sendWelcomeEmail(person);
@@ -79,6 +81,7 @@ public class PartyPersonController {
 	
 	@PutMapping("/user")
 	public PartyPerson updateUser(@RequestBody PartyPerson person) {
+		person.setPassword(HashPassword.hash(person.getPassword()));
 		if(daoPartyPerson.updatePerson(person) > 0) {
 			return person;
 		}else {
