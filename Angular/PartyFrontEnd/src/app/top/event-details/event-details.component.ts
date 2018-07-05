@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import { EventStore } from "../../stores/event-store";
+import { Event } from "../../models/Event";
+import { User } from "../../models/User";
 
 @Component({
   selector: 'app-event-details',
@@ -7,6 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventDetailsComponent implements OnInit {
 
+  @Input() activeEvent: Event;
+  @Input() activeUser: User;
+  @Input() errorField: string = null;
+  @Output() setRSVPEvent: EventEmitter<boolean> = new EventEmitter();
+  
   constructor() { }
 
   ngOnInit() {
