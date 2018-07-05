@@ -38,6 +38,7 @@
     margin-left: -45px;
     width: 90px;
     height: 45px;
+    pointer-events: all;
 }
 
 #shroud {
@@ -51,6 +52,7 @@
     left: 0px;
     width: 400px;
     height: 100px;
+    pointer-events: none;
 }
 
 #create-event-button {

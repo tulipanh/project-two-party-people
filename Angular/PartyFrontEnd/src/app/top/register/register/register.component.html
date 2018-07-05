@@ -19,13 +19,13 @@
         <mat-label>Re-Enter</mat-label>
         <input name="reenter" type="password" matInput required placeholder="Re-Enter Password" [(ngModel)]="inputReenter">
       </mat-form-field>
+      <mat-form-field>
+          <input name="email" type="email" matInput required placeholder="Your Email" [(ngModel)]="inputEmail">
+      </mat-form-field>
       <br>
       <mat-toolbar class="sub-nav">
         <span>Personal Info</span>
       </mat-toolbar>
-      <mat-form-field>
-        <input name="email" type="email" matInput placeholder="Your Email" [(ngModel)]="inputEmail">
-      </mat-form-field>
       <mat-form-field >
         <input name="age" type="number" min="13" max="150" step="1" matInput placeholder="Your Age" [(ngModel)]="inputAge">
       </mat-form-field>

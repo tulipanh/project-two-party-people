@@ -48,13 +48,16 @@ export class ProfileComponent implements OnInit {
     let edited = this.usernameEdit || this.passwordEdit || this.emailEdit || this.ageEdit || 
                   this.streetEdit || this.cityEdit || this.stateEdit || this.zipcodeEdit;
     if (this.usernameEdit && this.usernameValid()) newInfo.username = this.inputUsername;
-    if (this.passwordEdit && this.passwordValid()) newInfo['password'] = this.inputPassword;
-    if (this.emailEdit && this.emailValid()) newInfo['email'] = this.inputEmail;
-    if (this.ageEdit && this.ageValid()) newInfo['age'] = this.inputAge;
+    if (this.passwordEdit && this.passwordValid()) newInfo.password = this.inputPassword;
+    if (this.emailEdit && this.emailValid()) newInfo.email = this.inputEmail;
+    if (this.ageEdit && this.ageValid()) newInfo.age = this.inputAge;
     if (this.streetEdit && this.streetValid()) newInfo.address['streetName'] = this.inputStreet;
     if (this.cityEdit && this.cityValid()) newInfo.address['city'] = this.inputCity;
     if (this.stateEdit && this.stateValid()) newInfo.address['state'] = this.inputState;
     if (this.zipcodeEdit && this.zipcodeValid()) newInfo.address['zipCode'] = this.inputZipcode;
+
+    console.log("Profile: New Info");
+    console.log(newInfo);
 
     if (edited && this.errorField === "") {
       this.updateEvent.next(newInfo);
@@ -68,7 +71,7 @@ export class ProfileComponent implements OnInit {
   }
 
   passwordValid() {
-    let returnVal: boolean;
+    let returnVal: boolean = true;
     if (this.inputPassword === undefined || this.inputReenter === undefined) {
       this.errorField += "Password cannot be empty.\n"
       returnVal = returnVal && false;
@@ -104,7 +107,7 @@ export class ProfileComponent implements OnInit {
   }
 
   cityValid() {
-    if (this.inputCity != null && this.inputCity != undefined && this.inputStreet.length > 0) return true;
+    if (this.inputCity != null && this.inputCity != undefined && this.inputCity.length > 0) return true;
     this.errorField += "Invalid City.\n";
     return false;
   }
