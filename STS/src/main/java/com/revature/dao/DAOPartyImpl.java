@@ -58,6 +58,7 @@ public class DAOPartyImpl implements DAOParty {
 				.add(Projections.property("partyName"),"partyName")
 				.add(Projections.property("address"),"address")
 				.add(Projections.property("partyDate"),"partyDate")
+				.add(Projections.property("description"),"description")
 				.add(Projections.property("pp.personId"),"personId")
 				).setResultTransformer(new AliasToBeanResultTransformer(Party.class));
 		List<Party> partyList = criteria.list();
@@ -78,7 +79,7 @@ public class DAOPartyImpl implements DAOParty {
 	@Override
 	public Set<Tag> getTagsByPartyId(int partyId){
 		Session session = sessionFactory.getCurrentSession();
-		String sql = "SELECT TAGID, TAGNAME FROM TAG WHERE PARTYID = ?";
+		String sql = "SELECT TAGID, TAGNAME, PARTYID FROM TAG WHERE PARTYID = ?";
 		Query query = session.createSQLQuery(sql);
 		query.setInteger(0, partyId);
 		List<Object[]> tagLists = query.list();
@@ -154,7 +155,7 @@ public class DAOPartyImpl implements DAOParty {
 		Set<BigDecimal> partyIdList = new HashSet<BigDecimal>(query.list());
 		Set<Party> parties = new HashSet<>();
 		for(BigDecimal id: partyIdList) {
-			parties.add(getPartyById(Integer.parseInt(id.toString())));
+			parties.add(getPartyByIdSmall(Integer.parseInt(id.toString())));
 		}
 		return parties;
 	}
@@ -198,6 +199,29 @@ public class DAOPartyImpl implements DAOParty {
 		if(personList.size() > 0) {
 			//since partyId is primary key, there can only be 0 or 1 items in this list
 			return personList.get(0);
+		}else {
+			return null;
+		}
+	}
+
+	@Override
+	public Party getPartyByIdSmall(int partyId) {
+		Session session = sessionFactory.getCurrentSession();
+		//get the information from the party
+		Criteria criteria = session.createCriteria(Party.class);
+		criteria.add(Restrictions.eq("partyId", partyId));
+		criteria.setProjection(Projections.projectionList()
+				.add(Projections.property("partyId"),"partyId")
+				.add(Projections.property("partyName"),"partyName")
+				.add(Projections.property("address"),"address")
+				.add(Projections.property("partyDate"),"partyDate")
+				).setResultTransformer(new AliasToBeanResultTransformer(Party.class));
+		List<Party> partyList = criteria.list();
+		if(partyList.size() > 0) {
+			//since partyId is primary key, there can only be 0 or 1 items in this list
+			Party party = partyList.get(0);
+			party.setTagList(getTagsByPartyId(partyId));
+			return party;
 		}else {
 			return null;
 		}

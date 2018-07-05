@@ -38,7 +38,6 @@ public class PartyController {
 	
 	@GetMapping("/party/{id}")
 	public Party partyById(@PathVariable("id") int id) {
-		System.out.println(id);
 		Party party = daoPartyImpl.getPartyById(id);
 		return party;
 	}
@@ -57,7 +56,7 @@ public class PartyController {
 		return daoPartyImpl.getPartyListWithinCoordinates(minLat,minLong,maxLat,maxLong);
 	}
 	
-	@GetMapping("/local-parties/radius")
+	@GetMapping("/party/local/radius")
 	public Set<Party> parties(@RequestParam("radius") Double radius, 
 			@RequestParam("latitude") Double latitude,
 			@RequestParam("longitude") Double longitude){
@@ -66,9 +65,10 @@ public class PartyController {
 	
 	@PostMapping("/party")
 	public Party createParty(@RequestBody Party party) {
-		System.out.println(party);
 		if(daoPartyImpl.insertParty(party) > 0) {
-			sendEmail.sendEventCreatedEmail(party.getCreator(), party);
+			if(party.getCreator().getEmail() != null) {
+				sendEmail.sendEventCreatedEmail(party.getCreator(), party);
+			}
 			return party;
 		}else {
 			return null;

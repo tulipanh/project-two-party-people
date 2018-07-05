@@ -49,6 +49,8 @@ public class Party {
 	private Timestamp partyDate;
 	@Column
 	private Double cost;
+	@Column(length=4000)
+	private String description;
 	
 	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST},fetch= FetchType.LAZY )
 	@JoinTable(
@@ -70,7 +72,7 @@ public class Party {
 
 
 	public Party(Integer partyId, PartyPerson creator, Address address, String partyName, Timestamp partyDate,
-			Set<PartyPerson> attendees, Set<Tag> tagList, String pictureUrl) {
+			Set<PartyPerson> attendees, Set<Tag> tagList, String pictureUrl,String description) {
 		super();
 		this.partyId = partyId;
 		this.creator = creator;
@@ -80,6 +82,27 @@ public class Party {
 		this.attendees = attendees;
 		this.tagList = tagList;
 		this.pictureUrl = pictureUrl;
+		this.description = description;
+	}
+
+
+	public Double getCost() {
+		return cost;
+	}
+
+
+	public void setCost(Double cost) {
+		this.cost = cost;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 
@@ -171,8 +194,8 @@ public class Party {
 	@Override
 	public String toString() {
 		return "Party [partyId=" + partyId + ", creator=" + creator + ", address=" + address + ", partyName="
-				+ partyName + ", partyDate=" + partyDate + ", attendees=" + attendees + ", tagList=" + tagList
-				+ ", pictureUrl=" + pictureUrl + "]";
+				+ partyName + ", partyDate=" + partyDate + ", cost=" + cost + ", description=" + description
+				+ ", attendees=" + attendees + ", tagList=" + tagList + ", pictureUrl=" + pictureUrl + "]";
 	}
 
 
@@ -182,7 +205,9 @@ public class Party {
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((attendees == null) ? 0 : attendees.hashCode());
+		result = prime * result + ((cost == null) ? 0 : cost.hashCode());
 		result = prime * result + ((creator == null) ? 0 : creator.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((partyDate == null) ? 0 : partyDate.hashCode());
 		result = prime * result + ((partyId == null) ? 0 : partyId.hashCode());
 		result = prime * result + ((partyName == null) ? 0 : partyName.hashCode());
@@ -211,10 +236,20 @@ public class Party {
 				return false;
 		} else if (!attendees.equals(other.attendees))
 			return false;
+		if (cost == null) {
+			if (other.cost != null)
+				return false;
+		} else if (!cost.equals(other.cost))
+			return false;
 		if (creator == null) {
 			if (other.creator != null)
 				return false;
 		} else if (!creator.equals(other.creator))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
 			return false;
 		if (partyDate == null) {
 			if (other.partyDate != null)

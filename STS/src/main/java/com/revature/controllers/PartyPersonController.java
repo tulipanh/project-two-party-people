@@ -68,7 +68,9 @@ public class PartyPersonController {
 	@PostMapping("/user")
 	public PartyPerson createUser(@RequestBody PartyPerson person) {
 		if(daoPartyPerson.insertPerson(person) > 0) {
-			sendEmail.sendWelcomeEmail(person);
+			if(person.getEmail() != null) {
+				sendEmail.sendWelcomeEmail(person);
+			}
 			return person;
 		}else {
 			return null;
