@@ -10,12 +10,15 @@ import { UserDataService } from '../services/user-data.service';
 })
 export class UserStore {
 
-  private _allUsers: BehaviorSubject<User[]> =  new BehaviorSubject([]);
-  private _activeUser: BehaviorSubject<User> = new BehaviorSubject(new User());
+  private _activeUser: BehaviorSubject<User>;
   private _loginError: BehaviorSubject<string> = new BehaviorSubject("");
+  private _registerError: BehaviorSubject<string> = new BehaviorSubject("");
+  private _profileError: BehaviorSubject<string> = new BehaviorSubject("");
   
   constructor(private userService: UserDataService) {
-    this.getAllUsers();
+    let blankUser = new User();
+    blankUser['address'] = {};
+    this._activeUser = new BehaviorSubject(blankUser);
   }
 
   get activeUser() {
@@ -26,30 +29,49 @@ export class UserStore {
     return this._loginError.asObservable();
   }
 
+  get registerError() {
+    return this._registerError.asObservable();
+  }
+
+  get profileError() {
+    return this._profileError.asObservable();
+  }
+
   login(username: string, password: string) {
-    let users = this._allUsers.getValue();
-    for (let u of users) {
-      if (u.username === username && u.password === password) {
-        this._activeUser.next(u);
-        this._loginError.next("");
-        return
-      }
-    }
-    this._loginError.next("Invalid Username or Password.");
-  }
-
-  logout() {
-    this._activeUser.next(new User());
-  }
-
-  getAllUsers() {
-    this.userService.getAllUsers().subscribe(
-      (users) => {
-        this._allUsers.next(users);
-        console.log(users);
-      }
+    this.userService.login(username, password).subscribe(
+      // TODO: What does a failure look like here?
+      // Answer: The body is empty.
+      (user) => this._activeUser.next(user)
     )
   }
 
+  logout() {
+    this._activeUser.next(new User({address:{}}));
+  }
+
+  updateUser(updatedUser) {
+    this.userService.updateUser(updatedUser).subscribe(
+      // TODO: What does a failure look like here?
+      (user) => this._activeUser.next(user)
+    )
+  }
+
+  createUser(newUser: User) {
+    // TODO: What will a failure look like?
+    this.userService.addUser(newUser).subscribe((user) =>  {
+      if (user && user.username !== null && user.username !== undefined && user.username != "" ) {
+        this._activeUser.next(user);
+      }
+    });
+  }
+
+  refreshActiveUser() {
+    this.userService.getUserById(this._activeUser.getValue().personId).subscribe(
+      (user) => {
+        this._activeUser.next(user);
+        console.log(user);
+      }
+    );
+  }
 
 }

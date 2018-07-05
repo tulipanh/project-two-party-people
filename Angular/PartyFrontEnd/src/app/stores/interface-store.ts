@@ -24,7 +24,7 @@ export class InterfaceStore {
   }
 
   setActivity(activityNum: number) {
-    if (activityNum > 4 || activityNum < 1) {
+    if (activityNum > 5 || activityNum < 1) {
       this._topActivity.next(0);
       this._shroudState.next(false);
     } else {
