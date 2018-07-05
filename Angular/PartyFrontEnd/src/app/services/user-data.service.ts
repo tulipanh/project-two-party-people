@@ -8,9 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class UserDataService {
 
-  constructor(private api: ApiService) {
-
-  }
+  constructor(private api: ApiService) {}
 
   addUser(user: User): Observable<User> {
     return this.api.createUser(user);
@@ -30,6 +28,10 @@ export class UserDataService {
 
   getUserById(userId: number): Observable<User> {
     return this.api.getUserById(userId);
+  }
+
+  login(username: string, password: string) {
+    return this.api.login(username, password);
   }
 
 }

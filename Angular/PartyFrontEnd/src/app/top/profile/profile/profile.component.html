@@ -1,9 +1,84 @@
 <div id="profile-page">
-  <h1>Profile</h1>
-  <p>{{activeUser.id}}</p>
-  <p>{{activeUser.username}}</p>
-  <p>{{activeUser.password}}</p>
-  <p>{{activeUser.age}}</p>
-  <p>{{activeUser.address}}</p>
-  <p>{{activeUser.email}}</p>
+  <div id="profile-info">
+    <h1>Profile</h1>
+    <p>{{userString()}}</p>
+  </div>
 </div>
+
+<div id="profile-page">
+    <mat-toolbar class="main-toolbar" color="primary">
+      <span>Your Profile</span>
+    </mat-toolbar>
+    <div class="scrollable-form">
+      <form class="form-container" name="profileForm">
+        <mat-toolbar class="sub-nav">
+          <span>Login Info</span>
+        </mat-toolbar>
+        <div name="username-group">
+          <mat-toolbar class="profile-header"><span>Username:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditUsername()">{{usernameEdit?keepText:editText}}</button></mat-toolbar>
+          <mat-card *ngIf="!usernameEdit" class="info-card">{{activeUser.username}}</mat-card>
+          <mat-form-field *ngIf="usernameEdit" class="info-form-input">
+            <input name="username" type="text" matInput placeholder="New Username" [(ngModel)]="inputUsername">
+          </mat-form-field>
+        </div>
+        <div name="password-group">
+          <mat-toolbar class="profile-header"><span>Password:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditPassword()">{{passwordEdit?keepText:editText}}</button></mat-toolbar>
+          <mat-form-field *ngIf="passwordEdit" class="info-form-input">
+            <input name="password" type="password" matInput placeholder="New Password" [(ngModel)]="inputPassword">
+          </mat-form-field>
+          <mat-form-field *ngIf="passwordEdit" class="info-form-input">
+            <input name="reenter" type="password" matInput placeholder="Re-Enter" [(ngModel)]="inputReenter">
+          </mat-form-field>
+        </div>
+        <br>
+        <mat-toolbar class="sub-nav">
+          <span>Personal Info</span>
+        </mat-toolbar>
+        <div name="email-group">
+          <mat-toolbar class="profile-header"><span>Email:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditEmail()">{{emailEdit?keepText:editText}}</button></mat-toolbar>
+          <mat-card *ngIf="!emailEdit" class="info-card">{{activeUser.email}}</mat-card>
+          <mat-form-field *ngIf="emailEdit" class="info-form-input">
+            <input name="email" type="email" matInput placeholder="New Email" [(ngModel)]="inputEmail">
+          </mat-form-field>
+        </div>
+        <div name="age-group">
+          <mat-toolbar class="profile-header"><span>Age:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditAge()">{{ageEdit?keepText:editText}}</button></mat-toolbar>
+          <mat-card *ngIf="!ageEdit" class="info-card">{{activeUser.age}}</mat-card>
+          <mat-form-field *ngIf="ageEdit" class="info-form-input">
+            <input name="age" type="number" min="13" max="150" step="1" matInput placeholder="New Age" [(ngModel)]="inputAge">
+          </mat-form-field>
+        </div>
+        <div name="street-group">
+          <mat-toolbar class="profile-header"><span>Street:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditStreet()">{{streetEdit?keepText:editText}}</button></mat-toolbar>
+          <mat-card *ngIf="!streetEdit" class="info-card">{{activeUser.address.streetName}}</mat-card>
+          <mat-form-field *ngIf="streetEdit" class="info-form-input">
+            <input name="street" type="text" matInput placeholder="New Street" [(ngModel)]="inputStreet">
+          </mat-form-field>
+        </div>
+        <div name="city-group">
+          <mat-toolbar class="profile-header"><span>City:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditCity()">{{cityEdit?keepText:editText}}</button></mat-toolbar>
+          <mat-card *ngIf="!cityEdit" class="info-card">{{activeUser.address.city}}</mat-card>
+          <mat-form-field *ngIf="cityEdit" class="info-form-input">
+            <input name="city" type="text" matInput placeholder="New City" [(ngModel)]="inputCity">
+          </mat-form-field>
+        </div>
+        <div name="state-group">
+          <mat-toolbar class="profile-header"><span>State:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditState()">{{stateEdit?keepText:editText}}</button></mat-toolbar>
+          <mat-card *ngIf="!stateEdit" class="info-card">{{activeUser.address.state}}</mat-card>
+          <mat-form-field *ngIf="stateEdit" class="info-form-input">
+            <input name="state" type="text" matInput placeholder="New State" [(ngModel)]="inputState">
+          </mat-form-field>
+        </div>
+        <div name="zipcode-group">
+          <mat-toolbar class="profile-header"><span>Zipcode:</span><button class="profile-info-button" mat-button color="primary" (click)="toggleEditZipcode()">{{zipcodeEdit?keepText:editText}}</button></mat-toolbar>
+          <mat-card *ngIf="!zipcodeEdit" class="info-card">{{activeUser.address.zipCode}}</mat-card>
+          <mat-form-field *ngIf="zipcodeEdit" class="info-form-input">
+            <input name="zipcode" type="text" matInput placeholder="New Zipcode" [(ngModel)]="inputZipcode">
+          </mat-form-field>
+        </div>
+        <br>
+        <button mat-raised-button color="primary" (click)="updateInfo()">Update</button>
+        <p id="profileErrorField">{{errorField}}</p>
+      </form>
+    </div>
+  </div>
