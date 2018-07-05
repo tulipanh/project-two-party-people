@@ -1,0 +1,18 @@
+<mat-card color="primary" >
+  <mat-card-title color="primary">
+    {{event.name}}
+  </mat-card-title>
+  <mat-card-subtitle>
+    {{event.date | date: 'fullDate'}}
+  </mat-card-subtitle>
+  <div class="mat-card-image-container" color="primary">
+  <img mat-card-image [src]="event.picture" />
+  </div>
+  <mat-card-content>
+    {{event.address.streetName}}
+    {{event.address.city}}, {{event.address.state}}
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>View More</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,50 @@
+#create-page {
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    width: 90%;
+    height: 90%;
+    top: 50%;
+    left: 50%;
+    margin-left: -270px;
+    margin-top: -225px;
+    background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {width:10px;}
+::-webkit-scrollbar-track {background: #f5f5f5;}
+::-webkit-scrollbar-thumb {background: #673ab7;}
+::-webkit-scrollbar-thumb:hover {background: #a388d3;}
+
+.sub-nav {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 40px;
+    background-color: #f5f5f5;
+    color: #673ab7;
+}
+
+.form-container {
+    padding: 10px;
+    text-align: center;
+}
+
+.form-container > * {
+    width: 95%;
+}
+
+.main-toolbar {
+    height: 15%;
+    width: 100%;
+}
+
+.scrollable-form {
+    height: 85%;
+    width: 100%;
+    overflow: scroll;
+}
+
+#createErrorField {
+    color: red;
+}

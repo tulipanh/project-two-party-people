@@ -1,0 +1,38 @@
+<div class="fullscreen">
+    <div *ngIf="shroudOn" class="shroud-item" id="shroud"></div>
+    <div class="control-panel-item" id="control-panel-div">
+        <span class="control-panel-button">
+            <button mat-raised-button color="primary" class="control-panel-item small-button" id="create-event-button" type="button" (click)="switchToCreate()">
+                New Event
+            </button>
+        </span>
+        <span class="control-panel-button">
+            <button mat-raised-button color="primary" class="control-panel-item small-button" id="profile-button" type="button" (click)="switchToProfile()">
+                Profile
+            </button>
+        </span>
+        <span class="control-panel-button">
+            <button *ngIf="!(activeUser.personId == null)" mat-raised-button color="primary" class="control-panel-item small-button" id="login-logout-button" type="button" (click)="logout()">
+                Log Out
+            </button>
+            <button *ngIf="(activeUser.personId == null)" mat-raised-button color="primary" class="control-panel-item small-button" id="login-logout-button" type="button" (click)="switchToLogin()">
+                Log In
+            </button>
+        </span>
+        <span *ngIf="(activeUser.personId == null)" class="control-panel-button">
+            <button class="control-panel-item small-button" mat-raised-button color="primary" id="register-button" type="button" (click)="switchToRegister()">
+                Register
+            </button>
+        </span>
+      </div>
+    <div *ngIf="currentActivity > 0" class="control-details-item" id="control-details">
+        <button mat-mini-fab color="primary" id="exit-button" class="control-panel-item" (click)="switchToNone()">
+            <span class="anti-wrapper">X</span>
+        </button>
+        <app-login *ngIf="currentActivity === 1" (loginEvent)="attemptLogin($event)" [errorMessage]="loginError"></app-login>
+        <app-register *ngIf="currentActivity === 2" (registerEvent)="attemptRegister($event)" [errorField]="registerError"></app-register>
+        <app-profile *ngIf="currentActivity === 3" (updateEvent)="attemptUpdate($event)" [activeUser]="activeUser" [errorField]="profileError"></app-profile>
+        <app-create *ngIf="currentActivity == 4" (createEvent)="attemptCreate($event)" [errorField]="createError"></app-create>
+        <!--TODO: I need to add a fifth activity here which will activate when an event is selected from the middle layer for more detailed viewing.-->
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<div id="create-page">
+  <mat-toolbar class="main-toolbar" color="primary">
+    <span>Create Event</span>
+  </mat-toolbar>
+  <div class="scrollable-form">
+    <form class="form-container" name="createForm">
+      <mat-toolbar class="sub-nav">
+        <span>Event Info</span>
+      </mat-toolbar>
+      <mat-form-field>
+        <mat-label>Event Name:</mat-label>
+        <input name="eventname" type="text" matInput required placeholder="Event Name" [(ngModel)]="inputEventName">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Event Date:</mat-label>
+        <input name="eventdate" type="date" matInput required placeholder="Pick A Date" [(ngModel)]="inputEventDate">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Street:</mat-label>
+        <input name="street" type="text" matInput required placeholder="Enter A Street" [(ngModel)]="inputStreet">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>City:</mat-label>
+        <input name="city" type="text" matInput required placeholder="Enter A City" [(ngModel)]="inputCity">
+      </mat-form-field>
+      <mat-form-field >
+        <mat-label>State:</mat-label>
+        <input name="state" type="text" matInput required placeholder="Enter A State" [(ngModel)]="inputState">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Zipcode:</mat-label>
+        <input name="zipcode" type="text" matInput required placeholder="Enter A Zipcode" [(ngModel)]="inputZipcode">
+      </mat-form-field>
+      <br>
+      <mat-toolbar class="sub-nav">
+        <span>Extra Info</span>
+      </mat-toolbar>
+      <mat-form-field>
+        <mat-label>Cost:</mat-label>
+        <input name="cost" type="number" min="0.00" step="0.01" matInput placeholder="Event Cost" [(ngModel)]="inputCost">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Description:</mat-label>
+        <textarea matInput placeholder="Description" [(ngModel)]="inputDescription"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Add An Image Link:</mat-label>
+        <input name="pictureurl" type="text" matInput placeholder="Image Link" [(ngModel)]="inputPictureUrl">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Choose Which Categories Apply:</mat-label>
+        <mat-select name="categoryTags" type="select" matInput placeholder="Categories" [formControl]="selectedTags" multiple>
+          <mat-option *ngFor="let tag of TAGS" [value]="tag.id">
+            {{tag.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <button mat-raised-button color="primary" (click)="attemptCreateEvent()">Create</button>
+      <br>
+      <p id="createErrorField">{{errorField}}</p>
+    </form>
+  </div>
+</div>
