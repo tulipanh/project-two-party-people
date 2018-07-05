@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 /**
  * Class for the address of something, with street name, city, state, zipcode.  
  * Currently USA only, as there are only Parties In The USA
@@ -20,10 +22,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table
+@DynamicUpdate
 public class Address {
 
 	@Column
 	private String streetName;
+	@Column
+	private String streetName2;
 	@Column
 	private String city;
 	@Column

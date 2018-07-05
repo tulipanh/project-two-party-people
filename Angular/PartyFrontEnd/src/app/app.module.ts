@@ -48,6 +48,7 @@ import { EventDetailsComponent } from './top/event-details/event-details.compone
     BrowserAnimationsModule,
     HttpClientModule,
     HttpModule,
+<<<<<<< HEAD
     MaterialAppModule
   ],
   providers: [
@@ -56,6 +57,22 @@ import { EventDetailsComponent } from './top/event-details/event-details.compone
     EventFilterService,
     GeocachingApiService
   ],
+=======
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDividerModule,
+
+  ],
+  providers: [SearchCoordinatesDataService,GeocachingApiService],
+>>>>>>> development
   bootstrap: [AppComponent]
 })
 export class AppModule { }
