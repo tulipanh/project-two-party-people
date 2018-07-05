@@ -20,4 +20,11 @@ export class EventDetailsComponent implements OnInit {
   ngOnInit() {
   }
 
+  userIsRSVPed() {
+    try {
+      return this.activeUser.eventsRSVP.filter((entry) => entry.partyId === this.activeEvent.partyId).length > 0;
+    } catch (e) {
+      return false;
+    }
+  }
 }

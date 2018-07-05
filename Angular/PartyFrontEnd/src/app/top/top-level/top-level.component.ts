@@ -37,6 +37,7 @@ export class TopLevelComponent implements OnInit {
   subscribeActiveUser() {
     this.userStore.activeUser.subscribe(user => {
       this.activeUser = user;
+      this.switchToPartyDetails();
       if (this.currentActivity === TopLevelActivity.Login) this.switchToNone();
       if (this.currentActivity === TopLevelActivity.Register) this.switchToNone();
       if (this.currentActivity === TopLevelActivity.Profile) this.switchToNone();

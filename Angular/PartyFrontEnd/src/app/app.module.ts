@@ -5,7 +5,7 @@ import { HttpModule } from "@angular/http";
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatSelectModule, MatOptionModule} from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatSelectModule, MatOptionModule, MatChipsModule} from '@angular/material';
 import { MatDividerModule } from '@angular/material/divider';
 
 import {SearchCoordinatesDataService} from "./services/search-coordinates-data.service";
@@ -57,6 +57,7 @@ import { EventDetailsComponent } from './top/event-details/event-details.compone
     MatCardModule,
     MatSelectModule,
     MatOptionModule,
+    MatChipsModule,
     MatDividerModule,
 
   ],
