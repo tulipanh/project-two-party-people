@@ -72,7 +72,8 @@ export class EventStore {
       let newList: Event[] = this._userCreatedEvents.getValue();
       newList.push(event);
       this._userCreatedEvents.next(newList);
-    });
+      this.userStore.refreshActiveUser();
+    }, error => this._createError.next("Unable to create an event with that information."));
   }
 
   clearAllErrors() {

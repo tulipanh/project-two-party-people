@@ -21,4 +21,8 @@ export class EventTileComponent implements OnInit {
     this.detailsEvent.next(this.event.id);
   }
 
+  getImageUrl() {
+    return this.event.picture ? this.event.picture : 'https://seda.college/wp-content/uploads/party.jpg';
+  }
+
 }

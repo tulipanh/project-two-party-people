@@ -102,6 +102,7 @@ export class CreateComponent implements OnInit {
     ne.tagList = [];
 
     if (this.selectedTags.value) {
+      console.log(this.selectedTags.value);
       for (let i of this.selectedTags.value) {
         ne.tagList.push({tagName: i});
       }

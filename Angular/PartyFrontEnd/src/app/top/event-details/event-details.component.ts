@@ -39,5 +39,14 @@ export class EventDetailsComponent implements OnInit {
   getEventDate() {
     return new Date(this.activeEvent.partyDate);
   }
+
+  idToString(arg) {
+    let strings = ["Concert", "Lecture", "Social", "Workshop", "Party", "Food", "Alcohol", "Visual Art", "Performance Art", "Sports", "Outdoor", "Indoor"];
+    return strings[arg-1];
+  }
+
+  getImageUrl() {
+    return this.activeEvent.pictureUrl ? this.activeEvent.pictureUrl : 'https://seda.college/wp-content/uploads/party.jpg';
+  }
   
 }
