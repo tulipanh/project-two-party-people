@@ -8,11 +8,11 @@ import { } from '@types/googlemaps';
 })
 export class GeocachingApiService {
 
-  geocoder: google.maps.Geocoder;
+  geocoder: google.maps.Geocoder = new google.maps.Geocoder();
 
 
   getCoordsFromAddress(address: string){
-    this.geocoder.geocode({'address':address},function(results,status){
+    this.geocoder.geocode({'address':address}, function(results,status){
         if (status.toString() == 'OK') {
           return results[0].geometry.location;
         }

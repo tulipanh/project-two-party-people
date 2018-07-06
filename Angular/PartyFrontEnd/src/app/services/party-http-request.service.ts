@@ -38,15 +38,16 @@ export class PartyHttpRequestService {
 
   }
 
-  getPartiesWithinRadius() {
-    return this.http.get(this.baseUrl+'/endpoint');
+  getPartiesWithinRadius(latitude, longitude, radius) {
+    return this.http.get(this.baseUrl+'/party/local/radius',
+    {
+      params: {
+        latitude: latitude,
+        longitude: longitude,
+        radius: radius
+      }
+    }).toPromise();
   }
-  getPartiesByUser() {}
 
-  postNewParty() {}
-
-  updateParty() {}
-
-  deleteParty() {}
 
 }

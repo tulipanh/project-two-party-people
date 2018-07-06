@@ -6,6 +6,7 @@ import { EventFilterService } from '../../services/event-filter.service';
 import { } from '@types/googlemaps';
 import { FitlerMarkersService } from '../../services/fitler-markers.service';
 import { UpdateMarkerEventsService } from '../../services/update-marker-events.service';
+import { GeocachingApiService } from '../../services/geocaching-api.service';
 
 @Component({
   selector: 'app-map-view',
@@ -16,7 +17,6 @@ import { UpdateMarkerEventsService } from '../../services/update-marker-events.s
 export class MapViewComponent implements OnInit {
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
-  prevCoordinates : google.maps.LatLng; 
   currentCoordinates : google.maps.LatLng;
   markers : google.maps.Marker[] = [];
   filteredMarkers : google.maps.Marker[] = [];
@@ -39,15 +39,15 @@ export class MapViewComponent implements OnInit {
               private partyRequest : PartyHttpRequestService,
               private eventFilters: EventFilterService,
               private markerFilter: FitlerMarkersService,
-              private updateMarkerEvents: UpdateMarkerEventsService) { 
-
+              private updateMarkerEvents: UpdateMarkerEventsService,
+              private geocaching: GeocachingApiService) { 
   }
 
   ngOnInit() {
     this.createMap();
     this.listenForMapLoaded();    
     this.subscribeToCoordinateChanges();
-    this.subscribeToFilterChanges();  
+    this.subscribeToFilterChanges(); 
   }
 
   subscribeToFilterChanges = ()=> {
@@ -73,7 +73,7 @@ export class MapViewComponent implements OnInit {
         break;
     }
 
-    this.filteredMarkers = this.markerFilter.filter(this.markers, this.filters);
+    this.filteredMarkers = this.markerFilter.filter(this.currentCoordinates, this.markers, this.filters);
     this.addMarkers(this.filteredMarkers);
   }
 
@@ -99,18 +99,19 @@ export class MapViewComponent implements OnInit {
     // whenever map finished loading, get the new bounds and get the markers
     // withing those bounds
     this.map.addListener('tilesloaded', ()=>{
+      console.log('boop');
       this.maxLat = this.map.getBounds().getNorthEast().lat();
       this.maxLong = this.map.getBounds().getNorthEast().lng();
       this.minLat = this.map.getBounds().getSouthWest().lat();
       this.minLong = this.map.getBounds().getSouthWest().lng();
 
+      this.geoData.updateCoordinates(this.map.getCenter());
+      this.filterEvents({type: 'radius', radius: this.filters.radius});
+      
       // add markers
       this.getMarkers();
     });
-    /*this.map.addListener('click', ()=>{
-      console.log(this.map.getCenter().lat());
-      console.log(this.map.getCenter().lng());
-    })*/
+
   }
 
   subscribeToCoordinateChanges = ()=> {
@@ -129,6 +130,7 @@ export class MapViewComponent implements OnInit {
 
   // centers map on coordinates passed in
   centerMap = (updatedCoordinates:google.maps.LatLng) => {
+    this.currentCoordinates = updatedCoordinates;
     this.map.panTo(updatedCoordinates);
   }
 
@@ -182,5 +184,6 @@ export class MapViewComponent implements OnInit {
     this.updateMarkerEvents.updateMarkers(filteredMarkers);
 
   }
+
 
 }

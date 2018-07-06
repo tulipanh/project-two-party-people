@@ -37,8 +37,6 @@ export class SearchPanelComponent implements OnInit {
           }
 
           this.events = tempEvents;
-          console.log(this.events);
-        
       })
     });
     

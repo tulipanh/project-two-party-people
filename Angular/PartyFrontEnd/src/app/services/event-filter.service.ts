@@ -10,10 +10,8 @@ export class EventFilterService {
   constructor() { }
 
 
-
-
   private getStartingFilterParams = ()=> {
-    return { type: '', value: ''};
+    return { type: 'startDate', startDate: new Date()};
   }
 
   private filterParamsSource = new BehaviorSubject(this.getStartingFilterParams());

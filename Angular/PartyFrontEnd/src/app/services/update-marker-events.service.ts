@@ -13,7 +13,6 @@ export class UpdateMarkerEventsService {
   currentMarkers = this.markersSource.asObservable();
 
   updateMarkers = (markers)=> {
-    console.log('updating list of events');
     this.markersSource.next(markers);
   }
 

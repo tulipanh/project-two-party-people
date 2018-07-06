@@ -1,41 +1,54 @@
 import { Injectable } from '@angular/core';
 import { NullInjector } from '@angular/core/src/di/injector';
+import { PartyHttpRequestService } from './party-http-request.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FitlerMarkersService {
 
-  constructor() { }
+  constructor( private httpParty: PartyHttpRequestService ) { }
 
-  filter = (markers, filterParams)=> {
-    let filteredMarkers = markers;
+  filter  = (latlng: google.maps.LatLng, markers, filterParams) => {
+
+    let filteredMarkers : google.maps.Marker[] = markers;
+
     //filter by radius
     if(filterParams.radius) {
-      // get all the markers within a specific radius
-      // using the http request
-      console.log('filtering by radius. coming soon to a theater near you');
-    }
-
+     
+      filteredMarkers = filteredMarkers.filter(marker => {
+        return 3963*Math.acos((Math.sin(marker.getPosition().lat() / 57.3) * 
+        Math.sin(latlng.lat()/ 57.3))  + 
+        (Math.cos(marker.getPosition().lat() / 57.3) * 
+        Math.cos(latlng.lat()/ 57.3) *
+        Math.cos(marker.getPosition().lng()/ 57.3 - latlng.lng()/57.3 ))) 
+          < filterParams.radius
+      });
+     
+      console.log('filteredByRadius');
+      console.log(filteredMarkers);
+    } 
+    
     //filter by date
-    if(filterParams.startDate!= null  && filterParams.endDate!= null) {
-      console.log('filtering by date');
+    if(filterParams.startDate != null) {
       filteredMarkers = filteredMarkers.filter(marker=>{
         let partyDate = new Date(marker.get('partyDate'));
-        console.log('date: ' + partyDate + ' start: ' + filterParams.startDate + ' end: ' + filterParams.endDate);
-        return partyDate > filterParams.startDate && partyDate < filterParams.endDate;
+        return partyDate > filterParams.startDate;
+      });
+    } 
+    
+
+    if (filterParams.endDate!= null) {
+      filteredMarkers = filteredMarkers.filter(marker=>{
+        let partyDate = new Date(marker.get('partyDate'));
+        return  partyDate < filterParams.endDate;
       });
     }
 
     //filter by category
     if(filterParams.categories.length > 0) {
-      console.log('filtering by category');
-      console.log(filterParams.categories);
-      
       filteredMarkers = filteredMarkers.filter(marker=>{
         return filterParams.categories.every((tag)=>{
-          console.log(`is ${tag.value} in ${marker.get('partyTags')}?
-                    ${marker.get('partyTags').indexOf(tag.value) > -1}`);
           return marker.get('partyTags').indexOf(tag.value) > -1;
         });
       });
@@ -43,7 +56,6 @@ export class FitlerMarkersService {
 
     //filter by name
     filteredMarkers = filteredMarkers.filter(marker=>{
-      console.log('filtering by name');
       return marker.getTitle().toLowerCase().includes(filterParams.name.toLowerCase());
     });
     return filteredMarkers;

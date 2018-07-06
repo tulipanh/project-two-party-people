@@ -1,8 +1,12 @@
 
-  <form id="map-search">
-      <section class="form-block">
-
-            <input type="text" ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
+  <mat-card id="map-search">
+  <form class="full-width-input">
+      <mat-form-field>
+            <input matInput 
+              ngx-google-places-autocomplete #placesRef="ngx-places" 
+              placeholder="Location"
+              (onAddressChange)="handleAddressChange($event)"/>
         
-    </section>
+    </mat-form-field>
   </form>
+</mat-card>
