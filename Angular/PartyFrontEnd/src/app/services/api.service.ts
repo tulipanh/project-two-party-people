@@ -73,16 +73,9 @@ export class ApiService {
     return this.http
       .get(REAL + '/user/login' + "?username="+username+"&password="+password, {headers}).pipe(
       map(response => {
-        // What do do with an empty response?
-        console.log(response);
-        try {
-          let user = response.json();
-          console.log(user);
-          return new User(user);
-        } catch {
-          return new User({address: {}});
-        }
-        
+        let user = response.json();
+        console.log(user);
+        return new User(user);
       }));
   }
 
@@ -90,6 +83,18 @@ export class ApiService {
     console.log("Api Service creating: ");
     console.log(newEvent);
     return this.http.post(REAL + "/party", newEvent, {headers}).pipe(
+      map(response => {
+        console.log(response);
+        let event = response.json();
+        return new Event(event);
+      })
+    );
+  }
+
+  public getEventById(eventId: number): Observable<Event> {
+    console.log("Api Service getting: ");
+    console.log("Event ID: " + eventId);
+    return this.http.get(REAL + "/party/" + eventId, {headers}).pipe(
       map(response => {
         console.log(response);
         let event = response.json();

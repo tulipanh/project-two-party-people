@@ -1,13 +1,25 @@
 <div class="search-panel-item" id="search-panel-enclosing">
-  <div class="search-panel-item normal" id="search-panel-div" [class.hidden]="hidden">
-    <div class="search-panel-item" id="search-panel-info" >
-      <app-filter-tile></app-filter-tile>
-      <app-event-tile *ngFor="let event of events" [event]="event">
-        
-      </app-event-tile>
-    </div>
-    <div class="search-panel-item" id="search-panel-hide-button">
-      <button id="temp-button-content" (click)="toggleHide()">{{toggleButtonContent}}</button>
-    </div>
+<div class="search-panel-item normal" id="search-panel-div" [class.hidden]="hidden">
+  <div class="search-panel-item" id="search-panel-info">
+    <mat-tab-group>
+      <mat-tab label="Search">
+        <app-filter-tile></app-filter-tile>
+        <app-event-tile *ngFor="let event of events" [event]="event" (detailsEvent)="openDetails($event)">
+        </app-event-tile>
+      </mat-tab>
+      <mat-tab label="Your Events">
+          <app-event-tile *ngFor="let event of userCreated" [event]="event" (detailsEvent)="openDetails($event)">
+            </app-event-tile>
+      </mat-tab>
+      <mat-tab label="RSVPs">
+        <app-event-tile *ngFor="let event of userRSVPs" [event]="event" (detailsEvent)="openDetails($event)">
+        </app-event-tile>
+      </mat-tab>
+    </mat-tab-group>
+
   </div>
+  <div class="search-panel-item" id="search-panel-hide-button">
+    <button id="temp-button-content" (click)="toggleHide()">{{toggleButtonContent}}</button>
+  </div>
+</div>
 </div>

@@ -46,7 +46,6 @@ export class TopLevelComponent implements OnInit {
   subscribeActiveEvent() {
     this.eventStore.activeEvent.subscribe(event => {
       this.activeEvent = event;
-      this.switchToPartyDetails;
     })
   }
 
@@ -81,17 +80,17 @@ export class TopLevelComponent implements OnInit {
     this.eventStore.createEvent(arg);
     this.switchToNone();
   }
+  
   setRSVP(arg) {
+    // TODO: Need to work around the fact that isArray throws an error instead of returning undefined.
+    if (this.activeUser.eventsRSVP == null) this.activeUser.eventsRSVP = [];
     if(arg) {
-      if (!(this.activeUser.eventsRSVP.isArray)) this.activeUser.eventsRSVP = [];
       this.activeUser.eventsRSVP.push(this.activeEvent);
     } else {
-      if (this.activeUser.eventsRSVP.isArray) {
         this.activeUser.eventsRSVP = this.activeUser.eventsRSVP.filter(
           (entry) => {
             entry.partyId !== this.activeEvent.partyId;
         });
-      }
     }
     this.attemptUpdate(this.activeUser);
   }
@@ -101,7 +100,11 @@ export class TopLevelComponent implements OnInit {
   switchToProfile() {this.interfaceStore.setActivity(TopLevelActivity.Profile);}
   switchToLogin() {this.interfaceStore.setActivity(TopLevelActivity.Login);}
   switchToRegister() {this.interfaceStore.setActivity(TopLevelActivity.Register);}
-  switchToNone() {this.interfaceStore.setActivity(TopLevelActivity.None);}
+  switchToNone() {
+    this.userStore.clearAllErrors();
+    this.eventStore.clearAllErrors();
+    this.interfaceStore.setActivity(TopLevelActivity.None);
+  }
 }
 
 

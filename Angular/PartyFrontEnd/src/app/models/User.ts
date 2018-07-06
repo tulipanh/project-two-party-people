@@ -1,3 +1,5 @@
+import { Event } from './Event';
+
 export class User {
     personId: number;
     age: number;
@@ -5,7 +7,8 @@ export class User {
     username: string;
     password: string;
     address: {};
-    eventsRSVP;
+    eventsRSVP: Event[];
+    creatorEvents: Event[];
 
     constructor(values: Object = {}) {
         Object.assign(this, values);

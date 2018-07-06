@@ -16,10 +16,7 @@ export class UserStore {
   private _profileError: BehaviorSubject<string> = new BehaviorSubject("");
   
   constructor(private userService: UserDataService) {
-    let blankUser = new User();
-    blankUser['address'] = {};
-    // can be replaced with new User({address: {}})
-    this._activeUser = new BehaviorSubject(blankUser);
+    this._activeUser = new BehaviorSubject(new User({address:{}, eventsRSVP: [], creatorEvents: []}));
   }
 
   get activeUser() {
@@ -40,14 +37,16 @@ export class UserStore {
 
   login(username: string, password: string) {
     this.userService.login(username, password).subscribe(
-      // TODO: What does a failure look like here?
-      // Answer: The body is empty.
-      (user) => this._activeUser.next(user)
+      (user) => {
+        console.log(user);
+        this._activeUser.next(user);
+      }//,
+      //(error) => this._loginError.next("Unable to log in with those credentials.")
     )
   }
 
   logout() {
-    this._activeUser.next(new User({address:{}}));
+    this._activeUser.next(new User({address:{}, eventsRSVP: [], creatorEvents: []}));
   }
 
   updateUser(updatedUser) {
@@ -59,6 +58,8 @@ export class UserStore {
 
   createUser(newUser: User) {
     // TODO: What will a failure look like?
+    newUser.eventsRSVP = [];
+    newUser.creatorEvents = [];
     this.userService.addUser(newUser).subscribe((user) =>  {
       if (user && user.username !== null && user.username !== undefined && user.username != "" ) {
         this._activeUser.next(user);
@@ -73,6 +74,12 @@ export class UserStore {
         console.log(user);
       }
     );
+  }
+
+  clearAllErrors() {
+    this._loginError.next("");
+    this._profileError.next("");
+    this._registerError.next("");
   }
 
 }

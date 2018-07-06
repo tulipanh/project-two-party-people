@@ -7,7 +7,7 @@ export class Event {
     cost: number;
     attendees: {};
     tagList: any[];
-    pictureurl: string;
+    pictureUrl: string;
     description: string;
 
     constructor(values: Object = {}) {

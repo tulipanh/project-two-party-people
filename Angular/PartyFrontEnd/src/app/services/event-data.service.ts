@@ -14,4 +14,8 @@ export class EventDataService {
     return this.api.createEvent(event);
   }
 
+  getEventById(eventId: number): Observable<Event> {
+    return this.api.getEventById(eventId);
+  }
+
 }

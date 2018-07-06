@@ -59,5 +59,17 @@
     left: 50%;
     margin-top: -20px;
     margin-left: -20px;
+    background-color: #f5f5f5;
+    color: #673ab7;
+}
+
+#search-panel-info {
+    background-color: #f5f5f5AA;
+}
+
+mat-tab-group {
+    background-color: #f5f5f5;
+    color: #673ab7;
+
 }
 

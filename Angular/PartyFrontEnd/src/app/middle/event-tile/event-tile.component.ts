@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Event } from '../../models/Event';
 import { EventOverview } from '../../models/EventOverview';
 
@@ -10,10 +10,15 @@ import { EventOverview } from '../../models/EventOverview';
 export class EventTileComponent implements OnInit {
 
   @Input() event: EventOverview;
+  @Output() detailsEvent: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  openDetails() {
+    this.detailsEvent.next(this.event.id);
   }
 
 }

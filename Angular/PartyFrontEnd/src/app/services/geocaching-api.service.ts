@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { } from '@types/googlemaps';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +12,7 @@ export class GeocachingApiService {
   getCoordsFromAddress(address: string){
     this.geocoder.geocode({'address':address}, function(results,status){
         if (status.toString() == 'OK') {
+          console.log(results[0].geometry);
           return results[0].geometry.location;
         }
     })
@@ -27,5 +26,7 @@ export class GeocachingApiService {
     })
   }
 
-  constructor() { }
+  constructor() {
+    this.geocoder = new google.maps.Geocoder();
+  }
 }
