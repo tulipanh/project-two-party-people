@@ -18,6 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.revature.models.PartyPerson;
 import com.revature.util.HashPassword;
 
+/**
+ * Basic CRUD operations 
+ * Unique username and unique email check if that username or email already exists on create or update, 
+ * because these fields should always be unique 
+ * Get user by id returns the parties a user has created, but not the ones they are attending
+ *
+ */
+
 @Repository
 @Transactional
 public class DAOPartyPersonImpl implements DAOPartyPerson {
@@ -41,9 +49,16 @@ public class DAOPartyPersonImpl implements DAOPartyPerson {
 
 	@Override
 	public int updatePerson(PartyPerson person) {
-		PartyPerson oldPerson = getPersonById(person.getPersonId());
+		PartyPerson oldPerson = getUpdateFieldsById(person.getPersonId());
 		if(oldPerson.getUsername().equals(person.getUsername())) {
 			if(oldPerson.getEmail().equals(person.getEmail())) {
+				if(person.getPassword() == null) {
+					person.setPassword(oldPerson.getPassword());
+				}else {
+					System.out.println("Here! "+person.getPassword());
+					person.setPassword(HashPassword.hash(person.getPassword()));
+				}
+				
 				Session session = sessionFactory.getCurrentSession();
 				session.clear();
 				session.update(person);	
@@ -95,12 +110,31 @@ public class DAOPartyPersonImpl implements DAOPartyPerson {
 			//since personId is primary key, there can only be 0 or 1 items in this list
 			PartyPerson person = personList.get(0);
 			person.setCreatorEvents(daoParty.getPartiesCreated(personId));
+			person.setEventsRSVP(daoParty.getPartiesAttending(personId));
 			return person;
 		}else {
 			return null;
 		}
 	}
 	
+	@Override
+	public PartyPerson getUpdateFieldsById(int personId) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(PartyPerson.class);
+		criteria.add(Restrictions.eq("personId", personId));
+		criteria.setProjection(Projections.projectionList()
+				.add(Projections.property("username"),"username")
+				.add(Projections.property("email"),"email")
+				.add(Projections.property("password"),"password")
+				).setResultTransformer(Transformers.aliasToBean(PartyPerson.class));
+		List<PartyPerson> personList = criteria.list();
+		if(personList.size() > 0) {
+			//since personId is primary key, there can only be 0 or 1 items in this list
+			return personList.get(0);
+		}else {
+			return null;
+		}
+	}
 	
 
 	@Override
@@ -110,20 +144,17 @@ public class DAOPartyPersonImpl implements DAOPartyPerson {
 		criteria.add(Restrictions.eq("username", username));
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property("personId"),"personId")
-				.add(Projections.property("username"),"username")
-				.add(Projections.property("email"),"email")
-				.add(Projections.property("age"),"age")
 				.add(Projections.property("password"),"password")
-				.add(Projections.property("address"),"address")
 				).setResultTransformer(Transformers.aliasToBean(PartyPerson.class));
 		List<PartyPerson> personList = criteria.list();
 		if(personList.size() > 0) {
 			PartyPerson person = personList.get(0);
 			//since personId is primary key, there can only be 0 or 1 items in this list
 			if(HashPassword.verifyHash(password, person.getPassword())) {
-				person.setPassword(null);
+				person = getPersonById(person.getPersonId());
 				return person;
 			}
+			
 		}
 		return null;
 	}

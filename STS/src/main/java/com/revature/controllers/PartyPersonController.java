@@ -23,6 +23,13 @@ import com.revature.models.Party;
 import com.revature.models.PartyPerson;
 import com.revature.util.HashPassword;
 
+/**
+ * RESTful server for users, with the base as /user for post, put, and delete
+ * user/login takes a username and password in the URL
+ * user/{id} get returns a user
+ * user/{id}/parties gets all parties that a user has RSVP'd to
+ * user/{id}/parties/owner gets all parties a user has created
+ */
 @CrossOrigin(origins="*")
 @RestController
 public class PartyPersonController {
@@ -61,7 +68,7 @@ public class PartyPersonController {
 	}
 	
 	//gets all parties a person created
-	@GetMapping("/user/{id}/owner")
+	@GetMapping("/party/{id}/owner")
 	public Set<Party> partyCreatedByUserId(@PathVariable("id") int id) {
 		return DAOParty.getPartiesCreated(id);
 	}
@@ -69,10 +76,12 @@ public class PartyPersonController {
 	@PostMapping("/user")
 	public PartyPerson createUser(@RequestBody PartyPerson person) {
 		person.setPassword(HashPassword.hash(person.getPassword()));
+		System.out.println(person);
 		if(daoPartyPerson.insertPerson(person) > 0) {
 			if(person.getEmail() != null) {
 				sendEmail.sendWelcomeEmail(person);
 			}
+			person.setPassword(null);
 			return person;
 		}else {
 			return null;
@@ -81,8 +90,8 @@ public class PartyPersonController {
 	
 	@PutMapping("/user")
 	public PartyPerson updateUser(@RequestBody PartyPerson person) {
-		person.setPassword(HashPassword.hash(person.getPassword()));
 		if(daoPartyPerson.updatePerson(person) > 0) {
+			person.setPassword(null);
 			return person;
 		}else {
 			return null;

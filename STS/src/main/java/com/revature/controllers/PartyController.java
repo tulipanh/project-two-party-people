@@ -1,5 +1,7 @@
 package com.revature.controllers;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,15 @@ import com.revature.dao.DAOParty;
 import com.revature.emails.SendEmail;
 import com.revature.models.Party;
 import com.revature.models.PartyPerson;
+
+/**
+ * RESTful Controller for party objects.  
+ * /party has post, put, and delete methods with parties in the request body.
+ * party/{id} has get
+ * party/attendees gets the RSVP list, 
+ * party/local takes max and min lat and long and returns all parties within that rectangle
+ * party/local/radius takes a lat and long and a radius and returns all parties in that radius
+ */
 
 @CrossOrigin(origins="*")
 @RestController
@@ -57,16 +68,16 @@ public class PartyController {
 	}
 	
 	@GetMapping("/party/local/radius")
-	public Set<Party> parties(@RequestParam("radius") Double radius, 
+	public List<BigDecimal> parties(@RequestParam("radius") Double radius, 
 			@RequestParam("latitude") Double latitude,
 			@RequestParam("longitude") Double longitude){
-		return daoPartyImpl.getPartyWithinRadius(radius,latitude,longitude);
+		return daoPartyImpl.getPartyIdsWithinRadius(radius,latitude,longitude);
 	}
 	
 	@PostMapping("/party")
 	public Party createParty(@RequestBody Party party) {
 		if(daoPartyImpl.insertParty(party) > 0) {
-			if(party.getCreator().getEmail() != null) {
+			if(party.getCreator() != null  && party.getCreator().getEmail() != null) {
 				sendEmail.sendEventCreatedEmail(party.getCreator(), party);
 			}
 			return party;

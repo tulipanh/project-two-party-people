@@ -1,6 +1,5 @@
 package com.revature.util;
 
-import java.util.function.Function;
 
 public class HashPassword {
 	private static final UpdatableBCrypt bcrypt = new UpdatableBCrypt(11);
@@ -13,7 +12,7 @@ public class HashPassword {
 		return bcrypt.verifyHash(password, hashedPassword);
 	}
 	
-	public static boolean verifyAndUpdateHash(String password, String hash, Function<String, Boolean> updateFunc) {
-	    return bcrypt.verifyAndUpdateHash(password, hash, updateFunc);
+	public static String verifyAndUpdateHash(String password, String hashedPassword) {
+	    return bcrypt.verifyAndUpdateHash(password, hashedPassword);
 	}
 }

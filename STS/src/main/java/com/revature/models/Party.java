@@ -19,7 +19,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 /**
  * Class for the party object.  Links to the person who created the party (creator),
  * the address of the party (and the address links to the coordinates),
@@ -30,6 +32,8 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table
 @DynamicUpdate
+@DynamicInsert
+@SelectBeforeUpdate
 public class Party {
 	
 	@Column
@@ -55,8 +59,8 @@ public class Party {
 	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST},fetch= FetchType.LAZY )
 	@JoinTable(
 			name="PARTY_RSVP",
-			joinColumns= {@JoinColumn(name="personId")},
-			inverseJoinColumns= {@JoinColumn(name="partyId")}
+			joinColumns= {@JoinColumn(name="partyId")},
+			inverseJoinColumns= {@JoinColumn(name="personId")}
 			)
 	private Set<PartyPerson> attendees;
 	@OneToMany(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)

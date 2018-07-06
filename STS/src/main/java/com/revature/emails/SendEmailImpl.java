@@ -2,17 +2,21 @@ package com.revature.emails;
 
 
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import com.revature.models.Party;
 import com.revature.models.PartyPerson;
+
+/*
+ * Component for sending emails
+ * Whitelist array for which addresses emails can be sent to, later can be replaced with a blacklist based on bounced emails
+ * Sends a welcome email when user creates an account for the first time
+ * Sends an email when an event is created
+ */
 
 @Component
 public class SendEmailImpl implements SendEmail{

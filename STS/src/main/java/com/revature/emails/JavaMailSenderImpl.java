@@ -6,6 +6,11 @@ import java.util.Properties;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Propeties for Amazon emailing service
+ * 
+ */
+
 @Repository
 public class JavaMailSenderImpl extends org.springframework.mail.javamail.JavaMailSenderImpl{
 	
