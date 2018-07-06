@@ -58,10 +58,14 @@ export class SearchPanelComponent implements OnInit {
   }
 
   updateRSVPs() {
+    this.userRSVPs = [];
     for (let e of this.activeUser.eventsRSVP) {
       let newEO = new EventOverview();
       newEO.date = e.partyDate;
-      newEO.address = e.address;
+      newEO.address = {streetName: "", city: "", state: ""};
+      newEO.address.streetName = (e.address['streetName'] ? e.address['streetName'] : "");
+      newEO.address.city = (e.address['city'] ? e.address['city'] : "");
+      newEO.address.state = (e.address['state'] ? e.address['state'] : "");
       newEO.id = e.partyId;
       newEO.picture = e.pictureUrl;
       newEO.name = e.partyName;
@@ -70,10 +74,14 @@ export class SearchPanelComponent implements OnInit {
   }
 
   updateCreated() {
+    this.userCreated = [];
     for (let e of this.activeUser.creatorEvents) {
       let newEO = new EventOverview();
       newEO.date = e.partyDate;
-      newEO.address = e.address;
+      newEO.address = {streetName: "", city: "", state: ""};
+      newEO.address.streetName = (e.address['streetName'] ? e.address['streetName'] : "");
+      newEO.address.city = (e.address['city'] ? e.address['city'] : "");
+      newEO.address.state = (e.address['state'] ? e.address['state'] : "");
       newEO.id = e.partyId;
       newEO.picture = e.pictureUrl;
       newEO.name = e.partyName;

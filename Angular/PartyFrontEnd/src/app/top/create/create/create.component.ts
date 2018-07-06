@@ -72,7 +72,7 @@ export class CreateComponent implements OnInit {
       }
     }
 
-    let addressString = ne.address['streetName'] + " " + ne.address['city'] + " " + ne.address['state'] + " " + ne.address['zipCode']; 
+    let addressString = ne.address['streetName'] + " " + ne.address['zipCode']; 
     console.log("Address: ");
     console.log(addressString);
     let coords = this.geoService.getCoordsFromAddress(addressString);
