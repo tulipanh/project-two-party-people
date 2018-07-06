@@ -23,7 +23,7 @@ export class EventStore {
 
   constructor(private userStore: UserStore, private interfaceStore: InterfaceStore, private eventService: EventDataService) {
     let blankEvent = new Event();
-    blankEvent['address'] = {};
+    blankEvent['address'] = { streetName: '', city: '', state: '', zipCode: ''};
     blankEvent['attendees'] = [];
     blankEvent['tagList'] = [];
     blankEvent['creator'] = {};

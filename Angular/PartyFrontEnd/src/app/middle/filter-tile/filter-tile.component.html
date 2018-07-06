@@ -16,6 +16,7 @@
             <mat-option value="100">100 miles</mat-option>
           </mat-select>
         </mat-form-field>-->
+        
 
         <mat-form-field>
           <input matInput 
@@ -23,8 +24,8 @@
             [matDatepicker]="startPicker"  
             [min]="today.value"
             [max]="end.value"
-            [(ngModel)]="start.value"
             [value]="start.value"
+
             (dateChange)="pushStartDate($event)"
             placeholder="Choose a start date">
           <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
@@ -36,8 +37,8 @@
             name="endPicker"
             [matDatepicker]="endPicker" 
             [min]="start.value"
-            [(ngModel)]="end.value"
-            (value)="end.value"
+            [value]="end.value"
+ 
             (dateChange)="pushEndDate($event)"
             placeholder="Choose a end date">
           <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>

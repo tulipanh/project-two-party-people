@@ -56,11 +56,12 @@ export class CreateComponent implements OnInit {
     ne.creator = null;
     ne.partyName = this.inputEventName;
     ne.partyDate = this.inputEventDate;
-    ne.address = {};
-    ne.address['streetName'] = this.inputStreet;
-    ne.address['city'] = this.inputCity;
-    ne.address['state'] = this.inputState;
-    ne.address['zipCode'] = this.inputZipcode;
+    ne.address = {
+      streetName: this.inputStreet,
+      city: this.inputCity,
+      state: this.inputState,
+      zipCode: this.inputZipcode
+    };
     ne.description = this.inputDescription;
     ne.cost = this.inputCost;
     ne.pictureUrl = this.inputPictureUrl;
