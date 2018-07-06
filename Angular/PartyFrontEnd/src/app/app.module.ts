@@ -4,6 +4,7 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { HttpModule } from "@angular/http";
 import { MaterialAppModule } from './ngmaterial.module';
 import { MatChipsModule } from '@angular/material';
+import { MatTabsModule } from '@angular/material';
 
 import { SearchCoordinatesDataService } from "./services/search-coordinates-data.service";
 import { PartyHttpRequestService } from "./services/party-http-request.service";
@@ -50,6 +51,7 @@ import { EventDetailsComponent } from './top/event-details/event-details.compone
     HttpClientModule,
     HttpModule,
     MatChipsModule,
+    MatTabsModule,
     MaterialAppModule
   ],
   providers: [

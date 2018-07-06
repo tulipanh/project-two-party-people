@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Event } from "../../../models/Event";
+import { GeocachingApiService } from '../../../services/geocaching-api.service';
 
 @Component({
   selector: 'app-create',
@@ -38,7 +39,7 @@ export class CreateComponent implements OnInit {
   @Input() errorField: string = "";
   @Output() createEvent: EventEmitter<Event> = new EventEmitter();
 
-  constructor() { }
+  constructor(private geoService: GeocachingApiService) { }
 
   ngOnInit() {
   }
@@ -62,7 +63,7 @@ export class CreateComponent implements OnInit {
     ne.address['zipCode'] = this.inputZipcode;
     ne.description = this.inputDescription;
     ne.cost = this.inputCost;
-    ne.pictureurl = this.inputPictureUrl;
+    ne.pictureUrl = this.inputPictureUrl;
     ne.tagList = [];
 
     if (this.selectedTags.value) {
@@ -70,7 +71,14 @@ export class CreateComponent implements OnInit {
         ne.tagList.push({tagName: i});
       }
     }
-    
+
+    let addressString = ne.address['streetName'] + " " + ne.address['city'] + " " + ne.address['state'] + " " + ne.address['zipCode']; 
+    console.log("Address: ");
+    console.log(addressString);
+    let coords = this.geoService.getCoordsFromAddress(addressString);
+    ne.address['coordinates'] = coords;
+    ne.address['coordinates'];
+
     console.log("Creating Event:");
     console.log(ne);
 

@@ -1,12 +1,12 @@
 <div class="fullscreen">
     <div *ngIf="shroudOn" class="shroud-item" id="shroud"></div>
     <div class="control-panel-item" id="control-panel-div">
-        <span class="control-panel-button">
+        <span *ngIf="activeUser.personId" class="control-panel-button">
             <button mat-raised-button color="primary" class="control-panel-item small-button" id="create-event-button" type="button" (click)="switchToCreate()">
                 New Event
             </button>
         </span>
-        <span class="control-panel-button">
+        <span *ngIf="activeUser.personId" class="control-panel-button">
             <button mat-raised-button color="primary" class="control-panel-item small-button" id="profile-button" type="button" (click)="switchToProfile()">
                 Profile
             </button>
@@ -33,6 +33,6 @@
         <app-register *ngIf="currentActivity === 2" (registerEvent)="attemptRegister($event)" [errorField]="registerError"></app-register>
         <app-profile *ngIf="currentActivity === 3" (updateEvent)="attemptUpdate($event)" [activeUser]="activeUser" [errorField]="profileError"></app-profile>
         <app-create *ngIf="currentActivity === 4" (createEvent)="attemptCreate($event)" [errorField]="createError"></app-create>
-        <!--<app-event-details *ngIf="currentActivity === 5" (setRSVPEvent)="setRSVP($event)" [activeEvent]="activeEvent" [activeUser]="activeUser" [errorField]="eventError"></app-event-details>-->
+        <app-event-details *ngIf="currentActivity === 5" (setRSVPEvent)="setRSVP($event)" [activeEvent]="activeEvent" [activeUser]="activeUser" [errorField]="eventError"></app-event-details>
     </div>
 </div>

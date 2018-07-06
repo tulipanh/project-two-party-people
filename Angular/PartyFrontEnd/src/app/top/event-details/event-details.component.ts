@@ -27,4 +27,17 @@ export class EventDetailsComponent implements OnInit {
       return false;
     }
   }
+
+  userExists() {
+    return (this.activeUser && this.activeUser.personId);
+  }
+
+  setRSVP(val: boolean) {
+    this.setRSVPEvent.next(val);
+  }
+
+  getEventDate() {
+    return new Date(this.activeEvent.partyDate);
+  }
+  
 }

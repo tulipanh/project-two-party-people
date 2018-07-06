@@ -1,14 +1,15 @@
-<div id="create-page">
+<div id="event-details-page">
     <mat-toolbar class="main-toolbar" color="primary">
       <span>Event-Details</span>
     </mat-toolbar>
     <div class="scrollable-form">
-      <mat-card>
+    <div class="form-container">
+      <mat-card id="event-card">
         <mat-card-header>
           <mat-card-title>{{activeEvent.partyName}}</mat-card-title>
-          <mat-card-subtitle>{{Date(activeEvent.partyDate)}}</mat-card-subtitle>
+          <mat-card-subtitle>{{getEventDate() | date: 'fullDate'}}</mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image [src]="activeEvent.pictureurl" alt="Event Picture">
+        <img mat-card-image [src]="activeEvent.pictureUrl" alt="Event Picture">
         <mat-card-content>
           <mat-card-subtitle>Description:</mat-card-subtitle>
           <p>{{activeEvent.description}}</p>
@@ -24,9 +25,10 @@
             <mat-chip *ngFor="let tag of activeEvent.tagList" value="tag.id">{{tag.tagName}}</mat-chip>
           </mat-chip-list>
           <br>
-          <button *ngIf="!userIsRSVPed()" mat-button color="primary" (click)="setRSVP(true)">RSVP</button>
-          <button *ngIf="userIsRSVPed()" mat-button color="primary" (click)="setRSVP(false)">Un-RSVP</button>
+          <button *ngIf="userExists() && !userIsRSVPed()" mat-raised-button color="primary" (click)="setRSVP(true)">RSVP</button>
+          <button *ngIf="userExists() && userIsRSVPed()" mat-button color="primary" (click)="setRSVP(false)">Un-RSVP</button>
         </mat-card-content>
       </mat-card>
+    </div>
     </div>
   </div>

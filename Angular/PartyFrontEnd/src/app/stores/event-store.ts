@@ -5,6 +5,7 @@ import { BehaviorSubject } from "rxjs";
 import { User } from "../models/User";
 import { Event } from "../models/Event";
 import { UserStore } from "./user-store";
+import { InterfaceStore } from "./interface-store";
 import { EventDataService } from "../services/event-data.service";
 
 @Injectable({
@@ -20,7 +21,7 @@ export class EventStore {
 
   activeUser: User;
 
-  constructor(private userStore: UserStore, private eventService: EventDataService) {
+  constructor(private userStore: UserStore, private interfaceStore: InterfaceStore, private eventService: EventDataService) {
     let blankEvent = new Event();
     blankEvent['address'] = {};
     blankEvent['attendees'] = [];
@@ -43,6 +44,11 @@ export class EventStore {
   get userRSVPEvents() {return this._userRSVPEvents.asObservable();}
   get searchResults() {return this._searchResults.asObservable();}
   get createError() {return this._createError.asObservable();}
+
+  setActiveEvent(eventId) {
+    this.eventService.getEventById(eventId).subscribe((event) => this._activeEvent.next(event));
+    this.interfaceStore.setActivity(5);
+  }
 
   subscribeActiveUser() {
     this.userStore.activeUser.subscribe(user => {
@@ -69,6 +75,10 @@ export class EventStore {
       newList.push(event);
       this._userCreatedEvents.next(newList);
     });
+  }
+
+  clearAllErrors() {
+    this._createError.next("");
   }
 
 }
