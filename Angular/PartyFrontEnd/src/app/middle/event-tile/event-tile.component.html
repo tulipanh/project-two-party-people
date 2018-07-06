@@ -6,7 +6,7 @@
     {{event.date | date: 'fullDate'}}
   </mat-card-subtitle>
   <div class="mat-card-image-container" color="primary">
-  <img mat-card-image [src]="event.picture" />
+  <img mat-card-image [src]="getImageUrl()" />
   </div>
   <mat-card-content>
     {{event.address.streetName}}

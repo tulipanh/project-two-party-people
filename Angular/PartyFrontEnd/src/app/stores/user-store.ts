@@ -36,12 +36,13 @@ export class UserStore {
   }
 
   login(username: string, password: string) {
+    this._loginError.next("");
     this.userService.login(username, password).subscribe(
       (user) => {
         console.log(user);
         this._activeUser.next(user);
-      }//,
-      //(error) => this._loginError.next("Unable to log in with those credentials.")
+      },
+      (error) => this._loginError.next("Unable to log in with those credentials.")
     )
   }
 
@@ -50,29 +51,31 @@ export class UserStore {
   }
 
   updateUser(updatedUser) {
+    this._profileError.next("");
     this.userService.updateUser(updatedUser).subscribe(
-      // TODO: What does a failure look like here?
-      (user) => this._activeUser.next(user)
+      (user) => this._activeUser.next(user), 
+      (error) => this._profileError.next("Could not update your profile with that information.")
     )
   }
 
   createUser(newUser: User) {
-    // TODO: What will a failure look like?
+    this._registerError.next("");
     newUser.eventsRSVP = [];
     newUser.creatorEvents = [];
     this.userService.addUser(newUser).subscribe((user) =>  {
       if (user && user.username !== null && user.username !== undefined && user.username != "" ) {
         this._activeUser.next(user);
       }
-    });
+    }, (error) => this._registerError.next("Could not create a new user with that information."));
   }
 
   refreshActiveUser() {
+    this._loginError.next("");
     this.userService.getUserById(this._activeUser.getValue().personId).subscribe(
       (user) => {
         this._activeUser.next(user);
         console.log(user);
-      }
+      }, (error) => this._loginError.next("Could not refresh use information.")
     );
   }
 

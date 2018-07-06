@@ -67,14 +67,15 @@ export class EventStore {
   }
 
   createEvent(newEvent) {
-    // TODO: What will a failed create look like?
+    this._createError.next("");
     console.log("From EventStore: ");
     console.log(event);
     this.eventService.addEvent(newEvent).subscribe((event) => {
       let newList: Event[] = this._userCreatedEvents.getValue();
       newList.push(event);
       this._userCreatedEvents.next(newList);
-    });
+      this.userStore.refreshActiveUser();
+    }, error => this._createError.next("Unable to create an event with that information."));
   }
 
   clearAllErrors() {

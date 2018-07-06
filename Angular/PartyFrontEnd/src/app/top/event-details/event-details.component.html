@@ -9,7 +9,7 @@
           <mat-card-title>{{activeEvent.partyName}}</mat-card-title>
           <mat-card-subtitle>{{getEventDate() | date: 'fullDate'}}</mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image [src]="activeEvent.pictureUrl" alt="Event Picture">
+        <img mat-card-image [src]="getImageUrl()" alt="Event Picture">
         <mat-card-content>
           <mat-card-subtitle>Description:</mat-card-subtitle>
           <p>{{activeEvent.description}}</p>
@@ -22,7 +22,7 @@
           <p>{{activeEvent.cost}}</p>
           <mat-card-subtitle>Categories:</mat-card-subtitle>
           <mat-chip-list>
-            <mat-chip *ngFor="let tag of activeEvent.tagList" value="tag.id">{{tag.tagName}}</mat-chip>
+            <mat-chip *ngFor="let tag of activeEvent.tagList" value="tag.tagName">{{idToString(tag.tagName)}}</mat-chip>
           </mat-chip-list>
           <br>
           <button *ngIf="userExists() && !userIsRSVPed()" mat-raised-button color="primary" (click)="setRSVP(true)">RSVP</button>
