@@ -34,6 +34,11 @@ export class CreateComponent implements OnInit {
   inputDescription: string = "";
   inputCost: number = 0.00;
   inputPictureUrl: string = "";
+  coordinates : {
+    latitude:number,
+    longitude: number
+  } = { latitude: null, longitude: null};
+
   selectedTags = new FormControl();
 
   @Input() errorField: string = "";
@@ -42,6 +47,34 @@ export class CreateComponent implements OnInit {
   constructor(private geoService: GeocachingApiService) { }
 
   ngOnInit() {
+  }
+
+  handleAddressChange(address: google.maps.places.PlaceResult) {
+
+    this.coordinates.latitude = address.geometry.location.lat();
+    this.coordinates.longitude = address.geometry.location.lng();
+    let addressComponents = address.address_components;
+    for(let component of addressComponents) {
+      switch(component.types[0]) {
+        case "postal_code":
+          this.inputZipcode = component.long_name;
+          break;
+        case "street_number":
+          this.inputStreet = component.long_name;
+          break;
+        case "route":
+          this.inputStreet +=  " " + component.long_name;
+          break;
+        case "locality":
+          this.inputCity = component.long_name;
+          break;
+        case "administrative_area_level_1":
+          this.inputState = component.long_name;
+          break;
+
+      }
+    }
+
   }
 
   attemptCreateEvent() {
@@ -60,7 +93,8 @@ export class CreateComponent implements OnInit {
       streetName: this.inputStreet,
       city: this.inputCity,
       state: this.inputState,
-      zipCode: this.inputZipcode
+      zipCode: this.inputZipcode,
+      coordinates: this.coordinates
     };
     ne.description = this.inputDescription;
     ne.cost = this.inputCost;
@@ -73,15 +107,8 @@ export class CreateComponent implements OnInit {
       }
     }
 
-    let addressString = ne.address['streetName'] + " " + ne.address['zipCode']; 
-    console.log("Address: ");
-    console.log(addressString);
-    let coords = this.geoService.getCoordsFromAddress(addressString);
-    ne.address['coordinates'] = coords;
-    ne.address['coordinates'];
 
-    console.log("Creating Event:");
-    console.log(ne);
+
 
     this.createEvent.next(ne);
   }

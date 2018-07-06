@@ -23,7 +23,7 @@ export class EventStore {
 
   constructor(private userStore: UserStore, private interfaceStore: InterfaceStore, private eventService: EventDataService) {
     let blankEvent = new Event();
-    blankEvent['address'] = { streetName: '', city: '', state: '', zipCode: ''};
+    blankEvent['address'] = { streetName: '', city: '', state: '', zipCode: '', coordinates: { latitude: null, longitude: null}};
     blankEvent['attendees'] = [];
     blankEvent['tagList'] = [];
     blankEvent['creator'] = {};
@@ -68,8 +68,6 @@ export class EventStore {
 
   createEvent(newEvent) {
     // TODO: What will a failed create look like?
-    console.log("From EventStore: ");
-    console.log(event);
     this.eventService.addEvent(newEvent).subscribe((event) => {
       let newList: Event[] = this._userCreatedEvents.getValue();
       newList.push(event);

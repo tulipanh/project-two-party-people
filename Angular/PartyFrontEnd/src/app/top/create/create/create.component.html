@@ -16,20 +16,11 @@
         <input name="eventdate" type="date" matInput required placeholder="Pick A Date" [(ngModel)]="inputEventDate">
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Street:</mat-label>
-        <input name="street" type="text" matInput required placeholder="Enter A Street" [(ngModel)]="inputStreet">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>City:</mat-label>
-        <input name="city" type="text" matInput required placeholder="Enter A City" [(ngModel)]="inputCity">
-      </mat-form-field>
-      <mat-form-field >
-        <mat-label>State:</mat-label>
-        <input name="state" type="text" matInput required placeholder="Enter A State" [(ngModel)]="inputState">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Zipcode:</mat-label>
-        <input name="zipcode" type="text" matInput required placeholder="Enter A Zipcode" [(ngModel)]="inputZipcode">
+        <input matInput 
+        name="address"
+        ngx-google-places-autocomplete #placesRef="ngx-places" 
+        placeholder="Address"
+        (onAddressChange)="handleAddressChange($event)"/>
       </mat-form-field>
       <br>
       <mat-toolbar class="sub-nav">
@@ -41,7 +32,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Description:</mat-label>
-        <textarea matInput placeholder="Description" [(ngModel)]="inputDescription"></textarea>
+        <textarea name="description" matInput placeholder="Description" [(ngModel)]="inputDescription"></textarea>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Add An Image Link:</mat-label>

@@ -6,6 +6,10 @@ export class Event {
         city: string;
         state: string;
         zipCode: string;
+        coordinates: {
+            latitude: number;
+            longitude: number;
+        }
     };
     partyName: string;
     partyDate: Date;

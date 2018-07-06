@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from "../../../models/User";
+
+
+import { } from '@google/maps';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -16,6 +20,11 @@ export class RegisterComponent implements OnInit {
   inputCity: string = null;
   inputState: string = null;
   inputZipcode: string = null;
+  coordinates : {
+    latitude:number,
+    longitude: number
+  } = { latitude: null, longitude: null};
+
   @Input() errorField: string = null;
   @Output() registerEvent: EventEmitter<User> = new EventEmitter();
 
@@ -24,6 +33,32 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
+  handleAddressChange(address: google.maps.places.PlaceResult) {
+    this.coordinates.latitude = address.geometry.location.lat();
+    this.coordinates.longitude = address.geometry.location.lng();
+    let addressComponents = address.address_components;
+    for(let component of addressComponents) {
+      switch(component.types[0]) {
+        case "postal_code":
+          this.inputZipcode = component.long_name;
+          break;
+        case "street_number":
+          this.inputStreet = component.long_name;
+          break;
+        case "route":
+          this.inputStreet +=  " " + component.long_name;
+          break;
+        case "locality":
+          this.inputCity = component.long_name;
+          break;
+        case "administrative_area_level_1":
+          this.inputState = component.long_name;
+          break;
+
+      }
+    }
+
+  }
   attemptRegister() {
     this.errorField = "";
     if (this.inputUsername === null || this.inputUsername === undefined) {
@@ -54,7 +89,8 @@ export class RegisterComponent implements OnInit {
         "streetName": this.inputStreet,
         "city": this.inputCity,
         "state": this.inputState,
-        "zipCode": this.inputZipcode
+        "zipCode": this.inputZipcode,
+        "coordinates": this.coordinates
       }
     });
 
