@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Repository;
@@ -20,7 +22,7 @@ public interface DAOParty {
 	public Set<Party> getPartiesCreated(int personId);
 	public Set<PartyPerson> getAttendeesById(int partyId);
 	public Set<Tag> getTagsByPartyId(int partyId);
-	public Set<Party> getPartyWithinRadius(double radius, double latitude, double longitude);
+	public List<BigDecimal> getPartyIdsWithinRadius(double radius, double latitude, double longitude);
 	public PartyPerson getCreatorByPersonId(int personId);
 	public Party getPartyByIdSmall(int partyId);
 }

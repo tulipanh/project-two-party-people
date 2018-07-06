@@ -21,6 +21,15 @@ import com.revature.models.Party;
 import com.revature.models.PartyPerson;
 import com.revature.models.Tag;
 
+/**
+ * basic CRUD operations
+ * Get party by radius or coordinates only returns basic info about the party to display it to the front
+ * Getting a party by ID returns all the other info
+ * Get parties attending/created methods are for the user, and is used by the DAOPartyPerson class
+ * Other methods are helper methods used by get
+ *
+ */
+
 @Repository
 @Transactional
 public class DAOPartyImpl implements DAOParty {
@@ -139,7 +148,7 @@ public class DAOPartyImpl implements DAOParty {
 
 
 	@Override
-	public Set<Party> getPartyWithinRadius(double radius, double latitude, double longitude) {
+	public List<BigDecimal> getPartyIdsWithinRadius(double radius, double latitude, double longitude) {
 		Session session = sessionFactory.getCurrentSession();
 		String sql = "SELECT P.PARTYID FROM PARTY P\n" + 
 				"JOIN ADDRESS A\n" + 
@@ -153,12 +162,13 @@ public class DAOPartyImpl implements DAOParty {
 		query.setDouble(1, latitude);
 		query.setDouble(2,longitude);
 		query.setDouble(3, radius);
-		Set<BigDecimal> partyIdList = new HashSet<BigDecimal>(query.list());
-		Set<Party> parties = new HashSet<>();
-		for(BigDecimal id: partyIdList) {
-			parties.add(getPartyByIdSmall(Integer.parseInt(id.toString())));
-		}
-		return parties;
+		return query.list();
+//		Set<BigDecimal> partyIdList = new HashSet<BigDecimal>(query.list());
+//		Set<Party> parties = new HashSet<>();
+//		for(BigDecimal id: partyIdList) {
+//			parties.add(getPartyByIdSmall(Integer.parseInt(id.toString())));
+//		}
+//		return parties;
 	}
 	
 	public Set<Party> getPartyListWithinCoordinates(double minLat, double minLong, double maxLat, double maxLong){

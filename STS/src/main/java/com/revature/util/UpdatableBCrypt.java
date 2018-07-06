@@ -1,7 +1,5 @@
 package com.revature.util;
 
-import java.util.function.Function;
-
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,18 +21,17 @@ public class UpdatableBCrypt {
         return BCrypt.checkpw(password, hash);
     }
 
-    public boolean verifyAndUpdateHash(String password, String hash, Function<String, Boolean> updateFunc) {
+    public String verifyAndUpdateHash(String password, String hash) {
         if (BCrypt.checkpw(password, hash)) {
             int rounds = getRounds(hash);
           
             if (rounds != logRounds) {
                 log.debug("Updating password from {} rounds to {}", rounds, logRounds);
-                String newHash = hash(password);
-                return updateFunc.apply(newHash);
+                return hash(password);
+                
             }
-            return true;
         }
-        return false;
+        return password;
     }
 
     /*

@@ -18,7 +18,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Class for the party-goers and party-creators
@@ -30,6 +34,8 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table
 @DynamicUpdate
+@DynamicInsert
+@SelectBeforeUpdate
 public class PartyPerson {
 
 	@Column
@@ -99,6 +105,7 @@ public class PartyPerson {
 		return password;
 	}
 
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}

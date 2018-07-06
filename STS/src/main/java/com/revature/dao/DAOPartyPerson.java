@@ -15,4 +15,5 @@ public interface DAOPartyPerson {
 	public PartyPerson login(String username, String password);
 	public boolean uniqueUsername(String username);
 	public boolean uniqueEmail(String email);
+	public PartyPerson getUpdateFieldsById(int personId);
 }
