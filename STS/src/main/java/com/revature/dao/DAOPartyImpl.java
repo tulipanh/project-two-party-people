@@ -126,10 +126,16 @@ public class DAOPartyImpl implements DAOParty {
 		criteria.add(Restrictions.eq("person.personId", personId));
 		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property("partyId"),"partyId")
-				.add(Projections.property("partyName"),"partyName")
-				.add(Projections.property("partyDate"),"partyDate")
+//				.add(Projections.property("partyName"),"partyName")
+//				.add(Projections.property("partyDate"),"partyDate")
 				).setResultTransformer(Transformers.aliasToBean(Party.class));
-		return new HashSet<Party>(criteria.list());
+	//	return new HashSet<Party>(criteria.list());
+		Set<Party> parties = new HashSet<Party>(criteria.list());
+		Set<Party> finalPartyList = new HashSet<Party>();
+		for(Party party: parties) {
+			finalPartyList.add(getPartyById(party.getPartyId()));
+		}
+		return finalPartyList;
 	}
 	
 	

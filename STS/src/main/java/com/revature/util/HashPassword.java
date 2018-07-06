@@ -15,4 +15,5 @@ public class HashPassword {
 	public static String verifyAndUpdateHash(String password, String hashedPassword) {
 	    return bcrypt.verifyAndUpdateHash(password, hashedPassword);
 	}
+	
 }

@@ -27,6 +27,7 @@ public class SendEmailImpl implements SendEmail{
 		super();
 		allowedEmails.add("htulipan@gmail.com");
 		allowedEmails.add("jayfeldman03@gmail.com");
+		allowedEmails.add("partygoer999@gmail.com");
 	}
 
 	Set<String> allowedEmails = new HashSet<>();
